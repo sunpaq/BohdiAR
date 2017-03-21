@@ -22,7 +22,7 @@ pod "BohdiAR"
 
 ## Author
 
-sunpaq, yu.li.sun@cn.schindler.com
+sunpaq@gmail.com
 
 ## License
 
