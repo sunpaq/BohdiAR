@@ -1,0 +1,12 @@
+use_frameworks!
+
+target 'BohdiAR_Example' do
+  pod 'BohdiAR',     :path => '../'
+  pod 'BohdiEngine', :path => '~/Dev/pods/BohdiEngine-pod'
+
+  target 'BohdiAR_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
