@@ -1,4 +1,4 @@
-#ifdef USE_CVCONTROLLER
+#ifdef CVLOCK
 
 #import "CVViewController.h"
 #import "BECVDetector.hpp"
@@ -79,5 +79,3 @@
 @end
 
 #endif
-
-

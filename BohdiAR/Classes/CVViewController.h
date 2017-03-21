@@ -1,4 +1,4 @@
-#ifdef USE_CVCONTROLLER
+#ifdef CVLOCK
 
 #ifndef CVBridge_h
 #define CVBridge_h

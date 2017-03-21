@@ -1,7 +1,7 @@
 //#ifdef USE_CVCONTROLLER
 
 #import "CVViewController.h"
-#import "BECVDetector.hpp"
+#import <BohdiAR/BohdiAR-umbrella.h>
 
 @interface CVViewController()
 {
