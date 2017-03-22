@@ -1,5 +1,3 @@
-//#ifdef USE_OPENCV
-
 #include "BECVDetector.hpp"
 
 BECVDetector::BECVDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
@@ -10,7 +8,7 @@ BECVDetector::BECVDetector(int width, int height, float unit, Pattern patternTyp
     unitSize  = unit;
     pattern   = patternType;
     
-    intrinsicMatCalculated = false;
+    cameraCalibrated = false;
     estimateFlags = flags;
     useRANSAC = RANSAC;
     
@@ -133,26 +131,46 @@ void BECVDetector::calculateExtrinsicMat(bool flip)
     
 }
 
+void BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
+{
+    FileStorage fs;
+    fs.open(calibrateFile, FileStorage::READ);
+    if (fs.isOpened()) {
+        fs["Camera_Matrix"]           >> cameraMatrix;
+        fs["Distortion_Coefficients"] >> distCoeffs;
+        fs.release();
+        return;
+    }
+    
+    Mat gray;
+    cvtColor(image, gray, COLOR_BGRA2GRAY);
+    
+    if (detect(gray)) {
+        //root mean square
+        double RMS = calibrate(gray);
+        if(RMS < 0.1 || RMS > 1.0 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
+            fs.open(calibrateFile, FileStorage::WRITE);
+            if (fs.isOpened()) {
+                CvMat cam = cameraMatrix;
+                CvMat dis = distCoeffs;
+                fs.write("Avg_Reprojection_Error", RMS);
+                fs.writeObj("Camera_Matrix", &cam);
+                fs.writeObj("Distortion_Coefficients", &dis);
+                fs.release();
+                return;
+            }
+            
+            cameraCalibrated = true;
+            return;
+        }
+    }
+}
+
 bool BECVDetector::processImage(Mat& image) {
     try {
-        Mat gray;
-        cvtColor(image, gray, COLOR_BGRA2GRAY);
-        
-        if (intrinsicMatCalculated == false) {
-            if (!detect(gray)) {
-                return false;
-            }
-            double RMS = calibrate(gray);
-            if(RMS < 0.1 || RMS > 1.0 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
-                return false;
-            }
-            intrinsicMatCalculated = true;
-        }
-
-        if (markerDetector->detect(gray)) {
-            Mat rgb;
-            cvtColor(image, rgb, COLOR_BGRA2RGB);
-            
+        Mat rgb;
+        cvtColor(image, rgb, COLOR_BGRA2RGB);
+        if (markerDetector->detect(rgb)) {
             markerDetector->estimate(cameraMatrix, distCoeffs, R, T);
             //draw
             markerDetector->draw(rgb);
@@ -169,6 +187,4 @@ bool BECVDetector::processImage(Mat& image) {
     }
     return false;
 }
-
-//#endif
 

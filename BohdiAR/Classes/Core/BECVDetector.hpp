@@ -1,5 +1,3 @@
-//#ifdef USE_OPENCV
-
 #ifndef BECVDetector_hpp
 #define BECVDetector_hpp
 
@@ -37,8 +35,11 @@ public:
     enum Pattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID };
     
     BECVDetector(int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true);
-    bool processImage(Mat& image);
     
+    bool cameraCalibrated;
+    void calibrateCam(Mat& image, const char* calibrateFile);
+    bool processImage(Mat& image);
+
 private:
     BECVMarkers* markerDetector;
     
@@ -51,7 +52,6 @@ private:
     
     int estimateFlags;
     bool useRANSAC;
-    bool intrinsicMatCalculated;
     
     bool detect(Mat& image);
     double calibrate(Mat& image);
@@ -60,4 +60,3 @@ private:
 };
 
 #endif
-//#endif
