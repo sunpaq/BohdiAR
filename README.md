@@ -1,3 +1,6 @@
+# this pod is not published into cocoapods trunk right now !
+# please download or clone it. then use pod 'BohdiAR', :path => '~/Dev/pods/BohdiAR'
+
 # BohdiAR
 
 [![CI Status](http://img.shields.io/travis/sunpaq/BohdiAR.svg?style=flat)](https://travis-ci.org/sunpaq/BohdiAR)
