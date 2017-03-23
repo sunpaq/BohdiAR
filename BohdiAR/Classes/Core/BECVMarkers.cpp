@@ -7,13 +7,16 @@
 //
 
 #import "BECVMarkers.hpp"
+#import <opencv2/imgproc.hpp>
 
-BECVMarkers::BECVMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine)
+BECVMarkers::BECVMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, bool RANSAC)
 {
+    useRANSAC = RANSAC;
     markerLength = length;
     
     dict = getPredefinedDictionary(preDefine);
     params = DetectorParameters::create();    
+    params->doCornerRefinement = true;
     
     corners = vector<vector<Point2f>>();
     markerIds = vector<int>();
@@ -39,6 +42,7 @@ bool BECVMarkers::detect(Mat& image)
     
     detectMarkers(image, dict, corners, markerIds, params);
     if (markerIds.size() > 0) {
+        //calculate subpixel
         return true;
     }
     return false;
@@ -66,7 +70,11 @@ void BECVMarkers::estimate(const Mat cameraMatrix, const Mat distCoeffs, Mat& rv
     vector<Vec3d> rvecArray;
     vector<Vec3d> tvecArray;
 
-    solvePnPRansac(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec);
+    if (useRANSAC) {
+        solvePnPRansac(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec);
+    } else {
+        solvePnP(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec);
+    }
 }
 
 int BECVMarkers::getId()

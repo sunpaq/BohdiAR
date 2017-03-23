@@ -3,6 +3,8 @@
 BECVDetector::BECVDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
 {
     markerDetector = new BECVMarkers(unit);
+    drawRect = true;
+    drawAxis = true;
     
     boardSize = Size_<int>(width, height);
     unitSize  = unit;
@@ -71,14 +73,16 @@ bool BECVDetector::estimate(int flags)
 {
     bool OK;
     if (useRANSAC) {
-        OK = solvePnPRansac(points3D, points2D, cameraMatrix, distCoeffs, R, T, false, flags);
+        OK = solvePnPRansac(points3D, points2D, cameraMatrix, distCoeffs, R, T, true, flags);
     }
     else {
-        OK = solvePnP(points3D, points2D, cameraMatrix, distCoeffs, R, T, false, flags);
+        OK = solvePnP(points3D, points2D, cameraMatrix, distCoeffs, R, T, true, flags);
     }
     
     if (OK) {
         calculateExtrinsicMat(true);
+    } else {
+        
     }
     
     return OK;
@@ -173,8 +177,8 @@ bool BECVDetector::processImage(Mat& image) {
         if (markerDetector->detect(rgb)) {
             markerDetector->estimate(cameraMatrix, distCoeffs, R, T);
             //draw
-            markerDetector->draw(rgb);
-            markerDetector->axis(rgb, cameraMatrix, distCoeffs, R, T);
+            if(drawRect) markerDetector->draw(rgb);
+            if(drawAxis) markerDetector->axis(rgb, cameraMatrix, distCoeffs, R, T);
             calculateExtrinsicMat(true);
             cvtColor(rgb, image, COLOR_RGB2BGRA);
             

@@ -20,7 +20,7 @@ using namespace aruco;
 class BECVMarkers {
 
 public:
-    BECVMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL);
+    BECVMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = true);
     bool detect(Mat& image);
     void draw(Mat& image);
     void axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec);
@@ -28,7 +28,9 @@ public:
     int getId();
     
 private:
+    bool useRANSAC;
     float markerLength;
+
     Ptr<Dictionary> dict;
     Ptr<DetectorParameters> params;
     
