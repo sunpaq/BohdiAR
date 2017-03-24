@@ -35,11 +35,11 @@ public:
     enum Pattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID };
     
     BECVDetector(int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true);
+    bool drawChessboard;
     bool drawRect;
     bool drawAxis;
     
-    bool cameraCalibrated;
-    void calibrateCam(Mat& image, const char* calibrateFile);
+    bool calibrateCam(Mat& image, const char* calibrateFile);
     bool processImage(Mat& image);
 
 private:

@@ -3,6 +3,7 @@
 BECVDetector::BECVDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
 {
     markerDetector = new BECVMarkers(unit);
+    drawChessboard = true;
     drawRect = true;
     drawAxis = true;
     
@@ -10,7 +11,6 @@ BECVDetector::BECVDetector(int width, int height, float unit, Pattern patternTyp
     unitSize  = unit;
     pattern   = patternType;
     
-    cameraCalibrated = false;
     estimateFlags = flags;
     useRANSAC = RANSAC;
     
@@ -42,6 +42,7 @@ bool BECVDetector::detect(Mat& image)
     bool found = false;
     if (pattern == CHESSBOARD) {
         found = findChessboardCorners(image, boardSize, points2D);
+
     }
     else if (pattern == CIRCLES_GRID) {
         found = findCirclesGrid(image, boardSize, points2D);
@@ -54,7 +55,11 @@ bool BECVDetector::detect(Mat& image)
         //calculate subpixel
         cornerSubPix(image, points2D, boardSize, Size_<int>(-1,-1), TermCriteria(CV_TERMCRIT_ITER, 30, 0.1));
     }
-
+    
+    if (found && drawChessboard) {
+        drawChessboardCorners(image, boardSize, points2D, true);
+    }
+    
     return found;
 }
 
@@ -135,7 +140,7 @@ void BECVDetector::calculateExtrinsicMat(bool flip)
     
 }
 
-void BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
+bool BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
 {
     FileStorage fs;
     fs.open(calibrateFile, FileStorage::READ);
@@ -143,7 +148,7 @@ void BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
         fs["Camera_Matrix"]           >> cameraMatrix;
         fs["Distortion_Coefficients"] >> distCoeffs;
         fs.release();
-        return;
+        return true;
     }
     
     Mat gray;
@@ -153,6 +158,16 @@ void BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
         //root mean square
         double RMS = calibrate(gray);
         if(RMS < 0.1 || RMS > 1.0 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
+            /*
+            calibrationMatrixValues(cameraMatrix, image.size, <#double apertureWidth#>, <#double apertureHeight#>, <#double &fovx#>, <#double &fovy#>, <#double &focalLength#>, <#Point2d &principalPoint#>, <#double &aspectRatio#>)
+            
+            InputArray cameraMatrix, Size imageSize,
+            double apertureWidth, double apertureHeight,
+            CV_OUT double& fovx, CV_OUT double& fovy,
+            CV_OUT double& focalLength, CV_OUT Point2d& principalPoint,
+            CV_OUT double& aspectRatio )
+            */
+            
             fs.open(calibrateFile, FileStorage::WRITE);
             if (fs.isOpened()) {
                 CvMat cam = cameraMatrix;
@@ -161,17 +176,18 @@ void BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
                 fs.writeObj("Camera_Matrix", &cam);
                 fs.writeObj("Distortion_Coefficients", &dis);
                 fs.release();
-                return;
+                return true;
             }
-            
-            cameraCalibrated = true;
-            return;
         }
     }
+    
+    return false;
 }
 
 bool BECVDetector::processImage(Mat& image) {
     try {
+
+        
         Mat rgb;
         cvtColor(image, rgb, COLOR_BGRA2RGB);
         if (markerDetector->detect(rgb)) {
