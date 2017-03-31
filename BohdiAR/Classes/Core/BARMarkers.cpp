@@ -6,10 +6,10 @@
 //  Copyright © 2017 SODEC. All rights reserved.
 //
 
-#import "BECVMarkers.hpp"
+#import "BARMarkers.hpp"
 #import <opencv2/imgproc.hpp>
 
-BECVMarkers::BECVMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, bool RANSAC)
+BARMarkers::BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, bool RANSAC)
 {
     useRANSAC = RANSAC;
     markerLength = length;
@@ -30,7 +30,7 @@ BECVMarkers::BECVMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, boo
     objPoints.ptr< Vec3f >(0)[3] = Vec3f(-markerLength / 2.f, -markerLength / 2.f, 0);
 }
 
-bool BECVMarkers::detect(Mat& image)
+bool BARMarkers::detect(Mat& image)
 {
     corners.clear();
     markerIds.clear();
@@ -48,12 +48,12 @@ bool BECVMarkers::detect(Mat& image)
     return false;
 }
 
-void BECVMarkers::draw(Mat& image)
+void BARMarkers::draw(Mat& image)
 {
     drawDetectedMarkers(image, corners, markerIds);
 }
 
-void BECVMarkers::axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec)
+void BARMarkers::axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec)
 {
     drawAxis(image, cameraMatrix, distCoeffs, rvec, tvec, markerLength / 0.5);
 }
@@ -65,7 +65,7 @@ void BECVMarkers::axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, M
  Note that the translation vectors of the estimated poses 
  will be in the same unit
  */
-void BECVMarkers::estimate(const Mat cameraMatrix, const Mat distCoeffs, Mat& rvec, Mat& tvec)
+void BARMarkers::estimate(const Mat cameraMatrix, const Mat distCoeffs, Mat& rvec, Mat& tvec)
 {
     vector<Vec3d> rvecArray;
     vector<Vec3d> tvecArray;
@@ -77,7 +77,7 @@ void BECVMarkers::estimate(const Mat cameraMatrix, const Mat distCoeffs, Mat& rv
     }
 }
 
-int BECVMarkers::getId()
+int BARMarkers::getId()
 {
     return markerIds[0];
 }

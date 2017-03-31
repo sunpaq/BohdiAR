@@ -17,10 +17,10 @@ using namespace std;
 using namespace cv;
 using namespace aruco;
 
-class BECVMarkers {
+class BARMarkers {
 
 public:
-    BECVMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = true);
+    BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = true);
     bool detect(Mat& image);
     void draw(Mat& image);
     void axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec);

@@ -1,8 +1,8 @@
-#include "BECVDetector.hpp"
+#include "BARDetector.hpp"
 
-BECVDetector::BECVDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
+BARDetector::BARDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
 {
-    markerDetector = new BECVMarkers(unit);
+    markerDetector = new BARMarkers(unit);
     drawChessboard = true;
     drawRect = true;
     drawAxis = true;
@@ -36,7 +36,7 @@ BECVDetector::BECVDetector(int width, int height, float unit, Pattern patternTyp
     }
 }
 
-bool BECVDetector::detect(Mat& image)
+bool BARDetector::detect(Mat& image)
 {
     //chessboard
     bool found = false;
@@ -63,7 +63,7 @@ bool BECVDetector::detect(Mat& image)
     return found;
 }
 
-double BECVDetector::calibrate(Mat& image)
+double BARDetector::calibrate(Mat& image)
 {
     vector<vector<Point2f>> points2DArray;
     vector<vector<Point3f>> points3DArray;
@@ -74,7 +74,7 @@ double BECVDetector::calibrate(Mat& image)
     return calibrateCamera(points3DArray, points2DArray, image.size(), cameraMatrix, distCoeffs, noArray(), noArray());
 }
 
-bool BECVDetector::estimate(int flags)
+bool BARDetector::estimate(int flags)
 {
     bool OK;
     if (useRANSAC) {
@@ -93,7 +93,7 @@ bool BECVDetector::estimate(int flags)
     return OK;
 }
 
-void BECVDetector::calculateExtrinsicMat(bool flip)
+void BARDetector::calculateExtrinsicMat(bool flip)
 {
     Mat Rod(3,3,DataType<double>::type);
     Mat Rotate, Translate;
@@ -140,7 +140,7 @@ void BECVDetector::calculateExtrinsicMat(bool flip)
     
 }
 
-bool BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
+bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
 {
     FileStorage fs;
     fs.open(calibrateFile, FileStorage::READ);
@@ -184,7 +184,7 @@ bool BECVDetector::calibrateCam(Mat& image, const char* calibrateFile)
     return false;
 }
 
-bool BECVDetector::processImage(Mat& image) {
+bool BARDetector::processImage(Mat& image) {
     try {
 
         

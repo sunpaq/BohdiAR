@@ -14,12 +14,12 @@
 #import <opencv2/imgcodecs.hpp>
 #import <opencv2/videoio.hpp>
 
-#import "BECVMarkers.hpp"
+#import "BARMarkers.hpp"
 
 using namespace std;
 using namespace cv;
 
-class BECVDetector {
+class BARDetector {
 
 public:
     Mat cameraMatrix;
@@ -34,7 +34,7 @@ public:
     
     enum Pattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID };
     
-    BECVDetector(int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true);
+    BARDetector(int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true);
     bool drawChessboard;
     bool drawRect;
     bool drawAxis;
@@ -43,7 +43,7 @@ public:
     bool processImage(Mat& image);
 
 private:
-    BECVMarkers* markerDetector;
+    BARMarkers* markerDetector;
     
     float unitSize;
     Pattern pattern;
