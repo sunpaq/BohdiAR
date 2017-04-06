@@ -87,7 +87,7 @@
     
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
-    videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetMedium;
+    videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPreset640x480;
     
     CGRect frame = [[UIScreen mainScreen] bounds];
     videoSource.imageWidth  = frame.size.width;
