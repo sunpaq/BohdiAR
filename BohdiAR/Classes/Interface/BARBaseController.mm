@@ -107,7 +107,7 @@
 //conform CvVideoCameraDelegate, image colorspace is BGRA
 - (void)processImage:(cv::Mat&)mat
 {
-    if (cvManager) {
+    if (cvManager && self.delegate) {
         if (cameraCalibrated == NO) {
             const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:kCFStringEncodingUTF8];
             cameraCalibrated = cvManager->calibrateCam(mat, camCalibrateFile);
@@ -116,34 +116,13 @@
             if (cvManager->processImage(mat)) {
                 if (cvManager->markerId != markerId) {
                     markerId = cvManager->markerId;
-                    if (self.delegate) {
-                        [self.delegate onDetectArUcoMarker:cvManager->markerId];
-                    }
+                    [self.delegate onDetectArUcoMarker:cvManager->markerId];
                 }
-                [self.delegate onUpdateExtrinsicMat:cvManager->extrinsicMatColumnMajor];
+                //update extrinsic matrix
+                [self.delegate onUpdateExtrinsicMat:&cvManager->extrinsicMatColumnMajor[0]];
             }
         }
     }
-    
-    
-    
-    //                GLKVector3 lpos = {0,0,-2000};
-    //                [_beViewCtl lightReset:&lpos];
-    //                if (markerId == 33) {
-    //                    [_beViewCtl removeCurrentModel];
-    //                    [_beViewCtl addModelNamed:@"arcanegolem.obj"];
-    //                }
-    //                else if (markerId == 847) {
-    //                    [_beViewCtl removeCurrentModel];
-    //                    [_beViewCtl addModelNamed:@"2.obj"];
-    //                }
-    //            }
-    //            if (!modelLoaded) {
-    //                modelLoaded = YES;
-    //            }
-    //        }
-    //        [beViewCtl cameraReset:&cvManager->extrinsicMatColumnMajor[0]];
-    
 }
 
 @end
