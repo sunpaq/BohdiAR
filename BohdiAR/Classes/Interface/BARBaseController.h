@@ -5,10 +5,12 @@
 #import <Foundation/Foundation.h>
 #import <opencv2/videoio/cap_ios.h>
 
+enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID };
+
 @protocol BARDelegate <NSObject>
 
 -(void) onDetectArUcoMarker:(int)markerId;
--(void) onUpdateExtrinsicMat;
+-(void) onUpdateExtrinsicMat:(float*)extMat;
 
 @end
 
@@ -16,7 +18,8 @@
 
 @property (nonatomic, weak) id<BARDelegate> delegate;
 
--(void) startDetect;
+-(void) configDetectorWithMarker:(CGSize)size Unit:(float)unit Pattern:(BARCalibratePattern)pattern CalibrateFilePath:(NSString*)path;
+-(void) startDetector;
 
 @end
 
