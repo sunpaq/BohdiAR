@@ -20,6 +20,7 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 
 -(void) configDetectorWithMarker:(CGSize)size Unit:(float)unit Pattern:(BARCalibratePattern)pattern CalibrateFilePath:(NSString*)path;
 -(void) startDetector;
+-(void) stopDetector;
 
 @end
 

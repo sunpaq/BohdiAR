@@ -54,6 +54,11 @@
     [videoSource start];
 }
 
+-(void) stopDetector
+{
+    [videoSource stop];
+}
+
 -(instancetype)init
 {
     self = [super init];
