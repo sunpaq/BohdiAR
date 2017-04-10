@@ -1,4 +1,3 @@
-#import <AVFoundation/AVFoundation.h>
 #import "BARBaseController.h"
 #import "../Core/BARDetector.hpp"
 
