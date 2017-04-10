@@ -1,4 +1,4 @@
-#import "BARBaseController.h"
+#import "BARBaseController.hpp"
 #import "../Core/BARDetector.hpp"
 
 @interface BARBaseController()
