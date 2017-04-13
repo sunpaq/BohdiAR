@@ -16,6 +16,15 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
+BohdiAR depends on pod OpenCV-Dynamic
+https://cocoapods.org/pods/OpenCV-Dynamic
+which need cmake to build.
+you can install cmake use homebrew https://brew.sh/
+
+```ruby
+brew install cmake
+```
+
 BohdiAR is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
