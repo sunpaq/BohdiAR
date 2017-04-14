@@ -16,10 +16,27 @@
 
 @implementation BARBaseController
 
+-(void)setDrawDebugAxis:(BOOL)drawDebugAxis
+{
+    if (cvManager) {
+        cvManager->drawAxis = (_Bool)drawDebugAxis;
+    }
+}
+
+-(void)setDrawDebugRect:(BOOL)drawDebugRect
+{
+    if (cvManager) {
+        cvManager->drawRect = (_Bool)drawDebugRect;
+    }
+}
+
 -(void)setup
 {
     markerId = 0;
     cvManager = nil;
+    
+    self.drawDebugAxis = true;
+    self.drawDebugRect = true;
     
     CGRect frame = [[UIScreen mainScreen] bounds];
     cvView = [[UIView alloc] initWithFrame:frame];
@@ -91,13 +108,14 @@
     
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
-    videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPreset640x480;
+    //videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetMedium;
+    videoSource.useAVCaptureVideoPreviewLayer    = YES;
     
-    CGRect frame = [[UIScreen mainScreen] bounds];
-    videoSource.imageWidth  = frame.size.width;
-    videoSource.imageHeight = frame.size.height;
+    //CGRect frame = [[UIScreen mainScreen] bounds];
+    //videoSource.imageWidth  = frame.size.width;
+    //videoSource.imageHeight = frame.size.height;
     
-    videoSource.defaultFPS = 30;
+    videoSource.defaultFPS = 60;
     videoSource.delegate = self;
     
     [self.view addSubview:cvView];

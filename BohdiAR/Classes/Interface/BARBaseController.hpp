@@ -17,7 +17,7 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 
 @interface BARBaseController : UIViewController <CvVideoCameraDelegate>
 
-@property (nonatomic, weak) id<BARDelegate> delegate;
+@property (atomic, weak) id<BARDelegate> delegate;
 @property (atomic, readwrite) BOOL drawDebugRect;
 @property (atomic, readwrite) BOOL drawDebugAxis;
 
