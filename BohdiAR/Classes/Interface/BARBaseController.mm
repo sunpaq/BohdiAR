@@ -30,6 +30,11 @@
     }
 }
 
+-(CALayer *)cvlayer
+{
+    return videoSource.captureVideoPreviewLayer;
+}
+
 -(void)setup
 {
     markerId = 0;
@@ -108,14 +113,15 @@
     
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
-    //videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetMedium;
+    videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetHigh;
     videoSource.useAVCaptureVideoPreviewLayer    = YES;
     
     //CGRect frame = [[UIScreen mainScreen] bounds];
     //videoSource.imageWidth  = frame.size.width;
     //videoSource.imageHeight = frame.size.height;
     
-    videoSource.defaultFPS = 60;
+    videoSource.recordVideo = NO;
+    videoSource.defaultFPS = 30;//max
     videoSource.delegate = self;
     
     [self.view addSubview:cvView];
@@ -126,7 +132,7 @@
 {
     if (cvManager && self.delegate) {
         if (cameraCalibrated == NO) {
-            const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:kCFStringEncodingUTF8];
+            const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
             cameraCalibrated = cvManager->calibrateCam(mat, camCalibrateFile);
             
         } else {

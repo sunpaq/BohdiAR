@@ -2,7 +2,7 @@
 
 BARDetector::BARDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
 {
-    markerDetector = new BARMarkers(unit);
+    markerDetector = new BARMarkers(unit, DICT_ARUCO_ORIGINAL, RANSAC);
     drawChessboard = true;
     drawRect = true;
     drawAxis = true;
@@ -143,7 +143,7 @@ void BARDetector::calculateExtrinsicMat(bool flip)
 bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
 {
     FileStorage fs;
-    fs.open(calibrateFile, FileStorage::READ);
+    fs.open(String(calibrateFile), FileStorage::READ);
     if (fs.isOpened()) {
         fs["Camera_Matrix"]           >> cameraMatrix;
         fs["Distortion_Coefficients"] >> distCoeffs;
@@ -157,16 +157,20 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
     if (detect(gray)) {
         //root mean square
         double RMS = calibrate(gray);
-        if(RMS < 0.1 || RMS > 1.0 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
-            /*
-            calibrationMatrixValues(cameraMatrix, image.size, <#double apertureWidth#>, <#double apertureHeight#>, <#double &fovx#>, <#double &fovy#>, <#double &focalLength#>, <#Point2d &principalPoint#>, <#double &aspectRatio#>)
+        
+        if(RMS < 0 || RMS > 0.2 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
+            return false;
             
-            InputArray cameraMatrix, Size imageSize,
-            double apertureWidth, double apertureHeight,
-            CV_OUT double& fovx, CV_OUT double& fovy,
-            CV_OUT double& focalLength, CV_OUT Point2d& principalPoint,
-            CV_OUT double& aspectRatio )
-            */
+        } else {
+            /*
+             calibrationMatrixValues(cameraMatrix, image.size, <#double apertureWidth#>, <#double apertureHeight#>, <#double &fovx#>, <#double &fovy#>, <#double &focalLength#>, <#Point2d &principalPoint#>, <#double &aspectRatio#>)
+             
+             InputArray cameraMatrix, Size imageSize,
+             double apertureWidth, double apertureHeight,
+             CV_OUT double& fovx, CV_OUT double& fovy,
+             CV_OUT double& focalLength, CV_OUT Point2d& principalPoint,
+             CV_OUT double& aspectRatio )
+             */
             
             fs.open(calibrateFile, FileStorage::WRITE);
             if (fs.isOpened()) {
@@ -176,6 +180,8 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
                 fs.writeObj("Camera_Matrix", &cam);
                 fs.writeObj("Distortion_Coefficients", &dis);
                 fs.release();
+                
+                cout << "CAMERA CALIBRATE SUCCESS" << "\n";
                 return true;
             }
         }
@@ -186,18 +192,19 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
 
 bool BARDetector::processImage(Mat& image) {
     try {
+        Mat copy, rgb, gray;
+        image.copyTo(copy);
 
-        
-        Mat rgb;
-        cvtColor(image, rgb, COLOR_BGRA2RGB);
+        cvtColor(copy, rgb, COLOR_BGRA2RGB);
+        //cvtColor(copy, gray, COLOR_BGRA2GRAY);
         if (markerDetector->detect(rgb)) {
             markerDetector->estimate(cameraMatrix, distCoeffs, R, T);
             //draw
             if(drawRect) markerDetector->draw(rgb);
             if(drawAxis) markerDetector->axis(rgb, cameraMatrix, distCoeffs, R, T);
             calculateExtrinsicMat(true);
-            cvtColor(rgb, image, COLOR_RGB2BGRA);
-            
+            //cvtColor(rgb, image, COLOR_RGB2BGRA);
+            //cvtColor(gray, image, COLOR_GRAY2BGRA);
             markerId = markerDetector->getId();
             return true;
         }
