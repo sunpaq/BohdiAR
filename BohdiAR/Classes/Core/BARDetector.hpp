@@ -34,7 +34,7 @@ public:
     
     enum Pattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID };
     
-    BARDetector(int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true);
+    BARDetector(int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = false);
     bool drawChessboard;
     bool drawRect;
     bool drawAxis;
