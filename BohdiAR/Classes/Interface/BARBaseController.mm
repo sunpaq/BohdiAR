@@ -43,10 +43,10 @@
     self.drawDebugAxis = true;
     self.drawDebugRect = true;
     
-    CGRect frame = [[UIScreen mainScreen] bounds];
-    cvView = [[UIView alloc] initWithFrame:frame];
+    //CGRect frame = [[UIScreen mainScreen] bounds];
+    //cvView = [[UIView alloc] initWithFrame:frame];
     
-    videoSource = [[CvVideoCamera alloc] initWithParentView:cvView];
+    //videoSource = [[CvVideoCamera alloc] initWithParentView:self.view];
 }
 
 -(void)dealloc
@@ -110,7 +110,9 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor blackColor];
     
+    videoSource = [[CvVideoCamera alloc] initWithParentView:self.view];
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetHigh;
@@ -124,7 +126,7 @@
     videoSource.defaultFPS = 30;//max
     videoSource.delegate = self;
     
-    [self.view addSubview:cvView];
+    //[self.view addSubview:cvView];
 }
 
 //conform CvVideoCameraDelegate, image colorspace is BGRA
