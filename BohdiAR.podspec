@@ -40,5 +40,5 @@ TODO: Add long description of the pod here.
   # s.frameworks = 'UIKit', 'MapKit'
 
   s.frameworks = 'Foundation', 'AVFoundation', 'UIKit'
-  s.dependency 'OpenCV-Dynamic'
+  #s.dependency 'OpenCV-Dynamic'
 end
