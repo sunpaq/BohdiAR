@@ -158,7 +158,7 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
         //root mean square
         double RMS = calibrate(gray);
         
-        if(RMS < 0 || RMS > 0.2 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
+        if(RMS < 0 || RMS > 0.5 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
             return false;
             
         } else {

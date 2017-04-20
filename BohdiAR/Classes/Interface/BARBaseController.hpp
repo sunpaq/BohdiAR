@@ -23,7 +23,7 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 @property (atomic, readwrite) BOOL drawDebugAxis;
 
 -(void) configDetectorWithMarker:(CGSize)size Unit:(float)unit Pattern:(BARCalibratePattern)pattern CalibrateFilePath:(NSString*)path;
--(void) startDetector;
+-(void) startDetectorWithOverlay:(CALayer*)overlay;
 -(void) stopDetector;
 
 @end

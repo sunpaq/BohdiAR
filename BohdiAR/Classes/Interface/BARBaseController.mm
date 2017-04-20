@@ -70,9 +70,10 @@
     calibrateFilePath = path;
 }
 
--(void)startDetector
+-(void) startDetectorWithOverlay:(CALayer*)overlay
 {
     [videoSource start];
+    [videoSource.captureVideoPreviewLayer addSublayer:overlay];
 }
 
 -(void) stopDetector
