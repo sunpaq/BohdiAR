@@ -20,7 +20,7 @@ using namespace aruco;
 class BARMarkers {
 
 public:
-    BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = false);
+    BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = false, int flags = SOLVEPNP_EPNP);
     bool detect(Mat& image);
     void draw(Mat& image);
     void axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec);
@@ -38,6 +38,8 @@ private:
     
     vector<vector<Point2f>> corners;
     vector<int> markerIds;
+    
+    int estimateFlags;
 };
 
 #endif /* BECVMarkers_hpp */

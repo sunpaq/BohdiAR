@@ -809,17 +809,17 @@ void detectMarkers(InputArray _image, const Ptr<Dictionary> &_dictionary, Output
                   _params->cornerRefinementMinAccuracy > 0);
 
         //// do corner refinement for each of the detected markers
-        // for (unsigned int i = 0; i < _corners.cols(); i++) {
-        //    cornerSubPix(grey, _corners.getMat(i),
-        //                 Size(params.cornerRefinementWinSize, params.cornerRefinementWinSize),
-        //                 Size(-1, -1), TermCriteria(TermCriteria::MAX_ITER | TermCriteria::EPS,
-        //                                            params.cornerRefinementMaxIterations,
-        //                                            params.cornerRefinementMinAccuracy));
-        //}
+         for (unsigned int i = 0; i < _corners.cols(); i++) {
+            cornerSubPix(grey, _corners.getMat(i),
+                         Size(_params->cornerRefinementWinSize, _params->cornerRefinementWinSize),
+                         Size(-1, -1), TermCriteria(TermCriteria::MAX_ITER | TermCriteria::EPS,
+                                                    _params->cornerRefinementMaxIterations,
+                                                    _params->cornerRefinementMinAccuracy));
+        }
 
         // this is the parallel call for the previous commented loop (result is equivalent)
-        parallel_for_(Range(0, _corners.cols()),
-                      MarkerSubpixelParallel(&grey, _corners, _params));
+//        parallel_for_(Range(0, _corners.cols()),
+//                      MarkerSubpixelParallel(&grey, _corners, _params));
     }
 }
 

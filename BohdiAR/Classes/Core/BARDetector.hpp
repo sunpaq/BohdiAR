@@ -29,12 +29,14 @@ public:
     Mat T;
     
     int markerId;
+    float rotateUpdateRatio;
+    float transUpdateRatio;
     float intrinsicMatColumnMajor[16];
     float extrinsicMatColumnMajor[16];
     
     enum Pattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID };
     
-    BARDetector(int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = false);
+    BARDetector(int width, int height, float unit, Pattern patternType, int flags = SOLVEPNP_ITERATIVE, bool RANSAC = false);
     bool drawChessboard;
     bool drawRect;
     bool drawAxis;
@@ -58,7 +60,11 @@ private:
     bool detect(Mat& image);
     double calibrate(Mat& image);
     bool estimate(int flags);
+    
+    void matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio);
     void calculateExtrinsicMat(bool flip);
+    
+    unsigned frameCount;
 };
 
 #endif

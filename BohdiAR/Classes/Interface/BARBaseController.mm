@@ -60,6 +60,8 @@
 //cvManager = new BARDetector(5,4,10,BARDetector::CHESSBOARD);
 -(void) configDetectorWithMarker:(CGSize)size
                             Unit:(float)unit
+               rotateUpdateRatio:(float)rratio
+                transUpdateRatio:(float)tratio
                          Pattern:(BARCalibratePattern)pattern
                CalibrateFilePath:(NSString*)path
 {
@@ -67,7 +69,10 @@
         delete cvManager;
     }
     cvManager = new BARDetector(size.width, size.height, unit, (BARDetector::Pattern)pattern);
+    cvManager->rotateUpdateRatio = rratio;
+    cvManager->transUpdateRatio  = tratio;
     calibrateFilePath = path;
+    
 }
 
 -(void) startDetectorWithOverlay:(CALayer*)overlay
@@ -116,7 +121,7 @@
     videoSource = [[CvVideoCamera alloc] initWithParentView:self.view];
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
-    videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetHigh;
+    videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetPhoto;
     videoSource.useAVCaptureVideoPreviewLayer    = YES;
     
     //CGRect frame = [[UIScreen mainScreen] bounds];
@@ -145,7 +150,7 @@
                     [self.delegate onDetectArUcoMarker:cvManager->markerId];
                 }
                 //update extrinsic matrix
-                [self.delegate onUpdateExtrinsicMat:&cvManager->extrinsicMatColumnMajor[0]];
+                [self.delegate onUpdateExtrinsicMat:(float*)&cvManager->extrinsicMatColumnMajor[0]];
             }
         }
     }

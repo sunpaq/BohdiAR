@@ -9,11 +9,12 @@
 #import "BARMarkers.hpp"
 #import <opencv2/imgproc.hpp>
 
-BARMarkers::BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, bool RANSAC)
+BARMarkers::BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, bool RANSAC, int flags)
 {
     useRANSAC = RANSAC;
     markerLength = length;
-    
+    estimateFlags = flags;
+
     dict = getPredefinedDictionary(preDefine);
     params = DetectorParameters::create();    
     params->doCornerRefinement = true;
@@ -71,9 +72,11 @@ void BARMarkers::estimate(const Mat cameraMatrix, const Mat distCoeffs, Mat& rve
     vector<Vec3d> tvecArray;
 
     if (useRANSAC) {
-        solvePnPRansac(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec);
+        solvePnPRansac(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec,
+                       false, 100, 8.0, 0.99, noArray(), estimateFlags);
     } else {
-        solvePnP(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec);
+        solvePnP(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec,
+                 false, estimateFlags);
     }
 }
 

@@ -2,7 +2,7 @@
 
 BARDetector::BARDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
 {
-    markerDetector = new BARMarkers(unit, DICT_ARUCO_ORIGINAL, RANSAC);
+    markerDetector = new BARMarkers(unit, DICT_ARUCO_ORIGINAL, RANSAC, flags);
     drawChessboard = true;
     drawRect = true;
     drawAxis = true;
@@ -13,6 +13,10 @@ BARDetector::BARDetector(int width, int height, float unit, Pattern patternType,
     
     estimateFlags = flags;
     useRANSAC = RANSAC;
+    
+    rotateUpdateRatio = 0.6;
+    transUpdateRatio  = 0.4;
+    frameCount = 0;
     
     cameraMatrix = Mat::eye(3, 3, CV_64FC1);
     distCoeffs   = Mat::zeros(8, 1, CV_64FC1);
@@ -84,17 +88,35 @@ bool BARDetector::estimate(int flags)
         OK = solvePnP(points3D, points2D, cameraMatrix, distCoeffs, R, T, true, flags);
     }
     
-    if (OK) {
+    //if (OK) {
         calculateExtrinsicMat(true);
-    } else {
+    //} else {
         
-    }
+    //}
     
     return OK;
 }
 
+void BARDetector::matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio)
+{
+    for (int i=0; i<16; i++) {
+        if (i == 12 || i == 13 || i == 14) {
+            float sum = mat[i] * (1-transRatio) + newmat[i] * transRatio;
+            mat[i] = sum;
+        } else {
+            float sum = mat[i] * (1-rotateRatio) + newmat[i] * rotateRatio;
+            mat[i] = sum;
+        }
+
+    }
+}
+
 void BARDetector::calculateExtrinsicMat(bool flip)
 {
+    //if ((frameCount++) % 2 != 0) {
+        //return;
+    //}
+    
     Mat Rod(3,3,DataType<double>::type);
     Mat Rotate, Translate;
     
@@ -116,28 +138,38 @@ void BARDetector::calculateExtrinsicMat(bool flip)
         Translate = T;
     }
     
-    float scale = 1;
+    float scale = 1.0;
     
-    extrinsicMatColumnMajor[0] = Rotate.at<double>(0, 0);
-    extrinsicMatColumnMajor[1] = Rotate.at<double>(1, 0);
-    extrinsicMatColumnMajor[2] = Rotate.at<double>(2, 0);
-    extrinsicMatColumnMajor[3] = 0.0f;
+    float NewMat[16] = {
+        (float)Rotate.at<double>(0, 0),
+        (float)Rotate.at<double>(1, 0),
+        (float)Rotate.at<double>(2, 0),
+        0.0,
+        
+        (float)Rotate.at<double>(0, 1),
+        (float)Rotate.at<double>(1, 1),
+        (float)Rotate.at<double>(2, 1),
+        0.0,
+        
+        (float)Rotate.at<double>(0, 2),
+        (float)Rotate.at<double>(1, 2),
+        (float)Rotate.at<double>(2, 2),
+        0.0f,
     
-    extrinsicMatColumnMajor[4] = Rotate.at<double>(0, 1);
-    extrinsicMatColumnMajor[5] = Rotate.at<double>(1, 1);
-    extrinsicMatColumnMajor[6] = Rotate.at<double>(2, 1);
-    extrinsicMatColumnMajor[7] = 0.0f;
+        scale * (float)Translate.at<double>(0, 0),
+        scale * (float)Translate.at<double>(1, 0),
+        scale * (float)Translate.at<double>(2, 0),
+        1.0
+    };
     
-    extrinsicMatColumnMajor[8]  = Rotate.at<double>(0, 2);
-    extrinsicMatColumnMajor[9]  = Rotate.at<double>(1, 2);
-    extrinsicMatColumnMajor[10] = Rotate.at<double>(2, 2);
-    extrinsicMatColumnMajor[11] = 0.0f;
-    
-    extrinsicMatColumnMajor[12] = scale * Translate.at<double>(0, 0);
-    extrinsicMatColumnMajor[13] = scale * Translate.at<double>(1, 0);
-    extrinsicMatColumnMajor[14] = scale * Translate.at<double>(2, 0);
-    extrinsicMatColumnMajor[15] = 1.0f;
-    
+    if (frameCount == 0) {
+        frameCount = 1;
+        for (int i=0; i<16; i++) {
+            extrinsicMatColumnMajor[i] = NewMat[i];
+        }
+    } else {
+        matrix4AddValue(&extrinsicMatColumnMajor[0], &NewMat[0], rotateUpdateRatio, transUpdateRatio);
+    }
 }
 
 bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
@@ -158,7 +190,7 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
         //root mean square
         double RMS = calibrate(gray);
         
-        if(RMS < 0 || RMS > 0.5 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
+        if(RMS < 0 || RMS > 0.3 || !checkRange(cameraMatrix) || !checkRange(distCoeffs)){
             return false;
             
         } else {
@@ -200,8 +232,8 @@ bool BARDetector::processImage(Mat& image) {
         if (markerDetector->detect(rgb)) {
             markerDetector->estimate(cameraMatrix, distCoeffs, R, T);
             //draw
-            if(drawRect) markerDetector->draw(rgb);
-            if(drawAxis) markerDetector->axis(rgb, cameraMatrix, distCoeffs, R, T);
+            //if(drawRect) markerDetector->draw(rgb);
+            //if(drawAxis) markerDetector->axis(rgb, cameraMatrix, distCoeffs, R, T);
             calculateExtrinsicMat(true);
             //cvtColor(rgb, image, COLOR_RGB2BGRA);
             //cvtColor(gray, image, COLOR_GRAY2BGRA);
