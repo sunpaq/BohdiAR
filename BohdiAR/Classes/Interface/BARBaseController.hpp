@@ -24,12 +24,13 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 
 -(void) configDetectorWithMarker:(CGSize)size
                             Unit:(float)unit
-               rotateUpdateRatio:(float)rratio
-                transUpdateRatio:(float)tratio
                          Pattern:(BARCalibratePattern)pattern
                CalibrateFilePath:(NSString*)path;
 
--(void) startDetectorWithOverlay:(CALayer*)overlay;
+-(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate;
+
+-(void) startDetectorWithOverLayer:(CALayer*)layer;
+-(void) startDetectorWithOverView:(UIView*)view;
 -(void) stopDetector;
 
 @end

@@ -14,8 +14,9 @@ BARDetector::BARDetector(int width, int height, float unit, Pattern patternType,
     estimateFlags = flags;
     useRANSAC = RANSAC;
     
-    rotateUpdateRatio = 0.6;
-    transUpdateRatio  = 0.4;
+    useStabilizer = true;
+    rotateStabilizer    = 0.6;
+    translateStabilizer = 0.4;
     frameCount = 0;
     
     cameraMatrix = Mat::eye(3, 3, CV_64FC1);
@@ -139,7 +140,6 @@ void BARDetector::calculateExtrinsicMat(bool flip)
     }
     
     float scale = 1.0;
-    
     float NewMat[16] = {
         (float)Rotate.at<double>(0, 0),
         (float)Rotate.at<double>(1, 0),
@@ -155,20 +155,20 @@ void BARDetector::calculateExtrinsicMat(bool flip)
         (float)Rotate.at<double>(1, 2),
         (float)Rotate.at<double>(2, 2),
         0.0f,
-    
+        
         scale * (float)Translate.at<double>(0, 0),
         scale * (float)Translate.at<double>(1, 0),
         scale * (float)Translate.at<double>(2, 0),
         1.0
     };
     
-    if (frameCount == 0) {
+    if (useStabilizer && frameCount > 0) {
+        matrix4AddValue(&extrinsicMatColumnMajor[0], &NewMat[0], rotateStabilizer, translateStabilizer);
+    } else {
         frameCount = 1;
         for (int i=0; i<16; i++) {
             extrinsicMatColumnMajor[i] = NewMat[i];
         }
-    } else {
-        matrix4AddValue(&extrinsicMatColumnMajor[0], &NewMat[0], rotateUpdateRatio, transUpdateRatio);
     }
 }
 

@@ -29,8 +29,11 @@ public:
     Mat T;
     
     int markerId;
-    float rotateUpdateRatio;
-    float transUpdateRatio;
+    
+    bool  useStabilizer;
+    float rotateStabilizer;
+    float translateStabilizer;
+    
     float intrinsicMatColumnMajor[16];
     float extrinsicMatColumnMajor[16];
     

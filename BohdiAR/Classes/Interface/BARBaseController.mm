@@ -42,11 +42,6 @@
     
     self.drawDebugAxis = true;
     self.drawDebugRect = true;
-    
-    //CGRect frame = [[UIScreen mainScreen] bounds];
-    //cvView = [[UIView alloc] initWithFrame:frame];
-    
-    //videoSource = [[CvVideoCamera alloc] initWithParentView:self.view];
 }
 
 -(void)dealloc
@@ -60,8 +55,6 @@
 //cvManager = new BARDetector(5,4,10,BARDetector::CHESSBOARD);
 -(void) configDetectorWithMarker:(CGSize)size
                             Unit:(float)unit
-               rotateUpdateRatio:(float)rratio
-                transUpdateRatio:(float)tratio
                          Pattern:(BARCalibratePattern)pattern
                CalibrateFilePath:(NSString*)path
 {
@@ -69,16 +62,28 @@
         delete cvManager;
     }
     cvManager = new BARDetector(size.width, size.height, unit, (BARDetector::Pattern)pattern);
-    cvManager->rotateUpdateRatio = rratio;
-    cvManager->transUpdateRatio  = tratio;
     calibrateFilePath = path;
-    
 }
 
--(void) startDetectorWithOverlay:(CALayer*)overlay
+-(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate
+{
+    if (cvManager) {
+        cvManager->useStabilizer = use ? true : false;
+        cvManager->rotateStabilizer = rotate;
+        cvManager->translateStabilizer = translate;
+    }
+}
+
+-(void) startDetectorWithOverLayer:(CALayer*)layer
 {
     [videoSource start];
-    [videoSource.captureVideoPreviewLayer addSublayer:overlay];
+    [videoSource.captureVideoPreviewLayer addSublayer:layer];
+}
+
+-(void) startDetectorWithOverView:(UIView*)view
+{
+    [videoSource start];
+    [videoSource.captureVideoPreviewLayer addSublayer:view.layer];
 }
 
 -(void) stopDetector
@@ -123,16 +128,9 @@
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetPhoto;
     videoSource.useAVCaptureVideoPreviewLayer    = YES;
-    
-    //CGRect frame = [[UIScreen mainScreen] bounds];
-    //videoSource.imageWidth  = frame.size.width;
-    //videoSource.imageHeight = frame.size.height;
-    
     videoSource.recordVideo = NO;
     videoSource.defaultFPS = 30;//max
     videoSource.delegate = self;
-    
-    //[self.view addSubview:cvView];
 }
 
 //conform CvVideoCameraDelegate, image colorspace is BGRA
