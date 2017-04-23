@@ -19,8 +19,11 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 
 @property (atomic, weak) id<BARDelegate> delegate;
 @property (atomic, readonly) CALayer* cvlayer;
-@property (atomic, readwrite) BOOL drawDebugRect;
-@property (atomic, readwrite) BOOL drawDebugAxis;
+@property (atomic, readonly) CGSize videoSize;
+
+@property (atomic, readonly) float fieldOfView;
+@property (atomic, readonly) float fieldOfViewCalibratedX;
+@property (atomic, readonly) float fieldOfViewCalibratedY;
 
 -(void) configDetectorWithMarker:(CGSize)size
                             Unit:(float)unit
@@ -32,6 +35,10 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 -(void) startDetectorWithOverLayer:(CALayer*)layer;
 -(void) startDetectorWithOverView:(UIView*)view;
 -(void) stopDetector;
+
+-(void) lockFocus;
+-(void) unlockFocus;
+-(void) useAVCaptureVideoPreviewLayer:(BOOL)usePreview drawDebugRect:(BOOL)debug;
 
 @end
 

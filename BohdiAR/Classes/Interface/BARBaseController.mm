@@ -8,7 +8,7 @@
 
     BARDetector* cvManager;
     CvVideoCamera* videoSource;
-    UIView* cvView;
+    CGSize videoSize;
     
     NSString* calibrateFilePath;
 }
@@ -16,18 +16,39 @@
 
 @implementation BARBaseController
 
--(void)setDrawDebugAxis:(BOOL)drawDebugAxis
+-(float)fieldOfView
 {
-    if (cvManager) {
-        cvManager->drawAxis = (_Bool)drawDebugAxis;
-    }
+    AVCaptureDevice* device =[AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera
+                                                                mediaType:AVMediaTypeVideo
+                                                                 position:AVCaptureDevicePositionBack];
+    float fov = device.activeFormat.videoFieldOfView;
+    NSLog(@"VIDEO FOV:%f\n", fov);
+    return fov;
 }
 
--(void)setDrawDebugRect:(BOOL)drawDebugRect
+-(float)fieldOfViewCalibratedX
 {
     if (cvManager) {
-        cvManager->drawRect = (_Bool)drawDebugRect;
+        float fov = (float)cvManager->fovx;
+        return fov;
     }
+    return [self fieldOfView];
+}
+
+-(float)fieldOfViewCalibratedY
+{
+    if (cvManager) {
+        float fov = (float)cvManager->fovy;
+        return fov;
+    }
+    return [self fieldOfView];
+}
+
+-(CGSize)videoSize
+{
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    return CGSizeMake(videoSize.width / scale,
+                      videoSize.height / scale);
 }
 
 -(CALayer *)cvlayer
@@ -37,11 +58,8 @@
 
 -(void)setup
 {
-    markerId = 0;
+    markerId = -1;
     cvManager = nil;
-    
-    self.drawDebugAxis = true;
-    self.drawDebugRect = true;
 }
 
 -(void)dealloc
@@ -62,6 +80,8 @@
         delete cvManager;
     }
     cvManager = new BARDetector(size.width, size.height, unit, (BARDetector::Pattern)pattern);
+    cvManager->drawMarker = false;
+    cvManager->drawAxis = false;
     calibrateFilePath = path;
 }
 
@@ -76,19 +96,48 @@
 
 -(void) startDetectorWithOverLayer:(CALayer*)layer
 {
+    cvManager->markerId = -1;
+    
+    const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
+    cameraCalibrated = cvManager->calibrateFileLoad(camCalibrateFile) ? YES : NO;
+    
     [videoSource start];
     [videoSource.captureVideoPreviewLayer addSublayer:layer];
 }
 
 -(void) startDetectorWithOverView:(UIView*)view
 {
+    cvManager->markerId = -1;
+    
+    const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
+    cameraCalibrated = cvManager->calibrateFileLoad(camCalibrateFile) ? YES : NO;
+    
     [videoSource start];
-    [videoSource.captureVideoPreviewLayer addSublayer:view.layer];
+    [self.view addSubview:view];
 }
 
 -(void) stopDetector
 {
     [videoSource stop];
+}
+
+-(void) lockFocus
+{
+    [videoSource lockFocus];
+}
+
+-(void) unlockFocus
+{
+    [videoSource unlockFocus];
+}
+
+-(void) useAVCaptureVideoPreviewLayer:(BOOL)usePreview drawDebugRect:(BOOL)debug
+{
+    videoSource.useAVCaptureVideoPreviewLayer = usePreview;
+    if (cvManager) {
+        cvManager->drawMarker = (debug == YES) ? true : false;
+        cvManager->drawAxis   = (debug == YES) ? true : false;
+    }
 }
 
 -(instancetype)init
@@ -122,15 +171,32 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    CGSize size = self.view.frame.size;
+    CGFloat scale = [UIScreen mainScreen].scale;
     
     videoSource = [[CvVideoCamera alloc] initWithParentView:self.view];
-    videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
-    videoSource.defaultAVCaptureSessionPreset    = AVCaptureSessionPresetPhoto;
-    videoSource.useAVCaptureVideoPreviewLayer    = YES;
+    videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
+
+    //OpenCV allow max 1280x720 resolution
+    videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
+    videoSize.width  = 720;
+    videoSize.height = 1280;
+    
+    //create high-res
+//    VideoCapture cap(0);
+//    if (cap.isOpened()) {
+//        cap.set(cv::CAP_PROP_FRAME_WIDTH,  videoSize.width);
+//        cap.set(cv::CAP_PROP_FRAME_HEIGHT, videoSize.height);
+//    }
+    
     videoSource.recordVideo = NO;
+    videoSource.rotateVideo = NO;
     videoSource.defaultFPS = 30;//max
     videoSource.delegate = self;
+    
+    videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeCinematic;
+    [self useAVCaptureVideoPreviewLayer:YES drawDebugRect:NO];
 }
 
 //conform CvVideoCameraDelegate, image colorspace is BGRA
@@ -139,16 +205,18 @@
     if (cvManager && self.delegate) {
         if (cameraCalibrated == NO) {
             const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
-            cameraCalibrated = cvManager->calibrateCam(mat, camCalibrateFile);
+            cameraCalibrated = cvManager->calibrateCam(mat, camCalibrateFile) ? YES : NO;
             
         } else {
             if (cvManager->processImage(mat)) {
+                //[self lockFocus];
                 if (cvManager->markerId != markerId) {
                     markerId = cvManager->markerId;
                     [self.delegate onDetectArUcoMarker:cvManager->markerId];
                 }
                 //update extrinsic matrix
-                [self.delegate onUpdateExtrinsicMat:(float*)&cvManager->extrinsicMatColumnMajor[0]];
+                [self.delegate onUpdateExtrinsicMat:&cvManager->extrinsicMatColumnMajor[0]];
+                //[self unlockFocus];
             }
         }
     }

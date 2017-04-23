@@ -25,6 +25,11 @@ public:
     Mat cameraMatrix;
     Mat distCoeffs;
 
+    double fovx;
+    double fovy;
+    double focalLength;
+    double aspectRatio;
+    
     Mat R;
     Mat T;
     
@@ -41,9 +46,10 @@ public:
     
     BARDetector(int width, int height, float unit, Pattern patternType, int flags = SOLVEPNP_ITERATIVE, bool RANSAC = false);
     bool drawChessboard;
-    bool drawRect;
+    bool drawMarker;
     bool drawAxis;
     
+    bool calibrateFileLoad(const char* calibrateFile);
     bool calibrateCam(Mat& image, const char* calibrateFile);
     bool processImage(Mat& image);
 
