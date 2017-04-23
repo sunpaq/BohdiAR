@@ -80,6 +80,7 @@
         delete cvManager;
     }
     cvManager = new BARDetector(size.width, size.height, unit, (BARDetector::Pattern)pattern);
+    cvManager->drawChessboard = true;
     cvManager->drawMarker = false;
     cvManager->drawAxis = false;
     calibrateFilePath = path;
@@ -178,25 +179,25 @@
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
 
-    //OpenCV allow max 1280x720 resolution
-    videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
-    videoSize.width  = 720;
-    videoSize.height = 1280;
-    
-    //create high-res
-//    VideoCapture cap(0);
-//    if (cap.isOpened()) {
-//        cap.set(cv::CAP_PROP_FRAME_WIDTH,  videoSize.width);
-//        cap.set(cv::CAP_PROP_FRAME_HEIGHT, videoSize.height);
-//    }
-    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        //OpenCV allow max 1280x720 resolution
+        videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
+        videoSize.width  = 720;
+        videoSize.height = 1280;
+    }
+    else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
+        videoSize.width  = 720;
+        videoSize.height = 1280;
+    }
+
     videoSource.recordVideo = NO;
     videoSource.rotateVideo = NO;
     videoSource.defaultFPS = 30;//max
     videoSource.delegate = self;
     
     videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeCinematic;
-    [self useAVCaptureVideoPreviewLayer:YES drawDebugRect:NO];
+    [self useAVCaptureVideoPreviewLayer:NO drawDebugRect:YES];
 }
 
 //conform CvVideoCameraDelegate, image colorspace is BGRA
