@@ -9,6 +9,30 @@
 #import "BARMarkers.hpp"
 #import <opencv2/imgproc.hpp>
 
+/* the default values
+
+adaptiveThreshWinSizeMin(3),
+adaptiveThreshWinSizeMax(23),
+adaptiveThreshWinSizeStep(10),
+adaptiveThreshConstant(7),
+minMarkerPerimeterRate(0.03),
+maxMarkerPerimeterRate(4.),
+polygonalApproxAccuracyRate(0.03),
+minCornerDistanceRate(0.05),
+minDistanceToBorder(3),
+minMarkerDistanceRate(0.05),
+doCornerRefinement(false),
+cornerRefinementWinSize(5),
+cornerRefinementMaxIterations(30),
+cornerRefinementMinAccuracy(0.1),
+markerBorderBits(1),
+perspectiveRemovePixelPerCell(4),
+perspectiveRemoveIgnoredMarginPerCell(0.13),
+maxErroneousBitsInBorderRate(0.35),
+minOtsuStdDev(5.0),
+errorCorrectionRate(0.6)
+*/
+
 BARMarkers::BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, bool RANSAC, int flags)
 {
     useRANSAC = RANSAC;
@@ -18,6 +42,15 @@ BARMarkers::BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine, bool 
     dict = getPredefinedDictionary(preDefine);
     params = DetectorParameters::create();    
     params->doCornerRefinement = true;
+    params->minDistanceToBorder = 0;
+    
+    params->adaptiveThreshWinSizeMin = 23;
+    params->adaptiveThreshWinSizeMax = 23;
+    params->adaptiveThreshWinSizeStep = 23;
+    
+    params->minMarkerPerimeterRate = 0.1;
+    params->maxMarkerPerimeterRate = 1.0;
+    params->minMarkerDistanceRate = 100.0;
     
     corners = vector<vector<Point2f>>();
     markerIds = vector<int>();
@@ -68,12 +101,15 @@ void BARMarkers::axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Ma
  */
 void BARMarkers::estimate(const Mat cameraMatrix, const Mat distCoeffs, Mat& rvec, Mat& tvec)
 {
-    vector<Vec3d> rvecArray;
-    vector<Vec3d> tvecArray;
+    //vector<Vec3d> rvecArray;
+    //vector<Vec3d> tvecArray;
 
     if (useRANSAC) {
+        //bool useExtrinsicGuess = false, int iterationsCount = 100,
+        //float reprojectionError = 8.0, double confidence = 0.99,
+        //OutputArray inliers = noArray(), int flags = SOLVEPNP_ITERATIVE
         solvePnPRansac(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec,
-                       false, 100, 8.0, 0.99, noArray(), estimateFlags);
+                       false, 50, 4.0, 0.99, noArray(), estimateFlags);
     } else {
         solvePnP(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec,
                  false, estimateFlags);

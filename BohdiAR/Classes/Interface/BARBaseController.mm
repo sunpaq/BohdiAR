@@ -125,11 +125,15 @@
 -(void) lockFocus
 {
     [videoSource lockFocus];
+    [videoSource lockExposure];
+    [videoSource lockBalance];
 }
 
 -(void) unlockFocus
 {
     [videoSource unlockFocus];
+    [videoSource unlockExposure];
+    [videoSource unlockBalance];
 }
 
 -(void) useAVCaptureVideoPreviewLayer:(BOOL)usePreview drawDebugRect:(BOOL)debug
@@ -193,11 +197,11 @@
 
     videoSource.recordVideo = NO;
     videoSource.rotateVideo = NO;
-    videoSource.defaultFPS = 30;//max
+    videoSource.defaultFPS = 60;//max
     videoSource.delegate = self;
     
     videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeCinematic;
-    [self useAVCaptureVideoPreviewLayer:NO drawDebugRect:YES];
+    [self useAVCaptureVideoPreviewLayer:YES drawDebugRect:YES];
 }
 
 //conform CvVideoCameraDelegate, image colorspace is BGRA
@@ -217,6 +221,7 @@
                 }
                 //update extrinsic matrix
                 [self.delegate onUpdateExtrinsicMat:&cvManager->extrinsicMatColumnMajor[0]];
+            } else {
                 //[self unlockFocus];
             }
         }

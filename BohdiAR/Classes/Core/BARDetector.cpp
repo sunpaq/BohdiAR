@@ -84,10 +84,10 @@ bool BARDetector::estimate(int flags)
 {
     bool OK;
     if (useRANSAC) {
-        OK = solvePnPRansac(points3D, points2D, cameraMatrix, distCoeffs, R, T, true, flags);
+        OK = solvePnPRansac(points3D, points2D, cameraMatrix, distCoeffs, R, T, false, flags);
     }
     else {
-        OK = solvePnP(points3D, points2D, cameraMatrix, distCoeffs, R, T, true, flags);
+        OK = solvePnP(points3D, points2D, cameraMatrix, distCoeffs, R, T, false, flags);
     }
     
     //if (OK) {
