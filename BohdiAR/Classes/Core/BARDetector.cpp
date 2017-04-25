@@ -3,7 +3,7 @@
 BARDetector::BARDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
 {
     markerId = -1;
-    markerDetector = new BARMarkers(unit, DICT_ARUCO_ORIGINAL, RANSAC, flags);
+    markerDetector = new BARMarkers(unit, Dictionary::ARUCO_MIP_36h12, 1, RANSAC, flags);
     drawChessboard = true;
     drawMarker = true;
     drawAxis = true;
@@ -20,11 +20,11 @@ BARDetector::BARDetector(int width, int height, float unit, Pattern patternType,
     translateStabilizer = 0.4;
     frameCount = 0;
     
-    cameraMatrix = Mat::eye(3, 3, CV_64FC1);
-    distCoeffs   = Mat::zeros(8, 1, CV_64FC1);
+    cameraMatrix = Mat::eye(3, 3, CV_32FC1);//CV_64FC1
+    distCoeffs   = Mat::zeros(8, 1, CV_32FC1);
     
-    R = Mat::zeros(3, 1, CV_64FC1);
-    T = Mat::zeros(3, 1, CV_64FC1);
+    R = Mat::zeros(3, 1, CV_32FC1);
+    T = Mat::zeros(3, 1, CV_32FC1);
     
     points2D = vector<Point2f>();
     points3D = vector<Point3f>();
@@ -93,7 +93,7 @@ bool BARDetector::estimate(int flags)
     }
     
     //if (OK) {
-        calculateExtrinsicMat(true);
+        //calculateExtrinsicMat(true);
     //} else {
         
     //}
@@ -117,19 +117,19 @@ void BARDetector::matrix4AddValue(float* mat, float* newmat, float rotateRatio, 
 
 void BARDetector::calculateExtrinsicMat(bool flip)
 {
-    Mat Rod(3,3,DataType<double>::type);
+    Mat Rod(3,3,DataType<float>::type);
     Mat Rotate, Translate;
     
     Rodrigues(R, Rod);
     //cout << "Rodrigues = "<< endl << " "  << Rod << endl << endl;
     
     if (flip) {
-        static double flip[] = {
+        static float flip[] = {
             1, 0, 0,
             0,-1, 0,
             0, 0,-1
         };
-        Mat_<double> flipX(3,3,flip);
+        Mat_<float> flipX(3,3,flip);
         
         Rotate = flipX * Rod;
         Translate = flipX * T;
@@ -140,24 +140,24 @@ void BARDetector::calculateExtrinsicMat(bool flip)
     
     float scale = 1.0;
     float NewMat[16] = {
-        (float)Rotate.at<double>(0, 0),
-        (float)Rotate.at<double>(1, 0),
-        (float)Rotate.at<double>(2, 0),
+        (float)Rotate.at<float>(0, 0),
+        (float)Rotate.at<float>(1, 0),
+        (float)Rotate.at<float>(2, 0),
         0.0,
         
-        (float)Rotate.at<double>(0, 1),
-        (float)Rotate.at<double>(1, 1),
-        (float)Rotate.at<double>(2, 1),
+        (float)Rotate.at<float>(0, 1),
+        (float)Rotate.at<float>(1, 1),
+        (float)Rotate.at<float>(2, 1),
         0.0,
         
-        (float)Rotate.at<double>(0, 2),
-        (float)Rotate.at<double>(1, 2),
-        (float)Rotate.at<double>(2, 2),
+        (float)Rotate.at<float>(0, 2),
+        (float)Rotate.at<float>(1, 2),
+        (float)Rotate.at<float>(2, 2),
         0.0f,
         
-        scale * (float)Translate.at<double>(0, 0),
-        scale * (float)Translate.at<double>(1, 0),
-        scale * (float)Translate.at<double>(2, 0),
+        scale * (float)Translate.at<float>(0, 0),
+        scale * (float)Translate.at<float>(1, 0),
+        scale * (float)Translate.at<float>(2, 0),
         1.0
     };
     
@@ -247,7 +247,7 @@ bool BARDetector::processImage(Mat& image) {
         cvtColor(image, rgb, COLOR_BGRA2RGB);
         //cvtColor(copy, gray, COLOR_BGRA2GRAY);
         if (markerDetector->detect(rgb)) {
-            markerDetector->estimate(cameraMatrix, distCoeffs, R, T);
+            markerDetector->estimateRTVecs(cameraMatrix, distCoeffs, R, T);
             //draw
             if(drawMarker) markerDetector->draw(rgb);
             if(drawAxis) markerDetector->axis(rgb, cameraMatrix, distCoeffs, R, T);

@@ -238,7 +238,7 @@
                     [self.delegate onDetectArUcoMarker:cvManager->markerId];
                 }
                 //update extrinsic matrix
-                [self.delegate onUpdateExtrinsicMat:&cvManager->extrinsicMatColumnMajor[0]];
+                [self.delegate onUpdateExtrinsicMat:(float*)&cvManager->extrinsicMatColumnMajor[0]];
             } else {
                 //[self unlockFocus];
             }

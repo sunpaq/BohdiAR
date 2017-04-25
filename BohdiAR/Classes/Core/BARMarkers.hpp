@@ -11,7 +11,7 @@
 
 #import <iostream>
 #import <opencv2/calib3d.hpp>
-#import "aruco.hpp"
+#import "aruco.h"
 
 using namespace std;
 using namespace cv;
@@ -20,24 +20,31 @@ using namespace aruco;
 class BARMarkers {
 
 public:
-    BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = false, int flags = SOLVEPNP_ITERATIVE);
+    BARMarkers(float length, Dictionary::DICT_TYPES preDefine = Dictionary::ARTAG, int border = 1, bool RANSAC = false, int flags = SOLVEPNP_ITERATIVE);
     bool detect(Mat& image);
     void draw(Mat& image);
     void axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec);
-    void estimate(Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec);
+    void estimateRTVecs(Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec);
+    void estimateModelViewMat(Mat cameraMatrix, Mat distCoeffs, double* modelViewMat);
     int getId();
     
 private:
     bool useRANSAC;
     float markerLength;
 
-    Ptr<Dictionary> dict;
-    Ptr<DetectorParameters> params;
+    cv::Size imageSize;
+    Dictionary dict;
+    MarkerDetector detector;
+    MarkerPoseTracker tracker;
+    
+    //Ptr<Dictionary> dict;
+    //Ptr<DetectorParameters> params;
     
     Mat objPoints;
     
-    vector<vector<Point2f>> corners;
-    vector<int> markerIds;
+    //vector<vector<Point2f>> corners;
+    //vector<int> markerIds;
+    vector<Marker> markers;
     
     int estimateFlags;
 };
