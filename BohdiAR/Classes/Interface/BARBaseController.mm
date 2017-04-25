@@ -44,11 +44,24 @@
     return [self fieldOfView];
 }
 
+-(CGPoint)principalPoint
+{
+    if (cvManager) {
+        return CGPointMake(cvManager->principalPointX, cvManager->principalPointY);
+    }
+    return CGPointZero;
+}
+
 -(CGSize)videoSize
 {
     CGFloat scale = [[UIScreen mainScreen] scale];
     return CGSizeMake(videoSize.width / scale,
                       videoSize.height / scale);
+}
+
+-(float)videoAspect
+{
+    return (float) videoSize.height / videoSize.width;
 }
 
 -(CALayer *)cvlayer
@@ -138,11 +151,16 @@
 
 -(void) useAVCaptureVideoPreviewLayer:(BOOL)usePreview drawDebugRect:(BOOL)debug
 {
-    videoSource.useAVCaptureVideoPreviewLayer = usePreview;
-    if (cvManager) {
-        cvManager->drawMarker = (debug == YES) ? true : false;
-        cvManager->drawAxis   = (debug == YES) ? true : false;
+    if (!usePreview && debug) {
+        cvManager->drawAxis = true;
+        cvManager->drawMarker = true;
+        videoSource.rotateVideo = YES;
+    } else {
+        cvManager->drawAxis = false;
+        cvManager->drawMarker = false;
+        videoSource.rotateVideo = NO;
     }
+    videoSource.useAVCaptureVideoPreviewLayer = usePreview;
 }
 
 -(instancetype)init
@@ -200,8 +218,8 @@
     videoSource.defaultFPS = 60;//max
     videoSource.delegate = self;
     
-    videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeCinematic;
-    [self useAVCaptureVideoPreviewLayer:YES drawDebugRect:YES];
+    videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
+    videoSource.useAVCaptureVideoPreviewLayer = YES;
 }
 
 //conform CvVideoCameraDelegate, image colorspace is BGRA

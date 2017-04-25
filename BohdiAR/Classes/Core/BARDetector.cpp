@@ -59,7 +59,9 @@ bool BARDetector::detect(Mat& image)
     
     if (found) {
         //calculate subpixel
-        cornerSubPix(image, points2D, boardSize, Size_<int>(-1,-1), TermCriteria(CV_TERMCRIT_ITER, 30, 0.1));
+        Size winSize = cv::Size(5,5);
+        Size zeroZone = cv::Size(-1,-1);
+        cornerSubPix(image, points2D, winSize, zeroZone, TermCriteria(CV_TERMCRIT_ITER, 30, 0.1));
     }
     
     if (found && drawChessboard) {
@@ -174,13 +176,15 @@ bool BARDetector::calibrateFileLoad(const char* calibrateFile)
     FileStorage fs;
     fs.open(String(calibrateFile), FileStorage::READ);
     if (fs.isOpened()) {
-        fs["FOV_X"] >> fovx;
-        fs["FOV_Y"] >> fovy;
-        fs["Focal_Length"] >> focalLength;
-        fs["Aspect_Ratio"] >> aspectRatio;
+        fs["fovx"] >> fovx;
+        fs["fovy"] >> fovy;
+        fs["focalLength"] >> focalLength;
+        fs["nonfix_aspectRatio"] >> aspectRatio;
+        fs["principalPointX"] >> principalPointX;
+        fs["principalPointY"] >> principalPointY;
         
-        fs["Camera_Matrix"]           >> cameraMatrix;
-        fs["Distortion_Coefficients"] >> distCoeffs;
+        fs["camera_matrix"]           >> cameraMatrix;
+        fs["distortion_coefficients"] >> distCoeffs;
         
         fs.release();
         return true;
@@ -188,7 +192,7 @@ bool BARDetector::calibrateFileLoad(const char* calibrateFile)
     return false;
 }
 
-bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
+bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile, double sensorWidth, double sensorHeight)
 {
     Mat gray;
     cvtColor(image, gray, COLOR_BGRA2GRAY);
@@ -205,7 +209,7 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
             double fovx, fovy, focalLength, aspectRatio;
             Point2d principalPoint;
             
-            cv::calibrationMatrixValues(cameraMatrix, Size_<int>(image.rows, image.cols), 4.8, 3.6,
+            cv::calibrationMatrixValues(cameraMatrix, Size_<int>(image.rows, image.cols), sensorWidth, sensorHeight,
                                     fovx, fovy, focalLength, principalPoint, aspectRatio);
 
             FileStorage fs;
@@ -213,17 +217,17 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile)
             if (fs.isOpened()) {
                 CvMat cam = cameraMatrix;
                 CvMat dis = distCoeffs;
-                fs.write("Avg_Reprojection_Error", RMS);
+                fs.write("avg_reprojection_error", RMS);
                 
-                fs.write("FOV_X", fovx);
-                fs.write("FOV_Y", fovy);
-                fs.write("Focal_Length", focalLength);
-                fs.write("Aspect_Ratio", aspectRatio);
-                fs.write("Principal_Point_X", principalPoint.x);
-                fs.write("Principal_Point_Y", principalPoint.y);
+                fs.write("fovx", fovx);
+                fs.write("fovy", fovy);
+                fs.write("focalLength", focalLength);
+                fs.write("nonfix_aspectRatio", aspectRatio);
+                fs.write("principalPointX", principalPoint.x);
+                fs.write("principalPointY", principalPoint.y);
 
-                fs.writeObj("Camera_Matrix", &cam);
-                fs.writeObj("Distortion_Coefficients", &dis);
+                fs.writeObj("camera_matrix", &cam);
+                fs.writeObj("distortion_coefficients", &dis);
                 fs.release();
                 
                 cout << "CAMERA CALIBRATE SUCCESS: " << RMS << "\n";

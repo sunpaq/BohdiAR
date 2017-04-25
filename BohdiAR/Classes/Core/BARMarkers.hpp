@@ -20,7 +20,7 @@ using namespace aruco;
 class BARMarkers {
 
 public:
-    BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = false, int flags = SOLVEPNP_EPNP);
+    BARMarkers(float length, PREDEFINED_DICTIONARY_NAME preDefine = DICT_ARUCO_ORIGINAL, bool RANSAC = false, int flags = SOLVEPNP_ITERATIVE);
     bool detect(Mat& image);
     void draw(Mat& image);
     void axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec);

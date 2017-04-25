@@ -20,10 +20,12 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 @property (atomic, weak) id<BARDelegate> delegate;
 @property (atomic, readonly) CALayer* cvlayer;
 @property (atomic, readonly) CGSize videoSize;
+@property (atomic, readonly) float videoAspect;
 
 @property (atomic, readonly) float fieldOfView;
 @property (atomic, readonly) float fieldOfViewCalibratedX;
 @property (atomic, readonly) float fieldOfViewCalibratedY;
+@property (atomic, readonly) CGPoint principalPoint;
 
 -(void) configDetectorWithMarker:(CGSize)size
                             Unit:(float)unit

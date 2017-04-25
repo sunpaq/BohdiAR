@@ -29,6 +29,8 @@ public:
     double fovy;
     double focalLength;
     double aspectRatio;
+    double principalPointX;
+    double principalPointY;
     
     Mat R;
     Mat T;
@@ -50,7 +52,10 @@ public:
     bool drawAxis;
     
     bool calibrateFileLoad(const char* calibrateFile);
-    bool calibrateCam(Mat& image, const char* calibrateFile);
+    
+    //ip6_sensor_width  = 4.8;
+    //ip6_sensor_height = 3.6;
+    bool calibrateCam(Mat& image, const char* calibrateFile, double sensorWidth = 4.8, double sensorHeight = 3.6);
     bool processImage(Mat& image);
 
 private:
