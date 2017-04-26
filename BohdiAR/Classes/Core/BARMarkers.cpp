@@ -9,156 +9,120 @@
 #import "BARMarkers.hpp"
 #import <opencv2/imgproc.hpp>
 
-/* the default values
-
-adaptiveThreshWinSizeMin(3),
-adaptiveThreshWinSizeMax(23),
-adaptiveThreshWinSizeStep(10),
-adaptiveThreshConstant(7),
-minMarkerPerimeterRate(0.03),
-maxMarkerPerimeterRate(4.),
-polygonalApproxAccuracyRate(0.03),
-minCornerDistanceRate(0.05),
-minDistanceToBorder(3),
-minMarkerDistanceRate(0.05),
-doCornerRefinement(false),
-cornerRefinementWinSize(5),
-cornerRefinementMaxIterations(30),
-cornerRefinementMinAccuracy(0.1),
-markerBorderBits(1),
-perspectiveRemovePixelPerCell(4),
-perspectiveRemoveIgnoredMarginPerCell(0.13),
-maxErroneousBitsInBorderRate(0.35),
-minOtsuStdDev(5.0),
-errorCorrectionRate(0.6)
-*/
-
-BARMarkers::BARMarkers(float length, Dictionary::DICT_TYPES preDefine, int border, bool RANSAC, int flags)
+BARMarkers::BARMarkers(Mat cameraMatrix, Mat distCoeffs, float length, Dictionary::DICT_TYPES preDefine)
 {
-    useRANSAC = RANSAC;
+    frameCount = 0;
     markerLength = length;
-    estimateFlags = flags;
-
-    //dict = Dictionary::loadPredefined(preDefine);
+    
+    this->cameraMatrix = cameraMatrix;
+    this->distCoeffs = distCoeffs;
     
     tracker = MarkerPoseTracker();
     detector = MarkerDetector();
     detector.setDictionary(preDefine);
-
     markers = vector<Marker>();
-    
-    
-    //dict = getPredefinedDictionary(preDefine);
-    //params = DetectorParameters::create();
-    
-    //params->markerBorderBits = border;
-    //params->doCornerRefinement = true;
-    //params->cornerRefinementWinSize = 10;
-    //params->cornerRefinementMaxIterations = 10;
-    //params->cornerRefinementMinAccuracy = 0.5;
-    
-    //params->minDistanceToBorder = 0;
-    
-    //params->adaptiveThreshWinSizeMin = 23;
-    //params->adaptiveThreshWinSizeMax = 23;
-    //params->adaptiveThreshWinSizeStep = 23;
-    
-    //params->minMarkerPerimeterRate = 0.1;
-    //params->maxMarkerPerimeterRate = 1.0;
-    //params->minMarkerDistanceRate = 100.0;
-    
-    //params->polygonalApproxAccuracyRate = 0.08;
-        
-    //corners = vector<vector<Point2f>>();
-    //markerIds = vector<int>();
-    
-    //create points
-    //objPoints.create(4, 1, CV_32FC3);
-    // set coordinate system in the middle of the marker, with Z pointing out
-    //objPoints.ptr< Vec3f >(0)[0] = Vec3f(-markerLength / 2.f, markerLength / 2.f, 0);
-    //objPoints.ptr< Vec3f >(0)[1] = Vec3f(markerLength / 2.f, markerLength / 2.f, 0);
-    //objPoints.ptr< Vec3f >(0)[2] = Vec3f(markerLength / 2.f, -markerLength / 2.f, 0);
-    //objPoints.ptr< Vec3f >(0)[3] = Vec3f(-markerLength / 2.f, -markerLength / 2.f, 0);
 }
 
-bool BARMarkers::detect(Mat& image)
+int BARMarkers::detect(Mat& image, bool draw)
 {
-    //corners.clear();
-    //markerIds.clear();
-    
-    //int channels = ((InputArray)image).getMat().channels();
-    //if (channels != 1 && channels != 3) {
-    //    cout << "channels:" << channels << '\n';
-    //}
-    
-    //detectMarkers(image, dict, corners, markerIds, params);
-    //CameraParameters(<#cv::Mat cameraMatrix#>, <#cv::Mat distorsionCoeff#>, <#cv::Size size#>)
-    //detector.detect(image, markers, <#aruco::CameraParameters camParams#>)
-    markers = detector.detect(image);
-    
-    //if (markerIds.size() > 0) {
-        //calculate subpixel
-        //return true;
-    //}
+    //do not estimate the pose at this step!
+    detector.detect(image, markers);
     if (markers.size() > 0) {
-        imageSize = Size(image.rows, image.cols);
-        return true;
+        if (draw) {
+            for (int i=0; i<markers.size(); i++) {
+                markers[i].draw(image, Scalar(0, 255, 0, 255));
+            }
+        }
     }
-    return false;
+    return markers.size();
 }
 
-void BARMarkers::draw(Mat& image)
+void BARMarkers::estimate(Mat& image, int index, float* modelViewMat, bool drawAxis)
 {
-    //drawDetectedMarkers(image, corners, markerIds);
-    for (int i=0; i<markers.size(); i++) {
-        markers[i].draw(image, Scalar(0, 255, 0, 255));
+    if (markers.size() <= 0 || index < 0 || index > markers.size()) {
+        return;
     }
-}
-
-void BARMarkers::axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec)
-{
-    //drawAxis(image, cameraMatrix, distCoeffs, rvec, tvec, markerLength / 0.5);
-}
-
-/*
- markerLength:
- 
- marker side in meters or in any other unit. 
- Note that the translation vectors of the estimated poses 
- will be in the same unit
- */
-void BARMarkers::estimateRTVecs(Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec)
-{
-    //vector<Vec3d> rvecArray;
-    //vector<Vec3d> tvecArray;
-
-//    if (useRANSAC) {
-//        //bool useExtrinsicGuess = false, int iterationsCount = 100,
-//        //float reprojectionError = 8.0, double confidence = 0.99,
-//        //OutputArray inliers = noArray(), int flags = SOLVEPNP_ITERATIVE
-//        solvePnPRansac(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec,
-//                       false, 50, 4.0, 0.99, noArray(), estimateFlags);
-//    } else {
-//        solvePnP(objPoints, corners[0], cameraMatrix, distCoeffs, rvec, tvec,
-//                 false, estimateFlags);
-//    }
-
-    tracker.estimatePose(markers[0], CameraParameters(cameraMatrix, distCoeffs, imageSize), markerLength);
-    markers[0].Rvec.copyTo(rvec);
-    markers[0].Tvec.copyTo(tvec);
-}
-
-void BARMarkers::estimateModelViewMat(Mat cameraMatrix, Mat distCoeffs, double* modelViewMat)
-{
+    Size imageSize = Size(image.rows, image.cols);
     CameraParameters campara = CameraParameters(cameraMatrix, distCoeffs, imageSize);
-    tracker.estimatePose(markers[0], campara, markerLength);
-    //markers[0].calculateExtrinsics(markerLength, campara);
-    //markers[0].glGetModelViewMatrix(modelViewMat);
+    if (tracker.estimatePose(markers[index], campara, markerLength, 1)) {
+        Mat R = tracker.getRvec();
+        Mat T = tracker.getTvec();
+        calculateExtrinsicMat(modelViewMat, R, T, true, false, 0, 0);
+        CvDrawingUtils::draw3dAxis(image, campara, R, T, 1.0);
+    }
 }
 
-int BARMarkers::getId()
+int BARMarkers::getId(int index)
 {
-    //return markerIds[0];
-    return markers[0].id;
+    return markers[index].id;
 }
 
+void BARMarkers::matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio)
+{
+    for (int i=0; i<16; i++) {
+        if (i == 12 || i == 13 || i == 14) {
+            float sum = mat[i] * (1-transRatio) + newmat[i] * transRatio;
+            mat[i] = sum;
+        } else {
+            float sum = mat[i] * (1-rotateRatio) + newmat[i] * rotateRatio;
+            mat[i] = sum;
+        }
+        
+    }
+}
+
+void BARMarkers::calculateExtrinsicMat(float* mat4, Mat R, Mat T, bool doesFlip, bool useStabilizer, float rotateStabilizer, float translateStabilizer)
+{
+    Mat Rod(3,3,DataType<float>::type);
+    Mat Rotate, Translate;
+    
+    Rodrigues(R, Rod);
+    //cout << "Rodrigues = "<< endl << " "  << Rod << endl << endl;
+    
+    if (doesFlip) {
+        static float flip[] = {
+            1, 0, 0,
+            0,-1, 0,
+            0, 0,-1
+        };
+        Mat_<float> flipX(3,3,flip);
+        
+        Rotate = flipX * Rod;
+        Translate = flipX * T;
+    } else {
+        Rotate = Rod;
+        Translate = T;
+    }
+    
+    float scale = 1.0;
+    float NewMat[16] = {
+        (float)Rotate.at<float>(0, 0),
+        (float)Rotate.at<float>(1, 0),
+        (float)Rotate.at<float>(2, 0),
+        0.0,
+        
+        (float)Rotate.at<float>(0, 1),
+        (float)Rotate.at<float>(1, 1),
+        (float)Rotate.at<float>(2, 1),
+        0.0,
+        
+        (float)Rotate.at<float>(0, 2),
+        (float)Rotate.at<float>(1, 2),
+        (float)Rotate.at<float>(2, 2),
+        0.0f,
+        
+        scale * (float)Translate.at<float>(0, 0),
+        scale * (float)Translate.at<float>(1, 0),
+        scale * (float)Translate.at<float>(2, 0),
+        1.0
+    };
+    
+    if (useStabilizer && frameCount > 0) {
+        matrix4AddValue(mat4, &NewMat[0], rotateStabilizer, translateStabilizer);
+    } else {
+        frameCount = 1;
+        for (int i=0; i<16; i++) {
+            mat4[i] = NewMat[i];
+        }
+    }
+}

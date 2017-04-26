@@ -1,12 +1,14 @@
 #import "BARBaseController.hpp"
-#import "../Core/BARDetector.hpp"
+#import "../Core/BARManager.hpp"
 
 @interface BARBaseController()
 {
     int markerId;
     BOOL cameraCalibrated;
 
-    BARDetector* cvManager;
+    UIView* videoPreview;
+    
+    BARManager* cvManager;
     CvVideoCamera* videoSource;
     CGSize videoSize;
     
@@ -82,21 +84,22 @@
     }
 }
 
+-(void) addOverview:(UIView*)view
+{
+    [self.view insertSubview:view aboveSubview:videoPreview];
+}
+
 //int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true
 //cvManager = new BARDetector(5,4,10,BARDetector::CHESSBOARD);
--(void) configDetectorWithMarker:(CGSize)size
-                            Unit:(float)unit
-                         Pattern:(BARCalibratePattern)pattern
-               CalibrateFilePath:(NSString*)path
+-(void) configDetectorWithCameraParameters:(NSString*)filePath MarkerLength:(float)length
 {
-    if (cvManager) {
-        delete cvManager;
+    const char* path = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
+    if (path) {
+        if (cvManager) {
+            delete cvManager;
+        }
+        cvManager = new BARManager(path, length);
     }
-    cvManager = new BARDetector(size.width, size.height, unit, (BARDetector::Pattern)pattern);
-    cvManager->drawChessboard = true;
-    cvManager->drawMarker = false;
-    cvManager->drawAxis = false;
-    calibrateFilePath = path;
 }
 
 -(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate
@@ -108,26 +111,25 @@
     }
 }
 
--(void) startDetectorWithOverLayer:(CALayer*)layer
-{
-    cvManager->markerId = -1;
-    
-    const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
-    cameraCalibrated = cvManager->calibrateFileLoad(camCalibrateFile) ? YES : NO;
-    
-    [videoSource start];
-    [videoSource.captureVideoPreviewLayer addSublayer:layer];
-}
+//-(void) startDetectorWithOverLayer:(CALayer*)layer
+//{
+//    cvManager->markerId = -1;
+//    videoSource.useAVCaptureVideoPreviewLayer = YES;
+//    [videoSource start];
+//    [videoSource.captureVideoPreviewLayer addSublayer:layer];
+//}
+//
+//-(void) startDetectorWithOverView:(UIView*)view
+//{
+//    cvManager->markerId = -1;
+//    [videoSource start];
+//    [self.view addSubview:view];
+//}
 
--(void) startDetectorWithOverView:(UIView*)view
+-(void) startDetector
 {
     cvManager->markerId = -1;
-    
-    const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
-    cameraCalibrated = cvManager->calibrateFileLoad(camCalibrateFile) ? YES : NO;
-    
     [videoSource start];
-    [self.view addSubview:view];
 }
 
 -(void) stopDetector
@@ -147,20 +149,6 @@
     [videoSource unlockFocus];
     [videoSource unlockExposure];
     [videoSource unlockBalance];
-}
-
--(void) useAVCaptureVideoPreviewLayer:(BOOL)usePreview drawDebugRect:(BOOL)debug
-{
-    if (!usePreview && debug) {
-        cvManager->drawAxis = true;
-        cvManager->drawMarker = true;
-        videoSource.rotateVideo = YES;
-    } else {
-        cvManager->drawAxis = false;
-        cvManager->drawMarker = false;
-        videoSource.rotateVideo = NO;
-    }
-    videoSource.useAVCaptureVideoPreviewLayer = usePreview;
 }
 
 -(instancetype)init
@@ -197,7 +185,10 @@
     CGSize size = self.view.frame.size;
     CGFloat scale = [UIScreen mainScreen].scale;
     
-    videoSource = [[CvVideoCamera alloc] initWithParentView:self.view];
+    videoPreview = [[UIView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:videoPreview];
+    
+    videoSource = [[CvVideoCamera alloc] initWithParentView:videoPreview];
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
 
@@ -219,30 +210,31 @@
     videoSource.delegate = self;
     
     videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
-    videoSource.useAVCaptureVideoPreviewLayer = YES;
+    //videoSource.useAVCaptureVideoPreviewLayer = YES;
 }
 
 //conform CvVideoCameraDelegate, image colorspace is BGRA
-- (void)processImage:(cv::Mat&)mat
+- (void)processImage:(cv::Mat&)image
 {
     if (cvManager && self.delegate) {
-        if (cameraCalibrated == NO) {
-            const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
-            cameraCalibrated = cvManager->calibrateCam(mat, camCalibrateFile) ? YES : NO;
-            
-        } else {
-            if (cvManager->processImage(mat)) {
+//        if (cameraCalibrated == NO) {
+//            const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
+//            cameraCalibrated = cvManager->calibrateCam(image, camCalibrateFile) ? YES : NO;
+//            
+//        } else {
+            float mat4[16];
+            if (cvManager->processImage(image, mat4)) {
                 //[self lockFocus];
                 if (cvManager->markerId != markerId) {
                     markerId = cvManager->markerId;
                     [self.delegate onDetectArUcoMarker:cvManager->markerId];
                 }
                 //update extrinsic matrix
-                [self.delegate onUpdateExtrinsicMat:(float*)&cvManager->extrinsicMatColumnMajor[0]];
+                [self.delegate onUpdateExtrinsicMat:mat4];
             } else {
                 //[self unlockFocus];
             }
-        }
+        //}
     }
 }
 

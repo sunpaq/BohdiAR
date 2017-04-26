@@ -27,20 +27,17 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 @property (atomic, readonly) float fieldOfViewCalibratedY;
 @property (atomic, readonly) CGPoint principalPoint;
 
--(void) configDetectorWithMarker:(CGSize)size
-                            Unit:(float)unit
-                         Pattern:(BARCalibratePattern)pattern
-               CalibrateFilePath:(NSString*)path;
-
+-(void) addOverview:(UIView*)view;
+-(void) configDetectorWithCameraParameters:(NSString*)filePath MarkerLength:(float)length;
 -(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate;
 
--(void) startDetectorWithOverLayer:(CALayer*)layer;
--(void) startDetectorWithOverView:(UIView*)view;
+//-(void) startDetectorWithOverLayer:(CALayer*)layer;
+//-(void) startDetectorWithOverView:(UIView*)view;
+-(void) startDetector;
 -(void) stopDetector;
 
 -(void) lockFocus;
 -(void) unlockFocus;
--(void) useAVCaptureVideoPreviewLayer:(BOOL)usePreview drawDebugRect:(BOOL)debug;
 
 @end
 

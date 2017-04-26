@@ -20,33 +20,28 @@ using namespace aruco;
 class BARMarkers {
 
 public:
-    BARMarkers(float length, Dictionary::DICT_TYPES preDefine = Dictionary::ARTAG, int border = 1, bool RANSAC = false, int flags = SOLVEPNP_ITERATIVE);
-    bool detect(Mat& image);
-    void draw(Mat& image);
-    void axis(Mat& image, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec);
-    void estimateRTVecs(Mat cameraMatrix, Mat distCoeffs, Mat& rvec, Mat& tvec);
-    void estimateModelViewMat(Mat cameraMatrix, Mat distCoeffs, double* modelViewMat);
-    int getId();
+    //ARUCO_MIP_36h12 is recommand
+    BARMarkers(Mat cameraMatrix, Mat distCoeffs, float length, Dictionary::DICT_TYPES preDefine = Dictionary::ARUCO_MIP_36h12);
     
-private:
-    bool useRANSAC;
-    float markerLength;
+    int detect(Mat& image, bool drawMarker = true);
+    int getId(int index);
+    void estimate(Mat& image, int index, float* modelViewMat, bool drawAxis = true);
 
-    cv::Size imageSize;
+private:
+    int frameCount;
+    float markerLength;
+    
+    Mat cameraMatrix;
+    Mat distCoeffs;
+
     Dictionary dict;
     MarkerDetector detector;
     MarkerPoseTracker tracker;
-    
-    //Ptr<Dictionary> dict;
-    //Ptr<DetectorParameters> params;
-    
-    Mat objPoints;
-    
-    //vector<vector<Point2f>> corners;
-    //vector<int> markerIds;
+
     vector<Marker> markers;
     
-    int estimateFlags;
+    void matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio);
+    void calculateExtrinsicMat(float* mat4, Mat R, Mat T, bool doesFlip, bool useStabilizer, float rotateStabilizer, float translateStabilizer);
 };
 
 #endif /* BECVMarkers_hpp */

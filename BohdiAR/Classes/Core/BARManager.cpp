@@ -1,27 +1,24 @@
-#include "BARDetector.hpp"
+#include "BARManager.hpp"
 
-BARDetector::BARDetector(int width, int height, float unit, Pattern patternType, int flags, bool RANSAC)
+BARManager::BARManager(const char* calibrateFile, int markerLength)
 {
+    cameraMatrix = Mat::eye(3, 3, CV_32FC1);//CV_64FC1
+    distCoeffs   = Mat::zeros(8, 1, CV_32FC1);
+    
+    if (calibrateFileLoad(calibrateFile)) {
+        markerDetector = new BARMarkers(cameraMatrix, distCoeffs, markerLength);
+    } else {
+        cout << "Can not find camera parameters file: " << calibrateFile << "\n";
+        exit(-1);
+    }
+    
     markerId = -1;
-    markerDetector = new BARMarkers(unit, Dictionary::ARUCO_MIP_36h12, 1, RANSAC, flags);
     drawChessboard = true;
-    drawMarker = true;
-    drawAxis = true;
-    
-    boardSize = Size_<int>(width, height);
-    unitSize  = unit;
-    pattern   = patternType;
-    
-    estimateFlags = flags;
-    useRANSAC = RANSAC;
-    
+
     useStabilizer = true;
     rotateStabilizer    = 0.6;
     translateStabilizer = 0.4;
     frameCount = 0;
-    
-    cameraMatrix = Mat::eye(3, 3, CV_32FC1);//CV_64FC1
-    distCoeffs   = Mat::zeros(8, 1, CV_32FC1);
     
     R = Mat::zeros(3, 1, CV_32FC1);
     T = Mat::zeros(3, 1, CV_32FC1);
@@ -42,7 +39,7 @@ BARDetector::BARDetector(int width, int height, float unit, Pattern patternType,
     }
 }
 
-bool BARDetector::detect(Mat& image)
+bool BARManager::detect(Mat& image)
 {
     //chessboard
     bool found = false;
@@ -71,7 +68,7 @@ bool BARDetector::detect(Mat& image)
     return found;
 }
 
-double BARDetector::calibrate(Mat& image)
+double BARManager::calibrate(Mat& image)
 {
     vector<vector<Point2f>> points2DArray;
     vector<vector<Point3f>> points3DArray;
@@ -82,7 +79,7 @@ double BARDetector::calibrate(Mat& image)
     return calibrateCamera(points3DArray, points2DArray, image.size(), cameraMatrix, distCoeffs, noArray(), noArray());
 }
 
-bool BARDetector::estimate(int flags)
+bool BARManager::estimate(int flags)
 {
     bool OK;
     if (useRANSAC) {
@@ -101,77 +98,7 @@ bool BARDetector::estimate(int flags)
     return OK;
 }
 
-void BARDetector::matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio)
-{
-    for (int i=0; i<16; i++) {
-        if (i == 12 || i == 13 || i == 14) {
-            float sum = mat[i] * (1-transRatio) + newmat[i] * transRatio;
-            mat[i] = sum;
-        } else {
-            float sum = mat[i] * (1-rotateRatio) + newmat[i] * rotateRatio;
-            mat[i] = sum;
-        }
-
-    }
-}
-
-void BARDetector::calculateExtrinsicMat(bool flip)
-{
-    Mat Rod(3,3,DataType<float>::type);
-    Mat Rotate, Translate;
-    
-    Rodrigues(R, Rod);
-    //cout << "Rodrigues = "<< endl << " "  << Rod << endl << endl;
-    
-    if (flip) {
-        static float flip[] = {
-            1, 0, 0,
-            0,-1, 0,
-            0, 0,-1
-        };
-        Mat_<float> flipX(3,3,flip);
-        
-        Rotate = flipX * Rod;
-        Translate = flipX * T;
-    } else {
-        Rotate = Rod;
-        Translate = T;
-    }
-    
-    float scale = 1.0;
-    float NewMat[16] = {
-        (float)Rotate.at<float>(0, 0),
-        (float)Rotate.at<float>(1, 0),
-        (float)Rotate.at<float>(2, 0),
-        0.0,
-        
-        (float)Rotate.at<float>(0, 1),
-        (float)Rotate.at<float>(1, 1),
-        (float)Rotate.at<float>(2, 1),
-        0.0,
-        
-        (float)Rotate.at<float>(0, 2),
-        (float)Rotate.at<float>(1, 2),
-        (float)Rotate.at<float>(2, 2),
-        0.0f,
-        
-        scale * (float)Translate.at<float>(0, 0),
-        scale * (float)Translate.at<float>(1, 0),
-        scale * (float)Translate.at<float>(2, 0),
-        1.0
-    };
-    
-    if (useStabilizer && frameCount > 0) {
-        matrix4AddValue(&extrinsicMatColumnMajor[0], &NewMat[0], rotateStabilizer, translateStabilizer);
-    } else {
-        frameCount = 1;
-        for (int i=0; i<16; i++) {
-            extrinsicMatColumnMajor[i] = NewMat[i];
-        }
-    }
-}
-
-bool BARDetector::calibrateFileLoad(const char* calibrateFile)
+bool BARManager::calibrateFileLoad(const char* calibrateFile)
 {
     FileStorage fs;
     fs.open(String(calibrateFile), FileStorage::READ);
@@ -192,8 +119,17 @@ bool BARDetector::calibrateFileLoad(const char* calibrateFile)
     return false;
 }
 
-bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile, double sensorWidth, double sensorHeight)
+bool BARManager::calibrateCam(Mat& image, const char* calibrateFile, int width, int height, float unit,
+                              Pattern patternType, int flags, bool RANSAC,
+                              double sensorWidth, double sensorHeight)
 {
+    boardSize = Size_<int>(width, height);
+    unitSize  = unit;
+    pattern   = patternType;
+    
+    estimateFlags = flags;
+    useRANSAC = RANSAC;
+    
     Mat gray;
     cvtColor(image, gray, COLOR_BGRA2GRAY);
     
@@ -239,29 +175,26 @@ bool BARDetector::calibrateCam(Mat& image, const char* calibrateFile, double sen
     return false;
 }
 
-bool BARDetector::processImage(Mat& image) {
+bool BARManager::processImage(Mat& image, float extrinsicMatColumnMajor[16]) {
+    Mat RGB;
     try {
-        Mat copy, rgb, gray;
-        //image.copyTo(copy);
-
-        cvtColor(image, rgb, COLOR_BGRA2RGB);
-        //cvtColor(copy, gray, COLOR_BGRA2GRAY);
-        if (markerDetector->detect(rgb)) {
-            markerDetector->estimateRTVecs(cameraMatrix, distCoeffs, R, T);
-            //draw
-            if(drawMarker) markerDetector->draw(rgb);
-            if(drawAxis) markerDetector->axis(rgb, cameraMatrix, distCoeffs, R, T);
-            calculateExtrinsicMat(true);
-            cvtColor(rgb, image, COLOR_RGB2BGRA);
-            //cvtColor(gray, image, COLOR_GRAY2BGRA);
-            markerId = markerDetector->getId();
+        cvtColor(image, RGB, COLOR_BGRA2RGB);
+        int count = markerDetector->detect(RGB);
+        if (count > 0) {
+            for (int i=0; i<count; i++) {
+                markerDetector->estimate(RGB, i, extrinsicMatColumnMajor);
+                markerId = markerDetector->getId(i);
+            }
+            cvtColor(RGB, image, COLOR_RGB2BGRA);
             return true;
         }
-        
+
     } catch (exception& e) {
         cout << e.what() << '\n';
     }
+    
     markerId = -1;
+    cvtColor(RGB, image, COLOR_RGB2BGRA);
     return false;
 }
 
