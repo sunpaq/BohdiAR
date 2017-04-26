@@ -9,7 +9,7 @@
     UIView* videoPreview;
     
     BARManager* cvManager;
-    CvVideoCamera* videoSource;
+    BARVideoCamera* videoSource;
     CGSize videoSize;
     
     NSString* calibrateFilePath;
@@ -111,21 +111,6 @@
     }
 }
 
-//-(void) startDetectorWithOverLayer:(CALayer*)layer
-//{
-//    cvManager->markerId = -1;
-//    videoSource.useAVCaptureVideoPreviewLayer = YES;
-//    [videoSource start];
-//    [videoSource.captureVideoPreviewLayer addSublayer:layer];
-//}
-//
-//-(void) startDetectorWithOverView:(UIView*)view
-//{
-//    cvManager->markerId = -1;
-//    [videoSource start];
-//    [self.view addSubview:view];
-//}
-
 -(void) startDetector
 {
     cvManager->markerId = -1;
@@ -188,7 +173,7 @@
     videoPreview = [[UIView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:videoPreview];
     
-    videoSource = [[CvVideoCamera alloc] initWithParentView:videoPreview];
+    videoSource = [[BARVideoCamera alloc] initWithParentView:videoPreview];
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
 
@@ -205,7 +190,7 @@
     }
 
     videoSource.recordVideo = NO;
-    videoSource.rotateVideo = NO;
+    videoSource.rotateVideo = YES;
     videoSource.defaultFPS = 60;//max
     videoSource.delegate = self;
     
