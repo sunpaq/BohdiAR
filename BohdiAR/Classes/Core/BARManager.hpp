@@ -52,7 +52,11 @@ public:
                       Pattern patternType, int flags = SOLVEPNP_ITERATIVE, bool RANSAC = false,
                       double sensorWidth = 4.8, double sensorHeight = 3.6);
     
-    bool processImage(Mat& image, float extrinsicMatColumnMajor[16]);
+    //bool processImage(Mat& image, float extrinsicMatColumnMajor[16]);
+    int detectMarkers(Mat& rgbImage);
+    int getMarkerId(int index);
+    void estimateMarkers(Mat& rgbImage);
+    void getMarkerPose(int index, double* poseMat);
 
 private:
     BARMarkers* markerDetector;

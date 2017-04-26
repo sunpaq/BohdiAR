@@ -17,10 +17,11 @@ BARMarkers::BARMarkers(Mat cameraMatrix, Mat distCoeffs, float length, Dictionar
     this->cameraMatrix = cameraMatrix;
     this->distCoeffs = distCoeffs;
     
-    tracker = MarkerPoseTracker();
     detector = MarkerDetector();
     detector.setDictionary(preDefine);
-    markers = vector<Marker>();
+    
+    markers  = vector<Marker>();
+    trackers = vector<MarkerPoseTracker>();
 }
 
 int BARMarkers::detect(Mat& image, bool draw)
@@ -37,24 +38,38 @@ int BARMarkers::detect(Mat& image, bool draw)
     return markers.size();
 }
 
-void BARMarkers::estimate(Mat& image, int index, float* modelViewMat, bool drawAxis)
+int BARMarkers::estimate(Mat& image, bool drawAxis)
 {
-    if (markers.size() <= 0 || index < 0 || index > markers.size()) {
-        return;
+    if (markers.size() > 0) {
+        //create as many trackers as detected markers
+        if (trackers.size() != markers.size()) {
+            trackers.clear();
+            for (int i=0; i<markers.size(); i++) {
+                trackers.push_back(MarkerPoseTracker());
+            }
+        }
+        
+        Size imageSize = Size(image.rows, image.cols);
+        CameraParameters campara = CameraParameters(cameraMatrix, distCoeffs, imageSize);
+        for (int i=0; i<markers.size(); i++) {
+            trackers[i].estimatePose(markers[i], campara, markerLength, 1);
+            if (drawAxis) {
+                CvDrawingUtils::draw3dAxis(image, campara, markers[i].Rvec, markers[i].Tvec, 2.0);
+            }
+        }
     }
-    Size imageSize = Size(image.rows, image.cols);
-    CameraParameters campara = CameraParameters(cameraMatrix, distCoeffs, imageSize);
-    if (tracker.estimatePose(markers[index], campara, markerLength, 1)) {
-        Mat R = tracker.getRvec();
-        Mat T = tracker.getTvec();
-        calculateExtrinsicMat(modelViewMat, R, T, true, false, 0, 0);
-        CvDrawingUtils::draw3dAxis(image, campara, R, T, 1.0);
-    }
+    return markers.size();
 }
 
 int BARMarkers::getId(int index)
 {
     return markers[index].id;
+}
+
+void BARMarkers::getPoseMat(int index, double* mat4)
+{
+    //calculateExtrinsicMat((float*)mat4, markers[index].Rvec, markers[index].Tvec, true, false, 0, 0);
+    markers[index].glGetModelViewMatrix(mat4);
 }
 
 void BARMarkers::matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio)

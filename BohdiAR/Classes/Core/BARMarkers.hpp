@@ -24,8 +24,9 @@ public:
     BARMarkers(Mat cameraMatrix, Mat distCoeffs, float length, Dictionary::DICT_TYPES preDefine = Dictionary::ARUCO_MIP_36h12);
     
     int detect(Mat& image, bool drawMarker = true);
+    int estimate(Mat& image, bool drawAxis = true);
     int getId(int index);
-    void estimate(Mat& image, int index, float* modelViewMat, bool drawAxis = true);
+    void getPoseMat(int index, double* mat4);
 
 private:
     int frameCount;
@@ -36,9 +37,9 @@ private:
 
     Dictionary dict;
     MarkerDetector detector;
-    MarkerPoseTracker tracker;
 
     vector<Marker> markers;
+    vector<MarkerPoseTracker> trackers;
     
     void matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio);
     void calculateExtrinsicMat(float* mat4, Mat R, Mat T, bool doesFlip, bool useStabilizer, float rotateStabilizer, float translateStabilizer);

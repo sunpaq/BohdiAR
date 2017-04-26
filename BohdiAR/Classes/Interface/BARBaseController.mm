@@ -190,7 +190,7 @@
     }
 
     videoSource.recordVideo = NO;
-    videoSource.rotateVideo = YES;
+    videoSource.rotateVideo = NO;
     videoSource.defaultFPS = 60;//max
     videoSource.delegate = self;
     
@@ -202,24 +202,20 @@
 - (void)processImage:(cv::Mat&)image
 {
     if (cvManager && self.delegate) {
-//        if (cameraCalibrated == NO) {
-//            const char* camCalibrateFile = [calibrateFilePath cStringUsingEncoding:NSUTF8StringEncoding];
-//            cameraCalibrated = cvManager->calibrateCam(image, camCalibrateFile) ? YES : NO;
-//            
-//        } else {
-            float mat4[16];
-            if (cvManager->processImage(image, mat4)) {
-                //[self lockFocus];
-                if (cvManager->markerId != markerId) {
-                    markerId = cvManager->markerId;
-                    [self.delegate onDetectArUcoMarker:cvManager->markerId];
-                }
-                //update extrinsic matrix
-                [self.delegate onUpdateExtrinsicMat:mat4];
-            } else {
-                //[self unlockFocus];
+        Mat RGB;
+        cvtColor(image, RGB, COLOR_BGRA2RGB);
+        int count = cvManager->detectMarkers(RGB);
+        cvManager->estimateMarkers(RGB);
+        if (count > 0) {
+            double mat4[16] = {0};
+            for (int i=0; i<count; i++) {
+                cvManager->getMarkerPose(i, mat4);
+                [self.delegate onDetectArUcoMarker:cvManager->getMarkerId(i) Index:i];
+                [self.delegate onUpdateExtrinsicMat:mat4 Index:i];
             }
-        //}
+        }
+        cvtColor(RGB, image, COLOR_RGB2BGRA);
+        [self.delegate onImageProcessDone];
     }
 }
 
