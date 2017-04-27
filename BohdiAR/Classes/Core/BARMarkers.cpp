@@ -66,10 +66,11 @@ int BARMarkers::getId(int index)
     return markers[index].id;
 }
 
-void BARMarkers::getPoseMat(int index, double* mat4)
+//OpenCV coordinate system z pointing into screen
+//OpenGL coordinate system z pointing out of screen
+void BARMarkers::getPoseMat(int index, float* mat4)
 {
-    //calculateExtrinsicMat((float*)mat4, markers[index].Rvec, markers[index].Tvec, true, false, 0, 0);
-    markers[index].glGetModelViewMatrix(mat4);
+    glMatrixFromCV(mat4, markers[index].Rvec, markers[index].Tvec, false, 0.5, 1.0, true);
 }
 
 void BARMarkers::matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio)
@@ -86,7 +87,7 @@ void BARMarkers::matrix4AddValue(float* mat, float* newmat, float rotateRatio, f
     }
 }
 
-void BARMarkers::calculateExtrinsicMat(float* mat4, Mat R, Mat T, bool doesFlip, bool useStabilizer, float rotateStabilizer, float translateStabilizer)
+void BARMarkers::glMatrixFromCV(float* glmat4, Mat R, Mat T, bool useStabilizer, float rotateStabilizer, float translateStabilizer, bool doesFlip)
 {
     Mat Rod(3,3,DataType<float>::type);
     Mat Rotate, Translate;
@@ -110,7 +111,7 @@ void BARMarkers::calculateExtrinsicMat(float* mat4, Mat R, Mat T, bool doesFlip,
     }
     
     float scale = 1.0;
-    float NewMat[16] = {
+    float newmat[16] = {
         (float)Rotate.at<float>(0, 0),
         (float)Rotate.at<float>(1, 0),
         (float)Rotate.at<float>(2, 0),
@@ -133,11 +134,11 @@ void BARMarkers::calculateExtrinsicMat(float* mat4, Mat R, Mat T, bool doesFlip,
     };
     
     if (useStabilizer && frameCount > 0) {
-        matrix4AddValue(mat4, &NewMat[0], rotateStabilizer, translateStabilizer);
+        matrix4AddValue(glmat4, &newmat[0], rotateStabilizer, translateStabilizer);
     } else {
         frameCount = 1;
         for (int i=0; i<16; i++) {
-            mat4[i] = NewMat[i];
+            glmat4[i] = newmat[i];
         }
     }
 }

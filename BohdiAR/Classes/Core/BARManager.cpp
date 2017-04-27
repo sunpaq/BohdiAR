@@ -175,29 +175,6 @@ bool BARManager::calibrateCam(Mat& image, const char* calibrateFile, int width, 
     return false;
 }
 
-//bool BARManager::processImage(Mat& image, float extrinsicMatColumnMajor[16]) {
-//    Mat RGB;
-//    try {
-//        cvtColor(image, RGB, COLOR_BGRA2RGB);
-//        int count = markerDetector->detect(RGB);
-//        if (count > 0) {
-//            for (int i=0; i<count; i++) {
-//                markerDetector->estimate(RGB, i, extrinsicMatColumnMajor);
-//                markerId = markerDetector->getId(i);
-//            }
-//            cvtColor(RGB, image, COLOR_RGB2BGRA);
-//            return true;
-//        }
-//
-//    } catch (exception& e) {
-//        cout << e.what() << '\n';
-//    }
-//    
-//    markerId = -1;
-//    cvtColor(RGB, image, COLOR_RGB2BGRA);
-//    return false;
-//}
-
 int BARManager::detectMarkers(Mat& rgbImage)
 {
     return markerDetector->detect(rgbImage);
@@ -213,7 +190,7 @@ void BARManager::estimateMarkers(Mat& rgbImage)
     markerDetector->estimate(rgbImage);
 }
 
-void BARManager::getMarkerPose(int index, double* poseMat)
+void BARManager::getMarkerPose(int index, float* poseMat)
 {
     markerDetector->getPoseMat(index, poseMat);
 }

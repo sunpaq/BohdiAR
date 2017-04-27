@@ -207,7 +207,7 @@
         int count = cvManager->detectMarkers(RGB);
         cvManager->estimateMarkers(RGB);
         if (count > 0) {
-            double mat4[16] = {0};
+            float mat4[16] = {0};
             for (int i=0; i<count; i++) {
                 cvManager->getMarkerPose(i, mat4);
                 [self.delegate onDetectArUcoMarker:cvManager->getMarkerId(i) Index:i];

@@ -12,7 +12,7 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 @protocol BARDelegate <NSObject>
 
 -(void) onDetectArUcoMarker:(int)markerId Index:(int)index;
--(void) onUpdateExtrinsicMat:(double*)extMat Index:(int)index;
+-(void) onUpdateExtrinsicMat:(float*)extMat Index:(int)index;
 -(void) onImageProcessDone;
 
 @end

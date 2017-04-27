@@ -56,7 +56,7 @@ public:
     int detectMarkers(Mat& rgbImage);
     int getMarkerId(int index);
     void estimateMarkers(Mat& rgbImage);
-    void getMarkerPose(int index, double* poseMat);
+    void getMarkerPose(int index, float* poseMat);
 
 private:
     BARMarkers* markerDetector;

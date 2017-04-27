@@ -26,7 +26,7 @@ public:
     int detect(Mat& image, bool drawMarker = true);
     int estimate(Mat& image, bool drawAxis = true);
     int getId(int index);
-    void getPoseMat(int index, double* mat4);
+    void getPoseMat(int index, float* mat4);
 
 private:
     int frameCount;
@@ -41,8 +41,10 @@ private:
     vector<Marker> markers;
     vector<MarkerPoseTracker> trackers;
     
+    //OpenCV coordinate system z pointing into screen
+    //OpenGL coordinate system z pointing out of screen
     void matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio);
-    void calculateExtrinsicMat(float* mat4, Mat R, Mat T, bool doesFlip, bool useStabilizer, float rotateStabilizer, float translateStabilizer);
+    void glMatrixFromCV(float* glmat4, Mat R, Mat T, bool useStabilizer = false, float rotateStabilizer = 1.0, float translateStabilizer = 1.0, bool doesFlip = true);
 };
 
 #endif /* BECVMarkers_hpp */
