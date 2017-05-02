@@ -30,7 +30,6 @@
  */
 
 
-//#include "precomp.hpp"
 #import "BARAbstractCamera.hpp"
 
 #pragma mark - Private Interface

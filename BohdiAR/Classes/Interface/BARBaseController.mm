@@ -1,3 +1,4 @@
+
 #import "BARBaseController.hpp"
 #import "../Core/BARManager.hpp"
 

@@ -1,11 +1,12 @@
 #ifndef BEARViewController_h
 #define BEARViewController_h
 
+//import C++ code before all the others
+#import "BARVideoCamera.hpp"
+
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import "BARVideoCamera.hpp"
-//#import <opencv2/videoio/cap_ios.h>
 
 enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID };
 

@@ -1,20 +1,14 @@
 #ifndef BECVDetector_hpp
 #define BECVDetector_hpp
 
-#import <iostream>
-#import <sstream>
-#import <string>
-#import <ctime>
-#import <cstdio>
+#include <opencv2/core.hpp>
+#include <opencv2/core/utility.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/calib3d.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/videoio.hpp>
 
-#import <opencv2/core.hpp>
-#import <opencv2/core/utility.hpp>
-#import <opencv2/imgproc.hpp>
-#import <opencv2/calib3d.hpp>
-#import <opencv2/imgcodecs.hpp>
-#import <opencv2/videoio.hpp>
-
-#import "BARMarkers.hpp"
+#include "BARMarkers.hpp"
 
 using namespace std;
 using namespace cv;

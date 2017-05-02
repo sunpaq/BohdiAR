@@ -6,7 +6,9 @@
 //
 //
 
+#ifdef __cplusplus
 #include <opencv2/core.hpp>
+#endif
 
 #import <UIKit/UIKit.h>
 #import <Accelerate/Accelerate.h>

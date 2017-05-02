@@ -28,6 +28,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '8.0'
   s.source_files = 'BohdiAR/Classes/**/*.{h,hpp,cpp,mm}'
+  s.private_header_files = 'BohdiAR/Classes/ArUco2/**/*.{h,hpp}', 'BohdiAR/Classes/Core/**/*.{h,hpp}'
 
   s.frameworks = 'Foundation', 'AVFoundation', 'UIKit', 'AssetsLibrary', 'CoreMedia'
   s.dependency 'OpenCV-Dynamic'

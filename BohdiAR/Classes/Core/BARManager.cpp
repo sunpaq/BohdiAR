@@ -1,3 +1,9 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <ctime>
+#include <cstdio>
+
 #include "BARManager.hpp"
 
 BARManager::BARManager(const char* calibrateFile, int markerLength)

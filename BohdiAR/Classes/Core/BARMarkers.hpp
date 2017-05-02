@@ -9,8 +9,6 @@
 #ifndef BECVMarkers_hpp
 #define BECVMarkers_hpp
 
-#import <iostream>
-#import <opencv2/calib3d.hpp>
 #import "aruco.h"
 
 using namespace std;

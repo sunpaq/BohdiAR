@@ -7,6 +7,9 @@
 //
 
 #import "BARMarkers.hpp"
+
+#import <iostream>
+#import <opencv2/calib3d.hpp>
 #import <opencv2/imgproc.hpp>
 
 BARMarkers::BARMarkers(Mat cameraMatrix, Mat distCoeffs, float length, Dictionary::DICT_TYPES preDefine)
