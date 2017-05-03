@@ -199,6 +199,18 @@
     //videoSource.useAVCaptureVideoPreviewLayer = YES;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (self.drawDebugInfo) {
+        cvManager->drawMarker = true;
+        cvManager->drawAxis = true;
+    } else {
+        cvManager->drawMarker = false;
+        cvManager->drawAxis = false;
+    }
+}
+
 //conform CvVideoCameraDelegate, image colorspace is BGRA
 - (void)processImage:(cv::Mat&)image
 {
@@ -208,11 +220,12 @@
         int count = cvManager->detectMarkers(RGB);
         cvManager->estimateMarkers(RGB);
         if (count > 0) {
-            float mat4[16] = {0};
             for (int i=0; i<count; i++) {
+                float mat4[16] = {0};
+                int mid = cvManager->getMarkerId(i);
                 cvManager->getMarkerPose(i, mat4);
-                [self.delegate onDetectArUcoMarker:cvManager->getMarkerId(i) Index:i];
-                [self.delegate onUpdateExtrinsicMat:mat4 Index:i];
+                [self.delegate onDetectMarker:mid Index:i];
+                [self.delegate onUpdateMarker:mid Index:i Pose:mat4];
             }
         }
         cvtColor(RGB, image, COLOR_RGB2BGRA);

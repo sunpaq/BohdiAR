@@ -20,6 +20,8 @@ BARManager::BARManager(const char* calibrateFile, int markerLength)
     
     markerId = -1;
     drawChessboard = true;
+    drawMarker = false;
+    drawAxis = false;
 
     useStabilizer = true;
     rotateStabilizer    = 0.6;
@@ -183,7 +185,7 @@ bool BARManager::calibrateCam(Mat& image, const char* calibrateFile, int width, 
 
 int BARManager::detectMarkers(Mat& rgbImage)
 {
-    return markerDetector->detect(rgbImage);
+    return markerDetector->detect(rgbImage, drawMarker);
 }
 
 int BARManager::getMarkerId(int index)
@@ -193,7 +195,7 @@ int BARManager::getMarkerId(int index)
 
 void BARManager::estimateMarkers(Mat& rgbImage)
 {
-    markerDetector->estimate(rgbImage);
+    markerDetector->estimate(rgbImage, drawAxis);
 }
 
 void BARManager::getMarkerPose(int index, float* poseMat)

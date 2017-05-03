@@ -39,6 +39,8 @@ public:
     BARManager(const char* calibrateFile, int markerLength);
     
     bool drawChessboard;
+    bool drawMarker;
+    bool drawAxis;
     
     //ip6_sensor_width  = 4.8;
     //ip6_sensor_height = 3.6;

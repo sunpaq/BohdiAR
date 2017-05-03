@@ -12,8 +12,8 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 
 @protocol BARDelegate <NSObject>
 
--(void) onDetectArUcoMarker:(int)markerId Index:(int)index;
--(void) onUpdateExtrinsicMat:(float*)extMat Index:(int)index;
+-(void) onDetectMarker:(int)markerId Index:(int)index;
+-(void) onUpdateMarker:(int)markerId Index:(int)index Pose:(float*)mat4;
 -(void) onImageProcessDone;
 
 @end
@@ -29,6 +29,8 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 @property (atomic, readonly) float fieldOfViewCalibratedX;
 @property (atomic, readonly) float fieldOfViewCalibratedY;
 @property (atomic, readonly) CGPoint principalPoint;
+
+@property (atomic, readwrite) BOOL drawDebugInfo;
 
 -(void) addOverview:(UIView*)view;
 -(void) configDetectorWithCameraParameters:(NSString*)filePath MarkerLength:(float)length;
