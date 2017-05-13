@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BohdiAR'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'wrap OpenCV-Dynamic framework and ArUco library for AR apps'
 
   s.homepage         = 'https://github.com/sunpaq/BohdiAR-pod'
