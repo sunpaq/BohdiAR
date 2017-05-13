@@ -1,0 +1,6 @@
+framework module Pods_BohdiAR_Example {
+  umbrella header "Pods-BohdiAR_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

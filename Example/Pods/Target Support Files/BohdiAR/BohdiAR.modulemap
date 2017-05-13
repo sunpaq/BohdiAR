@@ -1,0 +1,6 @@
+framework module BohdiAR {
+  umbrella header "BohdiAR-umbrella.h"
+
+  export *
+  module * { export * }
+}
