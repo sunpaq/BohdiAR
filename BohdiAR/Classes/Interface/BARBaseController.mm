@@ -168,8 +168,8 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    CGSize size = self.view.frame.size;
-    CGFloat scale = [UIScreen mainScreen].scale;
+    //CGSize size = self.view.frame.size;
+    //CGFloat scale = [UIScreen mainScreen].scale;
     
     videoPreview = [[UIView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:videoPreview];

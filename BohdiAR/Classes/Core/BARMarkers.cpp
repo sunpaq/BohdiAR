@@ -38,7 +38,7 @@ int BARMarkers::detect(Mat& image, bool draw)
             }
         }
     }
-    return markers.size();
+    return (int)markers.size();
 }
 
 int BARMarkers::estimate(Mat& image, bool drawAxis)
@@ -61,7 +61,7 @@ int BARMarkers::estimate(Mat& image, bool drawAxis)
             }
         }
     }
-    return markers.size();
+    return (int)markers.size();
 }
 
 int BARMarkers::getId(int index)

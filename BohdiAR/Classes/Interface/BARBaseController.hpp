@@ -1,3 +1,8 @@
+/*
+ please subclass this base view controller
+ and integrate it into your UI flow
+ */
+
 #ifndef BEARViewController_h
 #define BEARViewController_h
 
