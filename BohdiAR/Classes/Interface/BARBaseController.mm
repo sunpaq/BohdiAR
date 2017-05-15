@@ -235,5 +235,12 @@
     }
 }
 
+-(void) showHideSubview:(UIView*)view showOrHide:(BOOL)showOrHide
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        view.hidden = !showOrHide;
+    });
+}
+
 @end
 

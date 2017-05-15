@@ -58,6 +58,8 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 -(void) lockFocus;
 -(void) unlockFocus;
 
+-(void) showHideSubview:(UIView*)view showOrHide:(BOOL)showOrHide;
+
 @end
 
 #endif /* BEARViewController_h */
