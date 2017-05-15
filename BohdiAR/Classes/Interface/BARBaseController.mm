@@ -171,10 +171,9 @@
     videoContainer = [[UIView alloc] initWithFrame:self.view.frame];
     openglContainer = [[UIView alloc] initWithFrame:self.view.frame];
     uiContainer = [[UIView alloc] initWithFrame:self.view.frame];
-    
-    [self.view addSubview:videoContainer];
-    [self.view addSubview:openglContainer];
-    [self.view addSubview:uiContainer];
+    videoContainer.tag  = 99;
+    openglContainer.tag = 99;
+    uiContainer.tag     = 99;
     
     videoSource = [[BARVideoCamera alloc] initWithParentView:videoContainer];
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
@@ -199,6 +198,17 @@
     
     videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
     //videoSource.useAVCaptureVideoPreviewLayer = YES;
+    
+    [self.view addSubview:videoContainer];
+    [self.view addSubview:openglContainer];
+    [self.view addSubview:uiContainer];
+    
+    //move all the existing subviews (add by storyboard) into UI container
+    for (UIView* view in self.view.subviews) {
+        if (view.tag != 99) {
+            [uiContainer addSubview:view];
+        }
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
