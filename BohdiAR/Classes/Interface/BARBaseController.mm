@@ -7,8 +7,6 @@
     int markerId;
     BOOL cameraCalibrated;
 
-    UIView* videoPreview;
-    
     BARManager* cvManager;
     BARVideoCamera* videoSource;
     CGSize videoSize;
@@ -18,6 +16,10 @@
 @end
 
 @implementation BARBaseController
+
+@synthesize videoContainer;
+@synthesize openglContainer;
+@synthesize uiContainer;
 
 -(float)fieldOfView
 {
@@ -83,11 +85,6 @@
     if (cvManager) {
         delete cvManager;
     }
-}
-
--(void) addOverview:(UIView*)view
-{
-    [self.view insertSubview:view aboveSubview:videoPreview];
 }
 
 //int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true
@@ -171,10 +168,15 @@
     //CGSize size = self.view.frame.size;
     //CGFloat scale = [UIScreen mainScreen].scale;
     
-    videoPreview = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:videoPreview];
+    videoContainer = [[UIView alloc] initWithFrame:self.view.frame];
+    openglContainer = [[UIView alloc] initWithFrame:self.view.frame];
+    uiContainer = [[UIView alloc] initWithFrame:self.view.frame];
     
-    videoSource = [[BARVideoCamera alloc] initWithParentView:videoPreview];
+    [self.view addSubview:videoContainer];
+    [self.view addSubview:openglContainer];
+    [self.view addSubview:uiContainer];
+    
+    videoSource = [[BARVideoCamera alloc] initWithParentView:videoContainer];
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
 
