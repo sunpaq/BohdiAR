@@ -29,7 +29,7 @@ class BEARViewController: BARBaseController, BARDelegate {
         let path = Bundle.main.path(forResource: "calibrate", ofType: "xml")
         self.configDetector(withCameraParameters: path, markerLength: 2.0)
         self.drawDebugInfo = true
-        self.addOverview(glview)
+        self.openglContainer.addSubview(glview)
         self.delegate = self
     }
 
