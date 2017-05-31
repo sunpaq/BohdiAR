@@ -262,6 +262,7 @@ method(MC3DScene, void, setRotationMat3, float mat3[9])
             MCSkysphere_setRotationMat3(0, var(skysph), mat3);
         }
     }
+    MCCamera_setRotationMat3(0, var(mainCamera), mat3);
 }
 
 method(MC3DScene, void, setRotationMat4, float mat4[16])
@@ -274,6 +275,7 @@ method(MC3DScene, void, setRotationMat4, float mat4[16])
             MCSkysphere_setRotationMat4(0, var(skysph), mat4);
         }
     }
+    //TODO rotate camera
 }
 
 onload(MC3DScene)

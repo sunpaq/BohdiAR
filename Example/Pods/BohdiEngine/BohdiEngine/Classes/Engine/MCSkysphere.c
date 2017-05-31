@@ -73,6 +73,11 @@ oninit(MCSkysphere)
         var(sphCameraAngle) = M_PI * 0.55;
         var(sphCameraRatio) = 9.0/16.0;
         
+        var(R_value) = 200.0;
+        var(R_percent) = 1.0;
+        var(tht);
+        var(fai);
+        
         int nr = 72;
         int nc = 144;
         
@@ -243,6 +248,13 @@ method(MCSkysphere, void, setRotationMat3, float mat3[9])
 method(MCSkysphere, void, setRotationMat4, float mat4[16])
 {
     MC3DNode_rotateMat4(0, sobj, mat4, false);
+}
+
+method(MCSkysphere, void, transformSelfByEularAngle, double R, double fai, double tht)
+{
+    //MCMatrix4 lookat = MCMatrix4MakeLookAt(0, 0, 0, 0, 0,-1, 0, 1, 0);
+    //double R = var(R_value) * var(R_percent);
+    //sobj->transform = MCMatrix4MakeLookAtByEulerAngle_EyeUp(lookat, R, fai, tht, null, null);
 }
 
 onload(MCSkysphere)

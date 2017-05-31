@@ -13,5 +13,6 @@
 
 -(instancetype) initWithTarget:(id)target Selector:(SEL)selector;
 -(void) startRunloop;
+-(void) stopRunloop;
 
 @end

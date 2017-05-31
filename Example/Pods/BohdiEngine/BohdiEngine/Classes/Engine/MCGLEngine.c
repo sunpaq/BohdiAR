@@ -338,3 +338,15 @@ utility(MCGLEngine, int, validateProgram, GLuint prog)
     return 1;
 }
 
+utility(MCGLEngine, void, setViewport, int x, int y, int width, int height)
+{
+    glEnable(GL_DEPTH_TEST);//this is for Google cardboard
+    glViewport(x, y, width, height);
+}
+
+utility(MCGLEngine, void, setScissor, int x, int y, int width, int height)
+{
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(x, y, width, height);
+}
+

@@ -28,6 +28,25 @@
     return computed(director, contextHandler)->drawMode == MCLineStrip? YES : NO;
 }
 
+-(CMRotationMatrix) deviceRotateMat3
+{
+    CMRotationMatrix mat3 = {0};
+    if (director) {
+        mat3.m11 = director->deviceRotationMat3.m00;
+        mat3.m12 = director->deviceRotationMat3.m01;
+        mat3.m13 = director->deviceRotationMat3.m02;
+        
+        mat3.m21 = director->deviceRotationMat3.m10;
+        mat3.m22 = director->deviceRotationMat3.m11;
+        mat3.m23 = director->deviceRotationMat3.m12;
+        
+        mat3.m31 = director->deviceRotationMat3.m20;
+        mat3.m32 = director->deviceRotationMat3.m21;
+        mat3.m33 = director->deviceRotationMat3.m22;
+    }
+    return mat3;
+}
+
 -(void)setDoesAutoRotateCamera:(BOOL)doesAutoRotateCamera
 {
     computed(director, cameraHandler)->isLockRotation = doesAutoRotateCamera? false : true;
@@ -36,6 +55,23 @@
 -(void)setDoesDrawWireFrame:(BOOL)doesDrawWireFrame
 {
     computed(director, contextHandler)->drawMode = doesDrawWireFrame ? MCLineStrip : MCTriAngles;
+}
+
+-(void) setDeviceRotateMat3:(CMRotationMatrix)mat3
+{
+    if (director) {
+        director->deviceRotationMat3.m00 = mat3.m11;
+        director->deviceRotationMat3.m01 = mat3.m12;
+        director->deviceRotationMat3.m02 = mat3.m13;
+
+        director->deviceRotationMat3.m10 = mat3.m21;
+        director->deviceRotationMat3.m11 = mat3.m22;
+        director->deviceRotationMat3.m12 = mat3.m23;
+
+        director->deviceRotationMat3.m20 = mat3.m31;
+        director->deviceRotationMat3.m21 = mat3.m32;
+        director->deviceRotationMat3.m22 = mat3.m33;
+    }
 }
 
 +(void) createFramebuffersWithContext:(EAGLContext*)ctx AndLayer:(CAEAGLLayer*)lyr
@@ -77,40 +113,25 @@
     glview.enableSetNeedsDisplay = YES;
     glview.opaque = NO;
     
-    glview.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
-    glview.drawableDepthFormat = GLKViewDrawableDepthFormat16;
+    glview.drawableColorFormat   = GLKViewDrawableColorFormatRGBA8888;
+    glview.drawableDepthFormat   = GLKViewDrawableDepthFormat16;
     glview.drawableStencilFormat = GLKViewDrawableStencilFormat8;
     
     return glview;
 }
 
--(instancetype) initWithFrame:(CGRect)frame doesOpaque:(BOOL)opaque
-{
-    return [self initWithFrame:frame doesOpaque:opaque cameraRotateMode:BECameraRotateAroundModelManual];
-}
-
--(instancetype) initWithFrame:(CGRect)frame doesOpaque:(BOOL)opaque cameraRotateMode:(BECameraRotateMode)rmode
+-(instancetype) initWithFrame:(CGRect)frame
 {
     if (self = [super init]) {
         pinch_scale = 10.0;
         director = new(MCDirector);
         CGFloat scale = [UIScreen mainScreen].scale;
-        MCDirector_setupMainScene(0, director, frame.size.width * scale,
+        MCDirector_setupMainScene(0, director,
+                                  frame.size.width * scale,
                                   frame.size.height * scale);
         
-        computed(director, cameraHandler)->rotateMode = (MCCameraRotateMode)rmode;
-        if (rmode == BECameraRotateAroundModelByGyroscope) {
-            director->gyroscopeMode = true;
-        } else {
-            director->gyroscopeMode = false;
-        }
-        
-        if (!opaque) {
-            MCDirector_setBackgroudColor(0, director, 0, 0, 0, 0);
-        } else {
-            MCDirector_setBackgroudColor(0, director, 0.05, 0.25, 0.35, 1.0);
-        }
-        
+        computed(director, cameraHandler)->rotateMode = MCCameraRotateAroundModelManual;
+        [self setBackgroundColor:[UIColor darkGrayColor]];
         return self;
     }
     return nil;
@@ -120,16 +141,44 @@
 {
     if (director) {
         release(director);
-        director = nil;
+        director = null;
     }
 }
 
--(void) resizeAllScene:(CGSize)frameSize
+-(instancetype) setCameraRotateMode:(BECameraRotateMode)rmode
+{
+    if (director) {
+        computed(director, cameraHandler)->rotateMode = (MCCameraRotateMode)rmode;
+    }
+    return self;
+}
+
+-(instancetype) setBackgroundColor:(UIColor*)color
+{
+    if (director) {
+        CGFloat red, green, blue, alpha;
+        [color getRed:&red green:&green blue:&blue alpha:&alpha];
+        MCDirector_setBackgroudColor(0, director, red, green, blue, alpha);
+    }
+    return self;
+}
+
+-(instancetype) resizeAllScene:(CGSize)frameSize
 {
     if (director) {
         CGFloat scale = [UIScreen mainScreen].scale;
         MCDirector_resizeAllScene(0, director, (int)frameSize.width * scale, (int)frameSize.height * scale);
     }
+    return self;
+}
+
+-(instancetype) scissorAllScene:(CGRect)frame
+{
+    if (director) {
+        MCDirector_scissorAllScene(0, director, (int)frame.origin.x, (int)frame.origin.y,
+                                   (int)frame.size.width, (int)frame.size.height);
+    }
+    return self;
 }
 
 -(void) removeCurrentModel
@@ -271,6 +320,26 @@
     }
 }
 
+-(void) cameraTransformWorld:(GLKMatrix4)mat4
+{
+    if (!director) return;
+    MCCamera* cam = computed(director, cameraHandler);
+    if (cam) {
+        MCMatrix4 m4 = MCMatrix4Make(mat4.m);
+        MCCamera_transformWorld(0, cam, &m4);
+    }
+}
+
+-(void) cameraTransformSelf:(GLKMatrix4)mat4
+{
+    if (!director) return;
+    MCCamera* cam = computed(director, cameraHandler);
+    if (cam) {
+        MCMatrix4 m4 = MCMatrix4Make(mat4.m);
+        MCCamera_transformSelf(0, cam, &m4);
+    }
+}
+
 -(void) lightReset:(GLKVector3*)pos
 {
     if (!director) return;
@@ -284,7 +353,7 @@
     }
 }
 
--(void) handlePanGesture:(CGPoint)offset
+-(void) rotateModelByPanGesture:(CGPoint)offset
 {
     float x = offset.x;
     float y = offset.y;
@@ -292,7 +361,12 @@
     computed(director, cameraHandler)->fai += -(x/9.0);
 }
 
--(void) handlePinchGesture:(float)scale
+-(void) rotateSkysphByPanGesture:(CGPoint)offset
+{
+    
+}
+
+-(void) zoomModelByPinchGesture:(CGFloat)scale
 {
     pinch_scale *= scale;
     pinch_scale = MAX(10.0, MIN(pinch_scale, 100.0));

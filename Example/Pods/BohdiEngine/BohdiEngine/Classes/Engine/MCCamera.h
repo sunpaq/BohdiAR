@@ -6,11 +6,10 @@
 #include "MC3DNode.h"
 
 typedef enum {
-    MCCameraFixedAtOrigin,
+    MCCameraFixedAtOrigin = 0,
     MCCameraRotateAroundModelManual,
     MCCameraRotateAroundModelByGyroscope,
-    MCCameraRotateAR,
-    MCCameraRotateARWall
+    MCCameraRotateAroundModelByGyroscopeReverse
 } MCCameraRotateMode;
 
 class(MCCamera, MC3DNode,
@@ -44,6 +43,11 @@ class(MCCamera, MC3DNode,
 
 method(MCCamera, void, bye, voida);
 method(MCCamera, MCCamera*, initWithWidthHeight, unsigned width, unsigned height);
+
+method(MCCamera, void, transformWorld, MCMatrix4* mat4);
+method(MCCamera, void, transformSelf, MCMatrix4* mat4);
+method(MCCamera, void, transformSelfByEularAngle, MCVector3 lookat, double R, double fai, double tht);
+
 method(MCCamera, void, move, MCFloat deltaFai, MCFloat deltaTht);
 method(MCCamera, void, fucus, MCFloat deltaX, MCFloat deltaY);
 method(MCCamera, void, pull, MCFloat deltaR);

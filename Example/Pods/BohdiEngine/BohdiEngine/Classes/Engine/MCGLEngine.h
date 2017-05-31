@@ -69,6 +69,8 @@ utility(MCGLEngine, MCBool, compileShader, GLuint* shader, GLenum type, const GL
 utility(MCGLEngine, int, linkProgram, GLuint prog);
 utility(MCGLEngine, int, validateProgram, GLuint prog);
 
-
+//Viewport
+utility(MCGLEngine, void, setViewport, int x, int y, int width, int height);
+utility(MCGLEngine, void, setScissor, int x, int y, int width, int height);
 
 #endif /* MCGLEngine_h */

@@ -20,7 +20,14 @@ class(MCSkysphere, MC3DNode,
       MCMatrix4 sphProjectionMatrix;
       double sphCameraRatio;
       double sphCameraAngle;
-            
+      
+      //local spherical coordinate
+      //R[0,unlimited) tht[0, 180.0), fai[0, 360.0)
+      double R_value;
+      double R_percent;
+      double tht;
+      double fai;
+      
       size_t   vertices_size;
       size_t   indices_size;
       GLfloat* vertices;

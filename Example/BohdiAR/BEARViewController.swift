@@ -22,9 +22,9 @@ class BEARViewController: BARBaseController, BARDelegate {
         detectedMarkers = []
         
         glview = BERenderer.createDefaultGLView(self.view.frame)
-        renderer = BERenderer.init(frame: self.view.frame,
-                                   doesOpaque: false,
-                                   cameraRotateMode: BECameraFixedAtOrigin)
+        renderer = BERenderer.init(frame: self.view.frame)
+        renderer.setCameraRotateMode(BECameraFixedAtOrigin)
+        renderer.setBackgroundColor(UIColor.clear)
 
         let path = Bundle.main.path(forResource: "calibrate", ofType: "xml")
         self.configDetector(withCameraParameters: path, markerLength: 2.0)

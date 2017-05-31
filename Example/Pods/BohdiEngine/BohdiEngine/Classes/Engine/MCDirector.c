@@ -43,7 +43,6 @@ oninit(MCDirector)
         var(currentHeight) = 0;
         
         var(pause) = false;
-        var(gyroscopeMode) = true;
         var(lightFollowCamera) = true;
         var(deviceRotationMat3) = MCMatrix3Identity;
         
@@ -92,8 +91,8 @@ method(MCDirector, void, bye, voida)
 method(MCDirector, void, updateAll, voida)
 {
     if (obj && var(lastScene) != null && var(pause) == false) {
-        if (var(gyroscopeMode)) {
-            MCCamera_setRotationMat3(0, cpt(cameraHandler), obj->deviceRotationMat3.m);
+        if (cpt(cameraHandler)->rotateMode == MCCameraRotateAroundModelByGyroscope
+            || cpt(cameraHandler)->rotateMode == MCCameraRotateAroundModelByGyroscopeReverse) {
             MC3DScene_setRotationMat3(0, var(lastScene), obj->deviceRotationMat3.m);
         }
         if (var(lightFollowCamera) && cpt(lightHandler) && cpt(cameraHandler)) {
@@ -178,6 +177,14 @@ method(MCDirector, void, resizeAllScene, int width, int height)
     }
     var(currentWidth) = width;
     var(currentHeight) = height;
+}
+
+method(MCDirector, void, scissorAllScene, int x, int y, int width, int height)
+{
+    MCGLEngine_setViewport(x, y, width, height);
+    MCGLEngine_setScissor(x, y, width, height);
+    //call resize scene
+    MCDirector_resizeAllScene(0, obj, width, height);
 }
 
 method(MCDirector, void, addNode, MC3DNode* node)
@@ -337,6 +344,7 @@ onload(MCDirector)
         binding(MCDirector, void, pushScene, MC3DScene* scene);
         binding(MCDirector, void, popScene, voida);
         binding(MCDirector, void, resizeAllScene, int width, int height);
+        binding(MCDirector, void, scissorAllScene, int x, int y, int width, int height);
         binding(MCDirector, void, addNode, MC3DNode* node);
         binding(MCDirector, void, addModel, MC3DModel* model, int maxsize);
         binding(MCDirector, void, addModelAtIndex, MC3DModel* model, MCFloat maxsize, int index);
