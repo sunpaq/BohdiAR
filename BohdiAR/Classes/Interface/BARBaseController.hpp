@@ -50,7 +50,6 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 @property (atomic, readwrite) BOOL drawDebugInfo;
 
 -(void) configDetectorWithCameraParameters:(NSString*)filePath MarkerLength:(float)length;
--(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate;
 
 -(void) startDetector;
 -(void) stopDetector;

@@ -100,15 +100,6 @@
     }
 }
 
--(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate
-{
-    if (cvManager) {
-        cvManager->useStabilizer = use ? true : false;
-        cvManager->rotateStabilizer = rotate;
-        cvManager->translateStabilizer = translate;
-    }
-}
-
 -(void) startDetector
 {
     cvManager->markerId = -1;
