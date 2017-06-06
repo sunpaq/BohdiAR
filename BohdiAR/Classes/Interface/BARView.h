@@ -31,7 +31,7 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
  add your UI element view as a subview of uiContainer
  */
 
-@interface BARBaseController : UIViewController <BARVideoCameraDelegate>
+@interface BARView : UIView <BARVideoCameraDelegate>
 
 @property (atomic, readonly) UIView* videoContainer;
 @property (atomic, readonly) UIView* openglContainer;

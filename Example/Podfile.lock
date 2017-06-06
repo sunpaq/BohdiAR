@@ -6,17 +6,19 @@ PODS:
 
 DEPENDENCIES:
   - BohdiAR (from `../`)
-  - BohdiEngine
+  - BohdiEngine (from `~/Dev/pods/BohdiEngine-pod`)
 
 EXTERNAL SOURCES:
   BohdiAR:
     :path: "../"
+  BohdiEngine:
+    :path: "~/Dev/pods/BohdiEngine-pod"
 
 SPEC CHECKSUMS:
   BohdiAR: 4068eb6e2c25e5bbd916426b64aaeccc5419c2be
   BohdiEngine: 496107bfefeb9996bbbfc9647729a8494d3344c3
   OpenCV-Dynamic: 8d4c9e4ccd4cf1ec7bf97448ae9fa18800ff3066
 
-PODFILE CHECKSUM: 0c1153139a5452f358957c53dfd48eb5b69f3d7e
+PODFILE CHECKSUM: 597b8db96e05b62d9bc99f3c9677dd3bba40b238
 
 COCOAPODS: 1.2.1

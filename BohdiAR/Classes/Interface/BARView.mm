@@ -1,8 +1,8 @@
 
-#import "BARBaseController.hpp"
+#import "BARView.h"
 #import "../Core/BARManager.hpp"
 
-@interface BARBaseController()
+@interface BARView()
 {
     int markerId;
     BOOL cameraCalibrated;
@@ -15,7 +15,7 @@
 }
 @end
 
-@implementation BARBaseController
+@implementation BARView
 
 @synthesize videoContainer;
 @synthesize openglContainer;
@@ -57,6 +57,22 @@
     return CGPointZero;
 }
 
+-(void)setDrawDebugInfo:(BOOL)drawDebugInfo
+{
+    if (drawDebugInfo) {
+        cvManager->drawMarker = true;
+        cvManager->drawAxis = true;
+    } else {
+        cvManager->drawMarker = false;
+        cvManager->drawAxis = false;
+    }
+}
+
+-(BOOL)drawDebugInfo
+{
+    return cvManager->drawMarker || cvManager->drawAxis;
+}
+
 -(CGSize)videoSize
 {
     CGFloat scale = [[UIScreen mainScreen] scale];
@@ -72,12 +88,6 @@
 -(CALayer *)cvlayer
 {
     return videoSource.captureVideoPreviewLayer;
-}
-
--(void)setup
-{
-    markerId = -1;
-    cvManager = nil;
 }
 
 -(void)dealloc
@@ -125,43 +135,36 @@
     [videoSource unlockBalance];
 }
 
--(instancetype)init
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    self = [super init];
+    self = [super initWithCoder:coder];
     if (self) {
-        [self setup];
+        [self setupWithFrame:self.bounds];
     }
     return self;
 }
 
--(instancetype)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithCoder:aDecoder];
+    self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
+        [self setupWithFrame:frame];
     }
     return self;
 }
 
--(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)setupWithFrame:(CGRect)frame
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        [self setup];
-    }
-    return self;
-}
-
--(void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    markerId = -1;
+    cvManager = nil;
+    
+    self.backgroundColor = [UIColor blackColor];
     //CGSize size = self.view.frame.size;
     //CGFloat scale = [UIScreen mainScreen].scale;
     
-    videoContainer = [[UIView alloc] initWithFrame:self.view.frame];
-    openglContainer = [[UIView alloc] initWithFrame:self.view.frame];
-    uiContainer = [[UIView alloc] initWithFrame:self.view.frame];
+    videoContainer = [[UIView alloc] initWithFrame:frame];
+    openglContainer = [[UIView alloc] initWithFrame:frame];
+    uiContainer = [[UIView alloc] initWithFrame:frame];
     videoContainer.tag  = 99;
     openglContainer.tag = 99;
     uiContainer.tag     = 99;
@@ -169,19 +172,19 @@
     videoSource = [[BARVideoCamera alloc] initWithParentView:videoContainer];
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         //OpenCV allow max 1280x720 resolution
         videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
-        videoSize.width  = 720;
-        videoSize.height = 1280;
+        videoSize.width  = frame.size.width;
+        videoSize.height = frame.size.height;
     }
     else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
-        videoSize.width  = 720;
-        videoSize.height = 1280;
+        videoSize.width  = frame.size.width;
+        videoSize.height = frame.size.height;
     }
-
+    
     videoSource.recordVideo = NO;
     videoSource.rotateVideo = NO;
     videoSource.defaultFPS = 60;//max
@@ -190,27 +193,15 @@
     videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
     //videoSource.useAVCaptureVideoPreviewLayer = YES;
     
-    [self.view addSubview:videoContainer];
-    [self.view addSubview:openglContainer];
-    [self.view addSubview:uiContainer];
+    [self addSubview:videoContainer];
+    [self addSubview:openglContainer];
+    [self addSubview:uiContainer];
     
     //move all the existing subviews (add by storyboard) into UI container
-    for (UIView* view in self.view.subviews) {
+    for (UIView* view in self.subviews) {
         if (view.tag != 99) {
             [uiContainer addSubview:view];
         }
-    }
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if (self.drawDebugInfo) {
-        cvManager->drawMarker = true;
-        cvManager->drawAxis = true;
-    } else {
-        cvManager->drawMarker = false;
-        cvManager->drawAxis = false;
     }
 }
 

@@ -8,7 +8,10 @@
 
 import UIKit
 
-class BEARViewController: BARBaseController, BARDelegate {
+class BEARViewController: UIViewController, BARDelegate {
+
+    @IBOutlet weak var arview: BARView!
+    
     var renderer: BERenderer!
     var glview: GLKView!
     var detectedMarkers: [Int32]!
@@ -21,21 +24,23 @@ class BEARViewController: BARBaseController, BARDelegate {
         super.viewDidLoad()
         detectedMarkers = []
         
-        glview = BERenderer.createDefaultGLView(self.view.frame)
-        renderer = BERenderer.init(frame: self.view.frame)
+        let frame = arview.frame
+        
+        glview = BERenderer.createDefaultGLView(frame)
+        renderer = BERenderer.init(frame:frame)
         renderer.setCameraRotateMode(BECameraFixedAtOrigin)
         renderer.setBackgroundColor(UIColor.clear)
 
         let path = Bundle.main.path(forResource: "calibrate", ofType: "xml")
-        self.configDetector(withCameraParameters: path, markerLength: 2.0)
-        self.drawDebugInfo = true
-        self.openglContainer.addSubview(glview)
-        self.delegate = self
+        arview.configDetector(withCameraParameters: path, markerLength: 2.0)
+        arview.drawDebugInfo = true
+        arview.openglContainer.addSubview(glview)
+        arview.delegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.startDetector()
+        arview.startDetector()
     }
     
     //MARK BARDelegate
