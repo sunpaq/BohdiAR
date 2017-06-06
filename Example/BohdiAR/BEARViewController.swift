@@ -27,6 +27,8 @@ class BEARViewController: UIViewController, BARDelegate {
         let frame = arview.frame
         
         glview = BERenderer.createDefaultGLView(frame)
+        arview.openglContainer.addSubview(glview)
+
         renderer = BERenderer.init(frame:frame)
         renderer.setCameraRotateMode(BECameraFixedAtOrigin)
         renderer.setBackgroundColor(UIColor.clear)
@@ -34,13 +36,13 @@ class BEARViewController: UIViewController, BARDelegate {
         let path = Bundle.main.path(forResource: "calibrate", ofType: "xml")
         arview.configDetector(withCameraParameters: path, markerLength: 2.0)
         arview.drawDebugInfo = true
-        arview.openglContainer.addSubview(glview)
         arview.delegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         arview.startDetector()
+        renderer.cameraFOVReset(arview.fieldOfView)
     }
     
     //MARK BARDelegate

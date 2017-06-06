@@ -176,13 +176,9 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         //OpenCV allow max 1280x720 resolution
         videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
-        videoSize.width  = frame.size.width;
-        videoSize.height = frame.size.height;
     }
     else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
-        videoSize.width  = frame.size.width;
-        videoSize.height = frame.size.height;
     }
     
     videoSource.recordVideo = NO;
@@ -190,7 +186,7 @@
     videoSource.defaultFPS = 60;//max
     videoSource.delegate = self;
     
-    videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
+    videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeOff;
     //videoSource.useAVCaptureVideoPreviewLayer = YES;
     
     [self addSubview:videoContainer];
