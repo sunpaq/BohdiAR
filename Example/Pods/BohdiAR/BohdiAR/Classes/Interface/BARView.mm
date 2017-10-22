@@ -1,14 +1,12 @@
 
-#import "BARBaseController.hpp"
+#import "BARView.hpp"
 #import "../Core/BARManager.hpp"
 
-@interface BARBaseController()
+@interface BARView()
 {
     int markerId;
     BOOL cameraCalibrated;
 
-    UIView* videoPreview;
-    
     BARManager* cvManager;
     BARVideoCamera* videoSource;
     CGSize videoSize;
@@ -17,7 +15,11 @@
 }
 @end
 
-@implementation BARBaseController
+@implementation BARView
+
+@synthesize videoContainer;
+@synthesize openglContainer;
+@synthesize uiContainer;
 
 -(float)fieldOfView
 {
@@ -55,6 +57,22 @@
     return CGPointZero;
 }
 
+-(void)setDrawDebugInfo:(BOOL)drawDebugInfo
+{
+    if (drawDebugInfo) {
+        cvManager->drawMarker = true;
+        cvManager->drawAxis = true;
+    } else {
+        cvManager->drawMarker = false;
+        cvManager->drawAxis = false;
+    }
+}
+
+-(BOOL)drawDebugInfo
+{
+    return cvManager->drawMarker || cvManager->drawAxis;
+}
+
 -(CGSize)videoSize
 {
     CGFloat scale = [[UIScreen mainScreen] scale];
@@ -72,22 +90,11 @@
     return videoSource.captureVideoPreviewLayer;
 }
 
--(void)setup
-{
-    markerId = -1;
-    cvManager = nil;
-}
-
 -(void)dealloc
 {
     if (cvManager) {
         delete cvManager;
     }
-}
-
--(void) addOverview:(UIView*)view
-{
-    [self.view insertSubview:view aboveSubview:videoPreview];
 }
 
 //int width, int height, float unit, Pattern patternType, int flags = CV_ITERATIVE, bool RANSAC = true
@@ -100,15 +107,6 @@
             delete cvManager;
         }
         cvManager = new BARManager(path, length);
-    }
-}
-
--(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate
-{
-    if (cvManager) {
-        cvManager->useStabilizer = use ? true : false;
-        cvManager->rotateStabilizer = rotate;
-        cvManager->translateStabilizer = translate;
     }
 }
 
@@ -137,77 +135,69 @@
     [videoSource unlockBalance];
 }
 
--(instancetype)init
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    self = [super init];
+    self = [super initWithCoder:coder];
     if (self) {
-        [self setup];
+        [self setupWithFrame:self.bounds];
     }
     return self;
 }
 
--(instancetype)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithCoder:aDecoder];
+    self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
+        [self setupWithFrame:frame];
     }
     return self;
 }
 
--(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)setupWithFrame:(CGRect)frame
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        [self setup];
-    }
-    return self;
-}
-
--(void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    markerId = -1;
+    cvManager = nil;
+    
+    self.backgroundColor = [UIColor blackColor];
     //CGSize size = self.view.frame.size;
     //CGFloat scale = [UIScreen mainScreen].scale;
     
-    videoPreview = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:videoPreview];
+    videoContainer = [[UIView alloc] initWithFrame:frame];
+    openglContainer = [[UIView alloc] initWithFrame:frame];
+    uiContainer = [[UIView alloc] initWithFrame:frame];
+    videoContainer.tag  = 99;
+    openglContainer.tag = 99;
+    uiContainer.tag     = 99;
     
-    videoSource = [[BARVideoCamera alloc] initWithParentView:videoPreview];
+    videoSource = [[BARVideoCamera alloc] initWithParentView:videoContainer];
     videoSource.defaultAVCaptureDevicePosition   = AVCaptureDevicePositionBack;
     videoSource.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         //OpenCV allow max 1280x720 resolution
         videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
-        videoSize.width  = 720;
-        videoSize.height = 1280;
     }
     else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         videoSource.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
-        videoSize.width  = 720;
-        videoSize.height = 1280;
     }
-
+    
     videoSource.recordVideo = NO;
     videoSource.rotateVideo = NO;
     videoSource.defaultFPS = 60;//max
     videoSource.delegate = self;
     
-    videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
+    videoSource.videoCaptureConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeOff;
     //videoSource.useAVCaptureVideoPreviewLayer = YES;
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if (self.drawDebugInfo) {
-        cvManager->drawMarker = true;
-        cvManager->drawAxis = true;
-    } else {
-        cvManager->drawMarker = false;
-        cvManager->drawAxis = false;
+    
+    [self addSubview:videoContainer];
+    [self addSubview:openglContainer];
+    [self addSubview:uiContainer];
+    
+    //move all the existing subviews (add by storyboard) into UI container
+    for (UIView* view in self.subviews) {
+        if (view.tag != 99) {
+            [uiContainer addSubview:view];
+        }
     }
 }
 
@@ -231,6 +221,13 @@
         cvtColor(RGB, image, COLOR_RGB2BGRA);
         [self.delegate onImageProcessDone];
     }
+}
+
+-(void) showHideSubview:(UIView*)view showOrHide:(BOOL)showOrHide
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        view.hidden = !showOrHide;
+    });
 }
 
 @end
