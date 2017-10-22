@@ -1,8 +1,8 @@
 PODS:
-  - BohdiAR (0.1.4):
-    - OpenCV-Dynamic
+  - BohdiAR (0.1.5):
+    - OpenCV
   - BohdiEngine (1.1.4)
-  - OpenCV-Dynamic (3.2.4)
+  - OpenCV (3.3.0)
 
 DEPENDENCIES:
   - BohdiAR (from `../`)
@@ -13,9 +13,9 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  BohdiAR: bccb3e27dc6911e04bd2b8537c94cd7342797d6f
+  BohdiAR: a17c60c3a4f4f8839ca728878a3d02435fedd8c8
   BohdiEngine: 3e9ff8828aa7b23d577c69301c35ab151013ff96
-  OpenCV-Dynamic: 8d4c9e4ccd4cf1ec7bf97448ae9fa18800ff3066
+  OpenCV: 9b36d1abdbdbcc6e8cacb6c29d0e6777f87423bb
 
 PODFILE CHECKSUM: 1f5ddcc1e37b7174340b55d59059c288848d262b
 
