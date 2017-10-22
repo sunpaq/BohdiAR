@@ -46,7 +46,7 @@ method(MC3DNode, void, bye, voida)
 method(MC3DNode, MC3DErrCode, addChild, MC3DNode* child)
 {
     child->visible = false;
-    MCLinkedList_addItem(0, var(children), (MCItem*)child);
+    MCLinkedList_addItem(var(children), (MCItem*)child);
     child->visible = true;
     return MC3DSuccess;
 }
@@ -55,9 +55,9 @@ method(MC3DNode, MC3DErrCode, addChildAtIndex, MC3DNode* child, int index)
 {
     child->visible = false;
     if (index < 0) {
-        MCLinkedList_addItem(0, var(children), (MCItem*)child);
+        MCLinkedList_addItem(var(children), (MCItem*)child);
     } else {
-        MCLinkedList_addItemAtIndex(0, var(children), index, (MCItem*)child);
+        MCLinkedList_addItemAtIndex(var(children), index, (MCItem*)child);
     }
     child->visible = true;
     return MC3DSuccess;
@@ -66,13 +66,13 @@ method(MC3DNode, MC3DErrCode, addChildAtIndex, MC3DNode* child, int index)
 method(MC3DNode, MC3DErrCode, removeChild, MC3DNode* child)
 {
     child->visible = false;
-    MCLinkedList_delItem(0, var(children), (MCItem*)child);
+    MCLinkedList_delItem(var(children), (MCItem*)child);
     return MC3DSuccess;
 }
 
 method(MC3DNode, void, copyChildrenFrom, MC3DNode* node)
 {
-    MCLinkedList_connectList(0, var(children), node->children);
+    MCLinkedList_connectList(var(children), node->children);
 }
 
 method(MC3DNode, void, cleanUnvisibleChild, voida)
@@ -80,7 +80,7 @@ method(MC3DNode, void, cleanUnvisibleChild, voida)
     MCLinkedListForEach(var(children),
                         MC3DNode* node = (MC3DNode*)item;
                         if (node != null && node->visible == false) {
-                            MCLinkedList_delItem(0, var(children), (MCItem*)node);
+                            MCLinkedList_delItem(var(children), (MCItem*)node);
                         })
 }
 
@@ -184,7 +184,7 @@ method(MC3DNode, void, draw, MCGLContext* ctx)
 {
     //draw self
     //if (obj->visible) {
-        MCGLContext_activateShaderProgram(0, ctx, 0);
+        MCGLContext_activateShaderProgram(ctx, 0);
         MCGLUniform f;
         
         //scale translate
@@ -192,12 +192,12 @@ method(MC3DNode, void, draw, MCGLContext* ctx)
 
         if (!MCMatrix4Equal(&MCMatrix4Identity, &viewModel)) {
             f.data.mat4 = viewModel;
-            MCGLContext_updateUniform(0, ctx, model_model, f.data);
+            MCGLContext_updateUniform(ctx, model_model, f.data);
         }
     
         MCMatrix3 nor = MCMatrix3InvertAndTranspose(MCMatrix4GetMatrix3(var(transform)), NULL);
         f.data.mat3 = nor;
-        MCGLContext_updateUniform(0, ctx, model_normal, f.data);
+        MCGLContext_updateUniform(ctx, model_normal, f.data);
         
         //material
         if (obj->material != null) {
@@ -205,7 +205,7 @@ method(MC3DNode, void, draw, MCGLContext* ctx)
                 return;
             }
             obj->material->dataChanged = true;
-            MCMaterial_prepareMatrial(0, obj->material, ctx);
+            MCMaterial_prepareMatrial(obj->material, ctx);
         }
         
         //draw self texture
@@ -216,7 +216,7 @@ method(MC3DNode, void, draw, MCGLContext* ctx)
         }
         
         //batch setup
-        MCGLContext_setUniforms(0, ctx, 0);
+        MCGLContext_setUniforms(ctx, 0);
         
         //draw self meshes
         MCLinkedListForEach(var(meshes),
@@ -224,8 +224,8 @@ method(MC3DNode, void, draw, MCGLContext* ctx)
                             if (mesh != null) {
                                 mesh->diffuseTextureRef  = obj->diffuseTexture;
                                 mesh->specularTextureRef = obj->specularTexture;
-                                MCMesh_prepareMesh(0, mesh, ctx);
-                                MCMesh_drawMesh(0, mesh, ctx);
+                                MCMesh_prepareMesh(mesh, ctx);
+                                MCMesh_drawMesh(mesh, ctx);
                             })
     //}
     

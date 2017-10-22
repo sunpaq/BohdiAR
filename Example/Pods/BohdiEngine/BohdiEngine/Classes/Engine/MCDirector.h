@@ -28,7 +28,7 @@ class(MCDirector, MCObject,
       int currentHeight;
       
       MCBool lightFollowCamera;
-      MCBool gyroscopeMode;
+      //MCBool gyroscopeOnOff;
       MCBool pause;
       
       MCMatrix3 deviceRotationMat3;
@@ -56,6 +56,7 @@ method(MCDirector, void, setBackgroudColor, float R, float G, float B, float A);
 method(MCDirector, void, pushScene, MC3DScene* scene);
 method(MCDirector, void, popScene, voida);
 method(MCDirector, void, resizeAllScene, int width, int height);
+method(MCDirector, void, scissorAllScene, int x, int y, int width, int height);
 
 method(MCDirector, void, addNode, MC3DNode* node);
 method(MCDirector, void, addModel, MC3DModel* model, MCFloat maxsize);

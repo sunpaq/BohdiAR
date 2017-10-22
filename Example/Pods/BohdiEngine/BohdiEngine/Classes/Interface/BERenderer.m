@@ -28,6 +28,25 @@
     return computed(director, contextHandler)->drawMode == MCLineStrip? YES : NO;
 }
 
+-(CMRotationMatrix) deviceRotateMat3
+{
+    CMRotationMatrix mat3 = {0};
+    if (director) {
+        mat3.m11 = director->deviceRotationMat3.m00;
+        mat3.m12 = director->deviceRotationMat3.m01;
+        mat3.m13 = director->deviceRotationMat3.m02;
+        
+        mat3.m21 = director->deviceRotationMat3.m10;
+        mat3.m22 = director->deviceRotationMat3.m11;
+        mat3.m23 = director->deviceRotationMat3.m12;
+        
+        mat3.m31 = director->deviceRotationMat3.m20;
+        mat3.m32 = director->deviceRotationMat3.m21;
+        mat3.m33 = director->deviceRotationMat3.m22;
+    }
+    return mat3;
+}
+
 -(void)setDoesAutoRotateCamera:(BOOL)doesAutoRotateCamera
 {
     computed(director, cameraHandler)->isLockRotation = doesAutoRotateCamera? false : true;
@@ -36,6 +55,23 @@
 -(void)setDoesDrawWireFrame:(BOOL)doesDrawWireFrame
 {
     computed(director, contextHandler)->drawMode = doesDrawWireFrame ? MCLineStrip : MCTriAngles;
+}
+
+-(void) setDeviceRotateMat3:(CMRotationMatrix)mat3
+{
+    if (director) {
+        director->deviceRotationMat3.m00 = mat3.m11;
+        director->deviceRotationMat3.m01 = mat3.m12;
+        director->deviceRotationMat3.m02 = mat3.m13;
+
+        director->deviceRotationMat3.m10 = mat3.m21;
+        director->deviceRotationMat3.m11 = mat3.m22;
+        director->deviceRotationMat3.m12 = mat3.m23;
+
+        director->deviceRotationMat3.m20 = mat3.m31;
+        director->deviceRotationMat3.m21 = mat3.m32;
+        director->deviceRotationMat3.m22 = mat3.m33;
+    }
 }
 
 +(void) createFramebuffersWithContext:(EAGLContext*)ctx AndLayer:(CAEAGLLayer*)lyr
@@ -70,47 +106,33 @@
 +(GLKView*) createDefaultGLView:(CGRect)frame
 {
     EAGLContext* ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-    ctx.multiThreaded = NO;
+    ctx.multiThreaded = YES;
+    
     [EAGLContext setCurrentContext:ctx];
-    GLKView* glview = [[GLKView alloc] initWithFrame:frame context:[EAGLContext currentContext]];
+    GLKView* glview = [[GLKView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) context:ctx];
     
     glview.enableSetNeedsDisplay = YES;
     glview.opaque = NO;
     
-    glview.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
-    glview.drawableDepthFormat = GLKViewDrawableDepthFormat16;
+    glview.drawableColorFormat   = GLKViewDrawableColorFormatRGBA8888;
+    glview.drawableDepthFormat   = GLKViewDrawableDepthFormat16;
     glview.drawableStencilFormat = GLKViewDrawableStencilFormat8;
     
     return glview;
 }
 
--(instancetype) initWithFrame:(CGRect)frame doesOpaque:(BOOL)opaque
-{
-    return [self initWithFrame:frame doesOpaque:opaque cameraRotateMode:BECameraRotateAroundModelManual];
-}
-
--(instancetype) initWithFrame:(CGRect)frame doesOpaque:(BOOL)opaque cameraRotateMode:(BECameraRotateMode)rmode
+-(instancetype) initWithFrame:(CGRect)frame
 {
     if (self = [super init]) {
         pinch_scale = 10.0;
         director = new(MCDirector);
         CGFloat scale = [UIScreen mainScreen].scale;
-        MCDirector_setupMainScene(0, director, frame.size.width * scale,
+        MCDirector_setupMainScene(director,
+                                  frame.size.width * scale,
                                   frame.size.height * scale);
         
-        computed(director, cameraHandler)->rotateMode = (MCCameraRotateMode)rmode;
-        if (rmode == BECameraRotateAroundModelByGyroscope) {
-            director->gyroscopeMode = true;
-        } else {
-            director->gyroscopeMode = false;
-        }
-        
-        if (!opaque) {
-            MCDirector_setBackgroudColor(0, director, 0, 0, 0, 0);
-        } else {
-            MCDirector_setBackgroudColor(0, director, 0.05, 0.25, 0.35, 1.0);
-        }
-        
+        computed(director, cameraHandler)->rotateMode = MCCameraRotateAroundModelManual;
+        [self setBackgroundColor:[UIColor darkGrayColor]];
         return self;
     }
     return nil;
@@ -120,16 +142,44 @@
 {
     if (director) {
         release(director);
-        director = nil;
+        director = null;
     }
 }
 
--(void) resizeAllScene:(CGSize)frameSize
+-(instancetype) setCameraRotateMode:(BECameraRotateMode)rmode
+{
+    if (director) {
+        computed(director, cameraHandler)->rotateMode = (MCCameraRotateMode)rmode;
+    }
+    return self;
+}
+
+-(instancetype) setBackgroundColor:(UIColor*)color
+{
+    if (director) {
+        CGFloat red, green, blue, alpha;
+        [color getRed:&red green:&green blue:&blue alpha:&alpha];
+        MCDirector_setBackgroudColor(director, red, green, blue, alpha);
+    }
+    return self;
+}
+
+-(instancetype) resizeAllScene:(CGSize)frameSize
 {
     if (director) {
         CGFloat scale = [UIScreen mainScreen].scale;
-        MCDirector_resizeAllScene(0, director, (int)frameSize.width * scale, (int)frameSize.height * scale);
+        MCDirector_resizeAllScene(director, (int)frameSize.width * scale, (int)frameSize.height * scale);
     }
+    return self;
+}
+
+-(instancetype) scissorAllScene:(CGRect)frame
+{
+    if (director) {
+        MCDirector_scissorAllScene(director, (int)frame.origin.x, (int)frame.origin.y,
+                                   (int)frame.size.width, (int)frame.size.height);
+    }
+    return self;
 }
 
 -(void) removeCurrentModel
@@ -156,10 +206,10 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         const char* name = [modelName cStringUsingEncoding:NSUTF8StringEncoding];
-        MC3DModel* m = MCDirector_addModelNamed(0, director, name, MCFloatF(scale));
+        MC3DModel* m = MCDirector_addModelNamed(director, name, MCFloatF(scale));
         m->tag = tag;
-        MC3DModel_rotateAroundSelfAxisX(0, m, ccwRadian);
-        MCDirector_cameraFocusOn(0, director, MCVector4Make(0, -scale * 0.5, 0, scale * 2.0));
+        MC3DModel_rotateAroundSelfAxisX(m, ccwRadian);
+        MCDirector_cameraFocusOn(director, MCVector4Make(0, -scale * 0.5, 0, scale * 2.0));
     });
 }
 
@@ -182,20 +232,20 @@
 {
     if (texname) {
         const char* name = [texname cStringUsingEncoding:NSUTF8StringEncoding];
-        MCDirector_addSkysphereNamed(0, director, name);
+        MCDirector_addSkysphereNamed(director, name);
     } else {
-        MCDirector_addSkysphereNamed(0, director, null);
+        MCDirector_addSkysphereNamed(director, null);
     }
 }
 
 -(void) removeCurrentSkybox
 {
-    MCDirector_removeCurrentSkybox(0, director, 0);
+    MCDirector_removeCurrentSkybox(director, 0);
 }
 
 -(void) removeCurrentSkysph
 {
-    MCDirector_removeCurrentSkysph(0, director, 0);
+    MCDirector_removeCurrentSkysph(director, 0);
 }
 
 -(void) cameraReset:(float*)mat4
@@ -236,7 +286,7 @@
     if (!director) return;
     MCCamera* cam = computed(director, cameraHandler);
     if (cam) {
-        MC3DNode_rotateMat3(0, &cam->Super, mat3.m, inc?true:false);
+        MC3DNode_rotateMat3(&cam->Super, mat3.m, inc?true:false);
     }
 }
 
@@ -249,7 +299,7 @@
         cam->R_value = MCVector3Length(eye);
         cam->eye = eye;
         MCVector3 v3 = {vec3.x, vec3.y, vec3.z};
-        MC3DNode_translateVec3(0, &cam->Super, &v3, inc?true:false);
+        MC3DNode_translateVec3(&cam->Super, &v3, inc?true:false);
     }
 }
 
@@ -271,6 +321,26 @@
     }
 }
 
+-(void) cameraTransformWorld:(GLKMatrix4)mat4
+{
+    if (!director) return;
+    MCCamera* cam = computed(director, cameraHandler);
+    if (cam) {
+        MCMatrix4 m4 = MCMatrix4Make(mat4.m);
+        MCCamera_transformWorld(cam, &m4);
+    }
+}
+
+-(void) cameraTransformSelf:(GLKMatrix4)mat4
+{
+    if (!director) return;
+    MCCamera* cam = computed(director, cameraHandler);
+    if (cam) {
+        MCMatrix4 m4 = MCMatrix4Make(mat4.m);
+        MCCamera_transformSelf(cam, &m4);
+    }
+}
+
 -(void) lightReset:(GLKVector3*)pos
 {
     if (!director) return;
@@ -284,7 +354,7 @@
     }
 }
 
--(void) handlePanGesture:(CGPoint)offset
+-(void) rotateModelByPanGesture:(CGPoint)offset
 {
     float x = offset.x;
     float y = offset.y;
@@ -292,13 +362,18 @@
     computed(director, cameraHandler)->fai += -(x/9.0);
 }
 
--(void) handlePinchGesture:(float)scale
+-(void) rotateSkysphByPanGesture:(CGPoint)offset
+{
+    
+}
+
+-(void) zoomModelByPinchGesture:(CGFloat)scale
 {
     pinch_scale *= scale;
     pinch_scale = MAX(10.0, MIN(pinch_scale, 100.0));
     
     MCCamera* camera = computed(director, cameraHandler);
-    MCCamera_distanceScale(0, camera, MCFloatF(20.0/pinch_scale));
+    MCCamera_distanceScale(camera, MCFloatF(20.0/pinch_scale));
 }
 
 -(void) updateModelTag:(int)tag PoseMat4D:(double*)mat4
@@ -338,8 +413,8 @@
 -(void) drawFrame
 {
     if (director) {
-        MCDirector_updateAll(0, director, 0);
-        MCDirector_drawAll(0, director, 0);
+        MCDirector_updateAll(director, 0);
+        MCDirector_drawAll(director, 0);
     }
 }
 

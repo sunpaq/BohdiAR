@@ -96,7 +96,7 @@ typedef struct BAMeshStruct {
     char group[LINE_MAX];
 } BAMesh;
 
-typedef struct BAObjModelStruct {
+typedef struct BAObjDataStruct {
     BACubeFrame Frame;
     //raw data
     MCVector3* vertexbuff;
@@ -114,9 +114,9 @@ typedef struct BAObjModelStruct {
     BAMtlLibrary* mtllib_list;
     //name
     char name[256];
-} BAObjModel;
+} BAObjData;
 
-MCInline void BAObjDumpInfo(BAObjModel* baobj)
+MCInline void BAObjDumpInfo(BAObjData* baobj)
 {
     for (int i=0; i<baobj->meshcount; i++) {
         BAMesh* m = &baobj->meshbuff[i];
@@ -137,9 +137,9 @@ MCInline void BAObjDumpInfo(BAObjModel* baobj)
     printf("total %ld meshes\n", baobj->meshcount);
 }
 
-MCInline BAObjModel* BAObjAlloc(BAObjMeta* meta)
+MCInline BAObjData* BAObjAlloc(BAObjMeta* meta)
 {
-    BAObjModel* buff = (BAObjModel*)malloc(sizeof(BAObjModel));
+    BAObjData* buff = (BAObjData*)malloc(sizeof(BAObjData));
     if (buff) {
         buff->Frame = (BACubeFrame){0};
         size_t sizevb = sizeof(MCVector3) * (meta->vertex_count);
@@ -204,9 +204,9 @@ MCInline BAObjModel* BAObjAlloc(BAObjMeta* meta)
     return null;
 }
 
-BAObjModel* BAObjModelNewWithFilepath(const char* filepath, BAObjMeta* meta);
-BAObjModel* BAObjModelNew(const char* filename, BAObjMeta* meta);
+BAObjData* BAObjDataNewWithFilepath(const char* filepath, BAObjMeta* meta);
+BAObjData* BAObjDataNew(const char* filename, BAObjMeta* meta);
 
-void BAObjRelease(BAObjModel* buff);
+void BAObjRelease(BAObjData* buff);
 
 #endif /* MC3DFileParser_h */

@@ -75,7 +75,7 @@ method(MCGLContext, MCGLContext*, initWithShaderName, const char* vname, const c
         return null;
     const char* fcode = MCFileCopyContentWithPath(fpath);
     
-    MCGLContext_initWithShaderCode(0, obj, vcode, fcode, attribs, acount, types, uniforms, ucount);
+    MCGLContext_initWithShaderCode(obj, vcode, fcode, attribs, acount, types, uniforms, ucount);
     
     free((void*)vcode);
     free((void*)fcode);
@@ -91,7 +91,7 @@ method(MCGLContext, int, getUniformLocation, const char* name)
 {
     for (MCUInt i=0; i<obj->uniformCount; i++) {
         if (strcmp(name, obj->uniforms[i].name)==0) {
-            return fillUniformLocation(0, obj, &obj->uniforms[i]);
+            return fillUniformLocation(obj, &obj->uniforms[i]);
         }
     }
     return MC3DErrUniformNotFound;
@@ -170,7 +170,7 @@ method(MCGLContext, void,  setUniforms, voida)
     for (int i=0; i<var(uniformCount); i++) {
         if (var(uniformsDirty)[i] == true) {
             MCGLUniform* f = &var(uniforms)[i];
-            setUniform(0, obj, null, f->location, f);
+            setUniform(obj, null, f->location, f);
             var(uniformsDirty)[i] = false;
         }
     }

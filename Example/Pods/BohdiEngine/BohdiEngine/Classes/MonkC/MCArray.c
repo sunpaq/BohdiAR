@@ -5,7 +5,7 @@ static void expand_array(MCArray* obj)
 {
     if(obj->maxcount == 0){
         obj->maxcount = 10;
-        MCArray_initWithMaxCount(0, obj, obj->maxcount);
+        MCArray_initWithMaxCount(obj, obj->maxcount);
     }else{
         obj->maxcount = (obj->maxcount) * 2;//double
         MCGeneric* newbuff = (MCGeneric*)malloc(sizeof(MCGeneric) * obj->maxcount);
@@ -64,7 +64,7 @@ method(MCArray, void, bye, voida)
 method(MCArray, MCArray*, clear, voida)
 {
     free(obj->buff);
-    return MCArray_initWithMaxCount(0, obj, 10);
+    return MCArray_initWithMaxCount(obj, 10);
 }
 
 method(MCArray, MCArray*, addItem, MCGeneric item)

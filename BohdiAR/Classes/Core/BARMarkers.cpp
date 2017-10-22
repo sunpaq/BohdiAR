@@ -73,7 +73,7 @@ int BARMarkers::getId(int index)
 //OpenGL coordinate system z pointing out of screen
 void BARMarkers::getPoseMat(int index, float* mat4)
 {
-    glMatrixFromCV(mat4, markers[index].Rvec, markers[index].Tvec, false, 0.5, 1.0, true);
+    glMatrixFromCV(mat4, markers[index].Rvec, markers[index].Tvec, false, 1.0, 1.0, true);
 }
 
 void BARMarkers::matrix4AddValue(float* mat, float* newmat, float rotateRatio, float transRatio)
@@ -90,6 +90,9 @@ void BARMarkers::matrix4AddValue(float* mat, float* newmat, float rotateRatio, f
     }
 }
 
+//stabilizer is just a ratio used to filter out the jitter (huge value change in short time) in pose matrix
+//to use the stabilizer, parameter glmat4 needs to have the last time post matrix value. this feature will slow down the response speed.
+//ArUco version 2 library is stable enough. currently stabilizer is not used
 void BARMarkers::glMatrixFromCV(float* glmat4, Mat R, Mat T, bool useStabilizer, float rotateStabilizer, float translateStabilizer, bool doesFlip)
 {
     Mat Rod(3,3,DataType<float>::type);

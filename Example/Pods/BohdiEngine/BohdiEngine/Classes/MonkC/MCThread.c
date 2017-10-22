@@ -34,7 +34,7 @@ method(MCThread, MCThread*, initWithFPointerArgument, void* fp, void* farg)
 
 method(MCThread, MCThread*, initWithFPointer, void* fp)
 {
-    return MCThread_initWithFPointerArgument(0, obj, fp, null);
+    return MCThread_initWithFPointerArgument(obj, fp, null);
 }
 
 method(MCThread, int, detach, voida)

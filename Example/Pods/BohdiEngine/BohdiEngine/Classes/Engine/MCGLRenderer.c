@@ -310,7 +310,7 @@ method(MCGLRenderer, void, bye, voida)
 
 method(MCGLRenderer, MCGLRenderer*, initWithShaderCodeString, const char* vcode, const char* fcode)
 {
-    MCGLContext_initWithShaderCode(0, obj->context, vcode, fcode,
+    MCGLContext_initWithShaderCode(obj->context, vcode, fcode,
         (const char* []){
             "position",
             "normal",
@@ -375,7 +375,7 @@ method(MCGLRenderer, MCGLRenderer*, initWithShaderFileName, const char* vshader,
     MCFileGetPath(fshader, path);
     const char* fcode = MCFileCopyContentWithPath(path);
     
-    MCGLRenderer_initWithShaderCodeString(0, obj, vcode, fcode);
+    MCGLRenderer_initWithShaderCodeString(obj, vcode, fcode);
     
     free((void*)vcode);
     free((void*)fcode);
@@ -384,7 +384,7 @@ method(MCGLRenderer, MCGLRenderer*, initWithShaderFileName, const char* vshader,
 
 method(MCGLRenderer, MCGLRenderer*, initWithDefaultShader, voida)
 {
-    return MCGLRenderer_initWithShaderCodeString(0, obj, VCODE, FCODE);
+    return MCGLRenderer_initWithShaderCodeString(obj, VCODE, FCODE);
 }
 
 method(MCGLRenderer, void, updateNodes, MC3DNode* rootnode)
@@ -400,7 +400,7 @@ method(MCGLRenderer, void, drawNodes, MC3DNode* rootnode)
     if (rootnode != null) {
         ff(rootnode, draw, obj->context);
         //make FPS stable motion more smooth
-        MCGLEngine_flushCommandBlock(0);
+        //MCGLEngine_flushCommandBlock(0);
         //MCGLEngine_flushCommandAsync(0);
     }
 }

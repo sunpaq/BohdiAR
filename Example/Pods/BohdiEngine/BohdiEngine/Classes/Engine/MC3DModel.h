@@ -25,7 +25,8 @@ class(MC3DModel, MC3DNode,
       MCColorf defaultColor;
       const char* defaultExtension;
       MCBool textureOnOff;
-
+      MCBool fitted;
+      
       MC3DFrame lastSavedFrame;
       computing(MC3DFrame, frame);
       computing(MCVector3, center);
@@ -42,6 +43,8 @@ method(MC3DModel, void, translateToOrigin, voida);
 method(MC3DModel, void, rotateAroundSelfAxisX, double ccwRadian);
 method(MC3DModel, void, rotateAroundSelfAxisY, double ccwRadian);
 method(MC3DModel, void, rotateAroundSelfAxisZ, double ccwRadian);
+//resize
+method(MC3DModel, void, resizeToFit, double maxsize);
 //override
 method(MC3DModel, void, update, MCGLContext* ctx);
 method(MC3DModel, void, draw, MCGLContext* ctx);

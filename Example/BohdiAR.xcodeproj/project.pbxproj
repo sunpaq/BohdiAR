@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57BEC390CA5F6F93E64415EE /* Pods_BohdiAR_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F3BC86B5A9693CBCA960353 /* Pods_BohdiAR_Example.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -14,40 +15,22 @@
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* BEARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* BEARAppDelegate.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
-		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
-		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
-		8AEDCA293F996A2478874446 /* Pods_BohdiAR_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE021330A2BD086E1B5E21C /* Pods_BohdiAR_Example.framework */; };
-		A6E1A214CB59927A4AC44A72 /* Pods_BohdiAR_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031664692F20E374B88D61A9 /* Pods_BohdiAR_Tests.framework */; };
-		F8B0002F1E81036B00350307 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B0002E1E81036B00350307 /* opencv2.framework */; };
 		FD59A28D1EC70EFC002495A2 /* BEARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD59A28C1EC70EFC002495A2 /* BEARViewController.swift */; };
-		FD59A2991EC7120E002495A2 /* calibrate.xml in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2901EC7120E002495A2 /* calibrate.xml */; };
-		FD59A29A1EC7120E002495A2 /* 2.obj in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2921EC7120E002495A2 /* 2.obj */; };
-		FD59A29B1EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2941EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga */; };
-		FD59A29C1EC7120E002495A2 /* arcanegolem.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2951EC7120E002495A2 /* arcanegolem.mtl */; };
-		FD59A29D1EC7120E002495A2 /* arcanegolem.obj in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2961EC7120E002495A2 /* arcanegolem.obj */; };
-		FD59A29E1EC7120E002495A2 /* ARMORREFLECT4.tga in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2971EC7120E002495A2 /* ARMORREFLECT4.tga */; };
-		FD59A29F1EC7120E002495A2 /* beengine.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2981EC7120E002495A2 /* beengine.mtl */; };
-		FD59A2A11EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2A01EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf */; };
 		FD59A2A31EC72C31002495A2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD59A2A21EC72C31002495A2 /* MainViewController.swift */; };
+		FDA51B2A1F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B201F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf */; };
+		FDA51B2B1F9C9540003C2E55 /* calibrate.xml in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B211F9C9540003C2E55 /* calibrate.xml */; };
+		FDA51B2C1F9C9540003C2E55 /* 2.obj in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B231F9C9540003C2E55 /* 2.obj */; };
+		FDA51B2D1F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B251F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga */; };
+		FDA51B2E1F9C9540003C2E55 /* arcanegolem.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B261F9C9540003C2E55 /* arcanegolem.mtl */; };
+		FDA51B2F1F9C9540003C2E55 /* arcanegolem.obj in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B271F9C9540003C2E55 /* arcanegolem.obj */; };
+		FDA51B301F9C9540003C2E55 /* ARMORREFLECT4.tga in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B281F9C9540003C2E55 /* ARMORREFLECT4.tga */; };
+		FDA51B311F9C9540003C2E55 /* beengine.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B291F9C9540003C2E55 /* beengine.mtl */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		6003F5B3195388D20070C39A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6003F582195388D10070C39A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6003F589195388D20070C39A;
-			remoteInfo = BohdiAR;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		031664692F20E374B88D61A9 /* Pods_BohdiAR_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BohdiAR_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2E9B1D1593AD6E93C2567726 /* Pods-BohdiAR_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BohdiAR_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BohdiAR_Tests/Pods-BohdiAR_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		575E80823E09504B8E66E99D /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* BohdiAR_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BohdiAR_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -60,31 +43,29 @@
 		6003F59C195388D20070C39A /* BEARAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BEARAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* BEARAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BEARAppDelegate.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		6003F5AE195388D20070C39A /* BohdiAR_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BohdiAR_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		623BD58255B40950FB76DEE4 /* Pods-BohdiAR_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BohdiAR_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-BohdiAR_Example/Pods-BohdiAR_Example.release.xcconfig"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7F3BC86B5A9693CBCA960353 /* Pods_BohdiAR_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BohdiAR_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8E6BD45C32E81F8B94AD0D74 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		A30FBB8CFFE6768731DC8C63 /* Pods-BohdiAR_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BohdiAR_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BohdiAR_Tests/Pods-BohdiAR_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C6CB51B042AFBCABB80DC2DE /* Pods-BohdiAR_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BohdiAR_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BohdiAR_Example/Pods-BohdiAR_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		DBE021330A2BD086E1B5E21C /* Pods_BohdiAR_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BohdiAR_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1777CE5DAADFF41729C2DFD /* BohdiAR.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = BohdiAR.podspec; path = ../BohdiAR.podspec; sourceTree = "<group>"; };
 		F8B0002E1E81036B00350307 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = "Pods/OpenCV-Dynamic/opencv2.framework"; sourceTree = "<group>"; };
 		FD59A2891EC70EA0002495A2 /* BohdiAR_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BohdiAR_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		FD59A28C1EC70EFC002495A2 /* BEARViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BEARViewController.swift; sourceTree = "<group>"; };
-		FD59A2901EC7120E002495A2 /* calibrate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = calibrate.xml; sourceTree = "<group>"; };
-		FD59A2921EC7120E002495A2 /* 2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 2.obj; sourceTree = "<group>"; };
-		FD59A2941EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = AG_Model_Mesh_ArcaneDefense.tga; sourceTree = "<group>"; };
-		FD59A2951EC7120E002495A2 /* arcanegolem.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.mtl; sourceTree = "<group>"; };
-		FD59A2961EC7120E002495A2 /* arcanegolem.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.obj; sourceTree = "<group>"; };
-		FD59A2971EC7120E002495A2 /* ARMORREFLECT4.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = ARMORREFLECT4.tga; sourceTree = "<group>"; };
-		FD59A2981EC7120E002495A2 /* beengine.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beengine.mtl; sourceTree = "<group>"; };
-		FD59A2A01EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ARUCO_MIP_36h12_test.pdf; sourceTree = "<group>"; };
 		FD59A2A21EC72C31002495A2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		FDA51B201F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ARUCO_MIP_36h12_test.pdf; sourceTree = "<group>"; };
+		FDA51B211F9C9540003C2E55 /* calibrate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = calibrate.xml; sourceTree = "<group>"; };
+		FDA51B231F9C9540003C2E55 /* 2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 2.obj; sourceTree = "<group>"; };
+		FDA51B251F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = AG_Model_Mesh_ArcaneDefense.tga; sourceTree = "<group>"; };
+		FDA51B261F9C9540003C2E55 /* arcanegolem.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.mtl; sourceTree = "<group>"; };
+		FDA51B271F9C9540003C2E55 /* arcanegolem.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.obj; sourceTree = "<group>"; };
+		FDA51B281F9C9540003C2E55 /* ARMORREFLECT4.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = ARMORREFLECT4.tga; sourceTree = "<group>"; };
+		FDA51B291F9C9540003C2E55 /* beengine.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beengine.mtl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,21 +73,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8B0002F1E81036B00350307 /* opencv2.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				8AEDCA293F996A2478874446 /* Pods_BohdiAR_Example.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6003F5AB195388D20070C39A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
-				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				A6E1A214CB59927A4AC44A72 /* Pods_BohdiAR_Tests.framework in Frameworks */,
+				57BEC390CA5F6F93E64415EE /* Pods_BohdiAR_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				6003F58A195388D20070C39A /* BohdiAR_Example.app */,
-				6003F5AE195388D20070C39A /* BohdiAR_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -141,8 +110,8 @@
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
-				DBE021330A2BD086E1B5E21C /* Pods_BohdiAR_Example.framework */,
 				031664692F20E374B88D61A9 /* Pods_BohdiAR_Tests.framework */,
+				7F3BC86B5A9693CBCA960353 /* Pods_BohdiAR_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -158,7 +127,7 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
-				F8B0000C1E80DA2300350307 /* Resources */,
+				FDA51B1E1F9C9540003C2E55 /* Assets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			name = "Example for BohdiAR";
@@ -210,55 +179,45 @@
 			children = (
 				C6CB51B042AFBCABB80DC2DE /* Pods-BohdiAR_Example.debug.xcconfig */,
 				623BD58255B40950FB76DEE4 /* Pods-BohdiAR_Example.release.xcconfig */,
-				A30FBB8CFFE6768731DC8C63 /* Pods-BohdiAR_Tests.debug.xcconfig */,
-				2E9B1D1593AD6E93C2567726 /* Pods-BohdiAR_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		F8B0000C1E80DA2300350307 /* Resources */ = {
+		FDA51B1E1F9C9540003C2E55 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A28E1EC7120E002495A2 /* Assets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		FD59A28E1EC7120E002495A2 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				FD59A28F1EC7120E002495A2 /* AR */,
-				FD59A2911EC7120E002495A2 /* models */,
+				FDA51B1F1F9C9540003C2E55 /* AR */,
+				FDA51B221F9C9540003C2E55 /* models */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		FD59A28F1EC7120E002495A2 /* AR */ = {
+		FDA51B1F1F9C9540003C2E55 /* AR */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A2A01EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf */,
-				FD59A2901EC7120E002495A2 /* calibrate.xml */,
+				FDA51B201F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf */,
+				FDA51B211F9C9540003C2E55 /* calibrate.xml */,
 			);
 			path = AR;
 			sourceTree = "<group>";
 		};
-		FD59A2911EC7120E002495A2 /* models */ = {
+		FDA51B221F9C9540003C2E55 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A2921EC7120E002495A2 /* 2.obj */,
-				FD59A2931EC7120E002495A2 /* Arcanegolem */,
-				FD59A2981EC7120E002495A2 /* beengine.mtl */,
+				FDA51B231F9C9540003C2E55 /* 2.obj */,
+				FDA51B241F9C9540003C2E55 /* Arcanegolem */,
+				FDA51B291F9C9540003C2E55 /* beengine.mtl */,
 			);
 			path = models;
 			sourceTree = "<group>";
 		};
-		FD59A2931EC7120E002495A2 /* Arcanegolem */ = {
+		FDA51B241F9C9540003C2E55 /* Arcanegolem */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A2941EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga */,
-				FD59A2951EC7120E002495A2 /* arcanegolem.mtl */,
-				FD59A2961EC7120E002495A2 /* arcanegolem.obj */,
-				FD59A2971EC7120E002495A2 /* ARMORREFLECT4.tga */,
+				FDA51B251F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga */,
+				FDA51B261F9C9540003C2E55 /* arcanegolem.mtl */,
+				FDA51B271F9C9540003C2E55 /* arcanegolem.obj */,
+				FDA51B281F9C9540003C2E55 /* ARMORREFLECT4.tga */,
 			);
 			path = Arcanegolem;
 			sourceTree = "<group>";
@@ -286,27 +245,6 @@
 			productReference = 6003F58A195388D20070C39A /* BohdiAR_Example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6003F5AD195388D20070C39A /* BohdiAR_Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "BohdiAR_Tests" */;
-			buildPhases = (
-				9785611DD77F4142ABD5464C /* [CP] Check Pods Manifest.lock */,
-				6003F5AA195388D20070C39A /* Sources */,
-				6003F5AB195388D20070C39A /* Frameworks */,
-				6003F5AC195388D20070C39A /* Resources */,
-				60EA9399ABB6046636C1E3E9 /* [CP] Embed Pods Frameworks */,
-				F19853E9880411B1A597A4A4 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				6003F5B4195388D20070C39A /* PBXTargetDependency */,
-			);
-			name = BohdiAR_Tests;
-			productName = BohdiARTests;
-			productReference = 6003F5AE195388D20070C39A /* BohdiAR_Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -314,15 +252,13 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = BEAR;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = sunpaq;
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
 						DevelopmentTeam = R7BTEXA73U;
-						LastSwiftMigration = 0830;
-					};
-					6003F5AD195388D20070C39A = {
-						TestTargetID = 6003F589195388D20070C39A;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -340,7 +276,6 @@
 			projectRoot = "";
 			targets = (
 				6003F589195388D20070C39A /* BohdiAR_Example */,
-				6003F5AD195388D20070C39A /* BohdiAR_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -350,26 +285,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD59A29C1EC7120E002495A2 /* arcanegolem.mtl in Resources */,
-				FD59A29F1EC7120E002495A2 /* beengine.mtl in Resources */,
-				FD59A29E1EC7120E002495A2 /* ARMORREFLECT4.tga in Resources */,
-				FD59A29A1EC7120E002495A2 /* 2.obj in Resources */,
-				FD59A29B1EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */,
-				FD59A2A11EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf in Resources */,
+				FDA51B2D1F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
-				FD59A29D1EC7120E002495A2 /* arcanegolem.obj in Resources */,
+				FDA51B2A1F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
-				FD59A2991EC7120E002495A2 /* calibrate.xml in Resources */,
+				FDA51B2E1F9C9540003C2E55 /* arcanegolem.mtl in Resources */,
+				FDA51B301F9C9540003C2E55 /* ARMORREFLECT4.tga in Resources */,
+				FDA51B2F1F9C9540003C2E55 /* arcanegolem.obj in Resources */,
+				FDA51B311F9C9540003C2E55 /* beengine.mtl in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6003F5AC195388D20070C39A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */,
+				FDA51B2C1F9C9540003C2E55 /* 2.obj in Resources */,
+				FDA51B2B1F9C9540003C2E55 /* calibrate.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,45 +318,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BohdiAR_Example/Pods-BohdiAR_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		60EA9399ABB6046636C1E3E9 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BohdiAR_Tests/Pods-BohdiAR_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9785611DD77F4142ABD5464C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		A8107D1A7BCF56BF1D35479B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BohdiAR_Example/Pods-BohdiAR_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BohdiAR/BohdiAR.framework",
+				"${BUILT_PRODUCTS_DIR}/BohdiEngine/BohdiEngine.framework",
+				"${PODS_ROOT}/OpenCV-Dynamic/opencv2.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BohdiAR.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BohdiEngine.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/opencv2.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -442,28 +346,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BohdiAR_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		F19853E9880411B1A597A4A4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BohdiAR_Tests/Pods-BohdiAR_Tests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -480,23 +372,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6003F5AA195388D20070C39A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		6003F5B4195388D20070C39A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6003F589195388D20070C39A /* BohdiAR_Example */;
-			targetProxy = 6003F5B3195388D20070C39A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		6003F596195388D20070C39A /* InfoPlist.strings */ = {
@@ -534,19 +410,26 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -564,7 +447,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -579,19 +462,26 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -602,8 +492,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -615,7 +506,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R7BTEXA73U;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/OpenCV",
@@ -624,13 +518,17 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BohdiAR/BohdiAR-Prefix.pch";
 				INFOPLIST_FILE = "BohdiAR/BohdiAR-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BohdiAR/BohdiAR_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -641,7 +539,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R7BTEXA73U;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/OpenCV",
@@ -650,59 +551,16 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BohdiAR/BohdiAR-Prefix.pch";
 				INFOPLIST_FILE = "BohdiAR/BohdiAR-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BohdiAR/BohdiAR_Example-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		6003F5C3195388D20070C39A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A30FBB8CFFE6768731DC8C63 /* Pods-BohdiAR_Tests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BohdiAR_Example.app/BohdiAR_Example";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		6003F5C4195388D20070C39A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E9B1D1593AD6E93C2567726 /* Pods-BohdiAR_Tests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BohdiAR_Example.app/BohdiAR_Example";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -723,15 +581,6 @@
 			buildConfigurations = (
 				6003F5C0195388D20070C39A /* Debug */,
 				6003F5C1195388D20070C39A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "BohdiAR_Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6003F5C3195388D20070C39A /* Debug */,
-				6003F5C4195388D20070C39A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

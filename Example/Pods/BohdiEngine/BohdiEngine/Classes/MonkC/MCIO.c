@@ -114,12 +114,12 @@ method(MCFile, MCFile*, initWithPathName, char* pathname, int oflag)
 
 method(MCFile, MCFile*, initWithPathNameDefaultFlag, char* pathname)
 {
-    return MCFile_initWithPathName(address, obj, pathname, MCFileReadWriteTrunc);
+    return MCFile_initWithPathName(obj, pathname, MCFileReadWriteTrunc);
 }
 
 method(MCFile, ssize_t, readAllFromBegin, off_t offset)
 {
-    return MCFile_readFromBegin(0, obj, offset, (size_t)obj->attribute.st_size);
+    return MCFile_readFromBegin(obj, offset, (size_t)obj->attribute.st_size);
 }
 
 method(MCFile, ssize_t, readFromBegin, off_t offset, size_t nbytes)
@@ -257,7 +257,7 @@ method(MCStream, MCStream*, initWithPath, MCStreamType type, const char* path)
 
 method(MCStream, MCStream*, initWithPathDefaultType, const char* path)
 {
-    return MCStream_initWithPath(0, obj, MakeMCStreamType(MCStreamBuf_FullBuffered, MCStreamOpen_ReadWrite), path);
+    return MCStream_initWithPath(obj, MakeMCStreamType(MCStreamBuf_FullBuffered, MCStreamOpen_ReadWrite), path);
 }
 
 method(MCStream, void, bye, voida)

@@ -244,7 +244,7 @@ utility(MCGLEngine, int, tickFPS, MCClock* clock)
     static clock_t elapse = 0;
     static clock_t time, lastime;
     
-    MCClock_getCPUClocksSinceStart(0, clock, &time);
+    MCClock_getCPUClocksSinceStart(clock, &time);
     if (elapse >= CLOCKS_PER_SEC ) {
         unsigned result = fcount;
         //reset
@@ -336,5 +336,17 @@ utility(MCGLEngine, int, validateProgram, GLuint prog)
     }
     
     return 1;
+}
+
+utility(MCGLEngine, void, setViewport, int x, int y, int width, int height)
+{
+    glEnable(GL_DEPTH_TEST);//this is for Google cardboard
+    glViewport(x, y, width, height);
+}
+
+utility(MCGLEngine, void, setScissor, int x, int y, int width, int height)
+{
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(x, y, width, height);
 }
 

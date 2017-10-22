@@ -111,7 +111,7 @@ static void runMethodByPointer(MCUnitTestCase* obj, mc_hashitem* amethod)
 	runtime_log("%s\n", "runMethodByPointer start");
 
 	try{
-		_push_jump(_response_to(cast(MCObject*, obj), amethod->key), null);
+		_push_jump(response_to(cast(MCObject*, obj), amethod->key), null);
 		//if exception generated, this line will never be reached
 	}
 	catch(MCAssertYESException){
@@ -226,7 +226,7 @@ method(MCUnitTestSuite, void, runTestCases, voida)
 	runtime_log("%s\n", "MCUnitTestSuite runTestCases");
 	MCUnitTestCase *iter = null;
 	for(iter=obj->first_case; iter!=null; iter = iter->next_case)
-        MCUnitTestCase_runTests(0, iter, 0);
+        MCUnitTestCase_runTests(iter, 0);
 }
 
 /* Test Result */
@@ -313,7 +313,7 @@ method(MCUnitTestRunner, void, runTestSuites, voida)
 	runtime_log("%s\n", "MCUnitTestRunner runTestSuites");
 	MCUnitTestSuite *iter;
 	for(iter=obj->first_suite; iter!=null; iter = iter->next_suite)
-        MCUnitTestSuite_runTestCases(0, iter, 0);
+        MCUnitTestSuite_runTestCases(iter, 0);
 }
 
 onload(MCUnitTestRunner)

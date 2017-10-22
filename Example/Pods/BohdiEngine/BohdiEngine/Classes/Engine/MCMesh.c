@@ -70,7 +70,7 @@ method(MCMesh, MCMesh*, initWithDefaultVertexAttributes, GLsizei vertexCount)
         MCVertexAttribTexCoord0,2, GL_FLOAT, GL_FALSE, 44, MCBUFFER_OFFSET(36)};
     
     //alloc vertex buffer
-    MCMesh_allocVertexBuffer(0, obj, vertexCount);
+    MCMesh_allocVertexBuffer(obj, vertexCount);
     //obj->vertexIndexes = (GLuint*)malloc(sizeof(GLuint)*obj->vforertexCount);
     
     return obj;
@@ -144,10 +144,10 @@ method(MCMesh, void, prepareMesh, MCGLContext* ctx)
         }
         //Texture
         if (obj->diffuseTextureRef) {
-            MCTexture_loadToGLBuffer(0, obj->diffuseTextureRef, 0);
+            MCTexture_loadToGLBuffer(obj->diffuseTextureRef, 0);
         }
         if (obj->specularTextureRef) {
-            MCTexture_loadToGLBuffer(0, obj->specularTextureRef, 0);
+            MCTexture_loadToGLBuffer(obj->specularTextureRef, 0);
         }
         //Unbind
         glBindVertexArray(0);
@@ -160,10 +160,10 @@ method(MCMesh, void, drawMesh, MCGLContext* ctx)
     glBindVertexArray(obj->VAO);
     //texture
     if (obj->diffuseTextureRef) {
-        MCTexture_active(0, obj->diffuseTextureRef, ctx->pid, "diffuse_sampler");
+        MCTexture_active(obj->diffuseTextureRef, ctx->pid, "diffuse_sampler");
     }
     if (obj->specularTextureRef) {
-        MCTexture_active(0, obj->specularTextureRef, ctx->pid, "specular_sampler");
+        MCTexture_active(obj->specularTextureRef, ctx->pid, "specular_sampler");
     }
     //override draw mode
     GLenum mode = var(mode);

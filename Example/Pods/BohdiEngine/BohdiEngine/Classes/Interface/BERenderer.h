@@ -7,23 +7,33 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMotion/CoreMotion.h>
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
-#import "BEInterface.h"
+
+typedef enum {
+    BECameraFixedAtOrigin = 0,
+    BECameraRotateAroundModelManual,
+    BECameraRotateAroundModelByGyroscope,
+    BECameraRotateAroundModelByGyroscopeReverse
+} BECameraRotateMode;
 
 @interface BERenderer : NSObject
 
 @property (atomic, readwrite) BOOL doesAutoRotateCamera;
 @property (atomic, readwrite) BOOL doesDrawWireFrame;
+@property (atomic, readwrite) CMRotationMatrix deviceRotateMat3;
 
 +(GLKView*) createDefaultGLView:(CGRect)frame;
 +(void) createFramebuffersWithContext:(EAGLContext*)ctx AndLayer:(CAEAGLLayer*)lyr;
 
 -(instancetype) init __unavailable;
--(instancetype) initWithFrame:(CGRect)frame doesOpaque:(BOOL)opaque;
--(instancetype) initWithFrame:(CGRect)frame doesOpaque:(BOOL)opaque cameraRotateMode:(BECameraRotateMode)rmode;
+-(instancetype) initWithFrame:(CGRect)frame;
 
--(void) resizeAllScene:(CGSize)frameSize;
+-(instancetype) setCameraRotateMode:(BECameraRotateMode)rmode;
+-(instancetype) setBackgroundColor:(UIColor*)color;
+-(instancetype) resizeAllScene:(CGSize)frameSize;
+-(instancetype) scissorAllScene:(CGRect)frame;
 
 -(void) removeCurrentModel;
 -(void) addModelNamed:(NSString*)modelName;
@@ -46,11 +56,15 @@
 -(void) cameraAspectRatioReset:(float)aspectRatio;
 -(void) cameraFOVReset:(float)fov;
 
+-(void) cameraTransformWorld:(GLKMatrix4)mat4;
+-(void) cameraTransformSelf:(GLKMatrix4)mat4;
+
 //light pos follow camera if pos is null
 -(void) lightReset:(GLKVector3*)pos;
 
--(void) handlePanGesture:(CGPoint)offset;
--(void) handlePinchGesture:(float)scale;
+-(void) rotateModelByPanGesture:(CGPoint)offset;
+-(void) rotateSkysphByPanGesture:(CGPoint)offset;
+-(void) zoomModelByPinchGesture:(CGFloat)scale;
 
 -(void) updateModelTag:(int)tag PoseMat4D:(double*)mat4;
 -(void) updateModelTag:(int)tag PoseMat4F:(float*)mat4;

@@ -8,7 +8,7 @@
 #define __exception_try_not_called -1
 extern jmp_buf exception_env;
 extern volatile int exception_type;
-void clean_exception_context();
+void clean_exception_context(void);
 
 #define __MCNoneException 0
 #define __ECODE(name) __get_exception_code(#name)

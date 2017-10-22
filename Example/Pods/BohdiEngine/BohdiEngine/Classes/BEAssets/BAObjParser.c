@@ -69,7 +69,7 @@ void parseObjMeta(BAObjMeta* meta, const char* buff)
     }
 }
 
-void parseObj(BAObjModel* object, const char* file)
+void parseObj(BAObjData* object, const char* file)
 {
     if (object && file) {
         size_t vcursor = 0;
@@ -225,7 +225,7 @@ void parseObj(BAObjModel* object, const char* file)
     }
 }
 
-BAObjModel* BAObjModelNewWithFilepath(const char* filepath, BAObjMeta* meta)
+BAObjData* BAObjDataNewWithFilepath(const char* filepath, BAObjMeta* meta)
 {
     const char* assetbuff;
     assetbuff = MCFileCopyContentWithPath(filepath);
@@ -240,7 +240,7 @@ BAObjModel* BAObjModelNewWithFilepath(const char* filepath, BAObjMeta* meta)
             error_log("MC3DObjParser modle need calculate normal\n");
         }
         
-        BAObjModel* buff = BAObjAlloc(meta);
+        BAObjData* buff = BAObjAlloc(meta);
         if (!buff) {
             return null;
         }
@@ -257,7 +257,7 @@ BAObjModel* BAObjModelNewWithFilepath(const char* filepath, BAObjMeta* meta)
     }
 }
 
-BAObjModel* BAObjModelNew(const char* filename, BAObjMeta* meta)
+BAObjData* BAObjDataNew(const char* filename, BAObjMeta* meta)
 {
     char path[PATH_MAX] = {0};
     if(MCFileGetPath(filename, path)) {
@@ -265,7 +265,7 @@ BAObjModel* BAObjModelNew(const char* filename, BAObjMeta* meta)
         return null;
     }
     
-    return BAObjModelNewWithFilepath(path, meta);
+    return BAObjDataNewWithFilepath(path, meta);
 }
 
 static void recursiveFreeBAMtlLibrary(BAMtlLibrary* lib)
@@ -277,7 +277,7 @@ static void recursiveFreeBAMtlLibrary(BAMtlLibrary* lib)
     BAMtlLibraryRelease(lib);
 }
 
-void BAObjRelease(BAObjModel* buff)
+void BAObjRelease(BAObjData* buff)
 {
     //recursively
     if (buff) {

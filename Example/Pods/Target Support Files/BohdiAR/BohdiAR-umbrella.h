@@ -10,7 +10,7 @@
 #endif
 #endif
 
-#import "BARBaseController.hpp"
+#import "BARView.hpp"
 #import "BARAbstractCamera.hpp"
 #import "BARPhotoCamera.hpp"
 #import "BARVideoCamera.hpp"
