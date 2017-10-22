@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BohdiAR'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'wrap OpenCV-Dynamic framework and ArUco library for AR apps'
 
   s.homepage         = 'https://github.com/sunpaq/BohdiAR-pod'
@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
   s.private_header_files = 'BohdiAR/Classes/ArUco2/**/*.{h,hpp}', 'BohdiAR/Classes/Core/**/*.{h,hpp}'
 
   s.frameworks = 'Foundation', 'AVFoundation', 'UIKit', 'AssetsLibrary', 'CoreMedia'
-  s.dependency 'OpenCV-Dynamic'
+  s.dependency 'OpenCV'
 
 end

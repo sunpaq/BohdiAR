@@ -23,7 +23,19 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 
 @end
 
-@interface BARBaseController : UIViewController <BARVideoCameraDelegate>
+/*
+ as GLKView and CALayer not act as normal UIViews
+ please use the following designated containers to customize your UI
+ videoContainer in the lowest layer openglContainer in the middle
+ add your 3D content view as a subview of openglContainer
+ add your UI element view as a subview of uiContainer
+ */
+
+@interface BARView : UIView <BARVideoCameraDelegate>
+
+@property (atomic, readonly) UIView* videoContainer;
+@property (atomic, readonly) UIView* openglContainer;
+@property (atomic, readonly) UIView* uiContainer;
 
 @property (atomic, weak) id<BARDelegate> delegate;
 @property (atomic, readonly) CALayer* cvlayer;
@@ -37,15 +49,15 @@ enum BARCalibratePattern { NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CI
 
 @property (atomic, readwrite) BOOL drawDebugInfo;
 
--(void) addOverview:(UIView*)view;
 -(void) configDetectorWithCameraParameters:(NSString*)filePath MarkerLength:(float)length;
--(void) configDetectorStabilier:(BOOL)use Rotate:(float)rotate Translate:(float)translate;
 
 -(void) startDetector;
 -(void) stopDetector;
 
 -(void) lockFocus;
 -(void) unlockFocus;
+
+-(void) showHideSubview:(UIView*)view showOrHide:(BOOL)showOrHide;
 
 @end
 
