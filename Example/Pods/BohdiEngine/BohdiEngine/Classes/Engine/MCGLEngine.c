@@ -244,7 +244,7 @@ utility(MCGLEngine, int, tickFPS, MCClock* clock)
     static clock_t elapse = 0;
     static clock_t time, lastime;
     
-    MCClock_getCPUClocksSinceStart(0, clock, &time);
+    MCClock_getCPUClocksSinceStart(clock, &time);
     if (elapse >= CLOCKS_PER_SEC ) {
         unsigned result = fcount;
         //reset

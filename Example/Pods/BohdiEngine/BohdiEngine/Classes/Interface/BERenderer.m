@@ -106,9 +106,10 @@
 +(GLKView*) createDefaultGLView:(CGRect)frame
 {
     EAGLContext* ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-    ctx.multiThreaded = NO;
+    ctx.multiThreaded = YES;
+    
     [EAGLContext setCurrentContext:ctx];
-    GLKView* glview = [[GLKView alloc] initWithFrame:frame context:[EAGLContext currentContext]];
+    GLKView* glview = [[GLKView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) context:ctx];
     
     glview.enableSetNeedsDisplay = YES;
     glview.opaque = NO;
@@ -126,7 +127,7 @@
         pinch_scale = 10.0;
         director = new(MCDirector);
         CGFloat scale = [UIScreen mainScreen].scale;
-        MCDirector_setupMainScene(0, director,
+        MCDirector_setupMainScene(director,
                                   frame.size.width * scale,
                                   frame.size.height * scale);
         
@@ -158,7 +159,7 @@
     if (director) {
         CGFloat red, green, blue, alpha;
         [color getRed:&red green:&green blue:&blue alpha:&alpha];
-        MCDirector_setBackgroudColor(0, director, red, green, blue, alpha);
+        MCDirector_setBackgroudColor(director, red, green, blue, alpha);
     }
     return self;
 }
@@ -167,7 +168,7 @@
 {
     if (director) {
         CGFloat scale = [UIScreen mainScreen].scale;
-        MCDirector_resizeAllScene(0, director, (int)frameSize.width * scale, (int)frameSize.height * scale);
+        MCDirector_resizeAllScene(director, (int)frameSize.width * scale, (int)frameSize.height * scale);
     }
     return self;
 }
@@ -175,7 +176,7 @@
 -(instancetype) scissorAllScene:(CGRect)frame
 {
     if (director) {
-        MCDirector_scissorAllScene(0, director, (int)frame.origin.x, (int)frame.origin.y,
+        MCDirector_scissorAllScene(director, (int)frame.origin.x, (int)frame.origin.y,
                                    (int)frame.size.width, (int)frame.size.height);
     }
     return self;
@@ -205,10 +206,10 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         const char* name = [modelName cStringUsingEncoding:NSUTF8StringEncoding];
-        MC3DModel* m = MCDirector_addModelNamed(0, director, name, MCFloatF(scale));
+        MC3DModel* m = MCDirector_addModelNamed(director, name, MCFloatF(scale));
         m->tag = tag;
-        MC3DModel_rotateAroundSelfAxisX(0, m, ccwRadian);
-        MCDirector_cameraFocusOn(0, director, MCVector4Make(0, -scale * 0.5, 0, scale * 2.0));
+        MC3DModel_rotateAroundSelfAxisX(m, ccwRadian);
+        MCDirector_cameraFocusOn(director, MCVector4Make(0, -scale * 0.5, 0, scale * 2.0));
     });
 }
 
@@ -231,20 +232,20 @@
 {
     if (texname) {
         const char* name = [texname cStringUsingEncoding:NSUTF8StringEncoding];
-        MCDirector_addSkysphereNamed(0, director, name);
+        MCDirector_addSkysphereNamed(director, name);
     } else {
-        MCDirector_addSkysphereNamed(0, director, null);
+        MCDirector_addSkysphereNamed(director, null);
     }
 }
 
 -(void) removeCurrentSkybox
 {
-    MCDirector_removeCurrentSkybox(0, director, 0);
+    MCDirector_removeCurrentSkybox(director, 0);
 }
 
 -(void) removeCurrentSkysph
 {
-    MCDirector_removeCurrentSkysph(0, director, 0);
+    MCDirector_removeCurrentSkysph(director, 0);
 }
 
 -(void) cameraReset:(float*)mat4
@@ -285,7 +286,7 @@
     if (!director) return;
     MCCamera* cam = computed(director, cameraHandler);
     if (cam) {
-        MC3DNode_rotateMat3(0, &cam->Super, mat3.m, inc?true:false);
+        MC3DNode_rotateMat3(&cam->Super, mat3.m, inc?true:false);
     }
 }
 
@@ -298,7 +299,7 @@
         cam->R_value = MCVector3Length(eye);
         cam->eye = eye;
         MCVector3 v3 = {vec3.x, vec3.y, vec3.z};
-        MC3DNode_translateVec3(0, &cam->Super, &v3, inc?true:false);
+        MC3DNode_translateVec3(&cam->Super, &v3, inc?true:false);
     }
 }
 
@@ -326,7 +327,7 @@
     MCCamera* cam = computed(director, cameraHandler);
     if (cam) {
         MCMatrix4 m4 = MCMatrix4Make(mat4.m);
-        MCCamera_transformWorld(0, cam, &m4);
+        MCCamera_transformWorld(cam, &m4);
     }
 }
 
@@ -336,7 +337,7 @@
     MCCamera* cam = computed(director, cameraHandler);
     if (cam) {
         MCMatrix4 m4 = MCMatrix4Make(mat4.m);
-        MCCamera_transformSelf(0, cam, &m4);
+        MCCamera_transformSelf(cam, &m4);
     }
 }
 
@@ -372,7 +373,7 @@
     pinch_scale = MAX(10.0, MIN(pinch_scale, 100.0));
     
     MCCamera* camera = computed(director, cameraHandler);
-    MCCamera_distanceScale(0, camera, MCFloatF(20.0/pinch_scale));
+    MCCamera_distanceScale(camera, MCFloatF(20.0/pinch_scale));
 }
 
 -(void) updateModelTag:(int)tag PoseMat4D:(double*)mat4
@@ -412,8 +413,8 @@
 -(void) drawFrame
 {
     if (director) {
-        MCDirector_updateAll(0, director, 0);
-        MCDirector_drawAll(0, director, 0);
+        MCDirector_updateAll(director, 0);
+        MCDirector_drawAll(director, 0);
     }
 }
 

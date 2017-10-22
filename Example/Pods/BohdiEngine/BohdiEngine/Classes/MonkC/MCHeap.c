@@ -141,7 +141,7 @@ method(MCHeap, void, bye, voida)
 
 method(MCHeap, MCHeap*, initWithCopy, MCHeap* ref)
 {
-    MCHeap_initWithMaxcount(0, obj, ref->maxcount);
+    MCHeap_initWithMaxcount(obj, ref->maxcount);
     memcpy(obj->values, ref->values, sizeof(MCGeneric) * ref->maxcount);
     obj->count = ref->count;
     return obj;
@@ -166,10 +166,10 @@ method(MCHeap, size_t, insertValue, MCGeneric newval)
 
 method(MCHeap, MCArray*, copySortAscend, voida)
 {
-    MCHeap* hcopy = MCHeap_initWithCopy(0, new(MCHeap), obj);
-    MCArray* array = MCArray_initWithMaxCount(0, new(MCArray), obj->maxcount);
+    MCHeap* hcopy = MCHeap_initWithCopy(new(MCHeap), obj);
+    MCArray* array = MCArray_initWithMaxCount(new(MCArray), obj->maxcount);
     while (hcopy->count > 0) {
-        MCArray_addItem(0, array, deleteRoot(hcopy));
+        MCArray_addItem(array, deleteRoot(hcopy));
     }
     release(hcopy);
     return array;

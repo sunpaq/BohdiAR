@@ -88,13 +88,13 @@ oninit(MCSkybox)
 method(MCSkybox, void, bye, voida)
 {
     release(var(ctx));
-    MC3DNode_bye(0, sobj, 0);
+    MC3DNode_bye(sobj, 0);
 }
 
 method(MCSkybox, MCSkybox*, initWithCubeTexture, BECubeTextureData* cubetex)
 {
     //Shader
-    MCGLContext_initWithShaderCode(0, var(ctx), vsource, fsource,
+    MCGLContext_initWithShaderCode(var(ctx), vsource, fsource,
                                    (const char* []){
                                        "position"
                                    }, 1,
@@ -150,7 +150,7 @@ method(MCSkybox, MCSkybox*, initWithCubeTexture, BECubeTextureData* cubetex)
 method(MCSkybox, MCSkybox*, initWithFileNames, const char* namelist[])
 {
     BECubeTextureData* data = BECubeTextureData_newWithFaces(namelist);
-    MCSkybox* skybox = MCSkybox_initWithCubeTexture(0, obj, data);
+    MCSkybox* skybox = MCSkybox_initWithCubeTexture(obj, data);
     release(data);
     return skybox;
 }
@@ -158,7 +158,7 @@ method(MCSkybox, MCSkybox*, initWithFileNames, const char* namelist[])
 method(MCSkybox, MCSkybox*, initWithDefaultFiles, voida)
 {
     const char* names[6] = {"right.jpg","left.jpg","top.jpg","bottom.jpg","back.jpg","front.jpg"};
-    return MCSkybox_initWithFileNames(0, obj, names);
+    return MCSkybox_initWithFileNames(obj, names);
 }
 
 function(MCMatrix4, boxViewMatrix, voida)
@@ -183,33 +183,33 @@ function(MCMatrix4, boxProjectionMatrix, voida)
 
 method(MCSkybox, void, setRotationMat3, float mat3[9])
 {
-    MC3DNode_rotateMat3(0, sobj, mat3, false);
+    MC3DNode_rotateMat3(sobj, mat3, false);
 }
 
 method(MCSkybox, void, setRotationMat4, float mat4[16])
 {
-    MC3DNode_rotateMat4(0, sobj, mat4, false);
+    MC3DNode_rotateMat4(sobj, mat4, false);
 }
 
 method(MCSkybox, void, update, MCGLContext* ctx)
 {
-    obj->boxViewMatrix = boxViewMatrix(0, obj, 0);
-    obj->boxProjectionMatrix = boxProjectionMatrix(0, obj, 0);
+    obj->boxViewMatrix = boxViewMatrix(obj, 0);
+    obj->boxProjectionMatrix = boxProjectionMatrix(obj, 0);
     
-    MCGLContext_activateShaderProgram(0, var(ctx), 0);
+    MCGLContext_activateShaderProgram(var(ctx), 0);
     MCGLUniformData data;
     data.mat4 = obj->boxProjectionMatrix;
-    MCGLContext_updateUniform(0, var(ctx), "boxProjectionMatrix", data);
+    MCGLContext_updateUniform(var(ctx), "boxProjectionMatrix", data);
 }
 
 method(MCSkybox, void, draw, MCGLContext* ctx)
 {
     glDepthMask(GL_FALSE);
-    MCGLContext_activateShaderProgram(0, var(ctx), 0);
+    MCGLContext_activateShaderProgram(var(ctx), 0);
     MCGLUniformData data;
     data.mat4 = obj->boxViewMatrix;
-    MCGLContext_updateUniform(0, var(ctx), "boxViewMatrix", data);
-    MCGLContext_setUniforms(0, var(ctx), 0);
+    MCGLContext_updateUniform(var(ctx), "boxViewMatrix", data);
+    MCGLContext_setUniforms(var(ctx), 0);
     
     glBindVertexArray(obj->vaoid);
     MCGLEngine_activeTextureUnit(0);

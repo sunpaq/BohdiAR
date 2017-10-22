@@ -64,7 +64,7 @@ method(MCGraph, MCArray*, copyNeighborsOf, MCGraphVertex x)
     MCArray* array = new(MCArray);
     MCGraphVertex* iter = x.neighbors;
     while (iter) {
-        MCArray_addItem(0, array, MCGenericI(iter->index));
+        MCArray_addItem(array, MCGenericI(iter->index));
         iter = iter->next;
     }
     return array;

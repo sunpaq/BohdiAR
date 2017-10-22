@@ -45,7 +45,7 @@ static BSTNode* printnode(BSTNode* node) {
 
 method(MCBST, void, bye, voida)
 {
-    MCBST_traverseTree(0, obj, freenode);
+    MCBST_traverseTree(obj, freenode);
 }
 
 function(BSTNode*, insert, BSTNode* root, MCGeneric newval)
@@ -56,9 +56,9 @@ function(BSTNode*, insert, BSTNode* root, MCGeneric newval)
         obj->count++;
     }
     if (MCGenericCompare(newval, root->value) < 0)
-        root->left = insert(0, obj, root->left, newval);
+        root->left = insert(obj, root->left, newval);
     if (MCGenericCompare(newval, root->value) > 0)
-        root->right = insert(0, obj, root->right, newval);
+        root->right = insert(obj, root->right, newval);
     return root;
 }
 
@@ -67,25 +67,25 @@ function(void, traverse, BSTNode* root, BSTNode* (*funcptr)(BSTNode* node))
     as(MCBST);
     if (!root) return;
     if (root->left)
-        traverse(0, obj, root->left, funcptr);
+        traverse(obj, root->left, funcptr);
     root = (*funcptr)(root);
     if (root->right)
-        traverse(0, obj, root->right, funcptr);
+        traverse(obj, root->right, funcptr);
 }
 
 method(MCBST, void, insertValue, MCGeneric newval)
 {
-    var(root) = insert(0, obj, var(root), newval);
+    var(root) = insert(obj, var(root), newval);
 }
 
 method(MCBST, void, traverseTree, BSTNode* (*funcptr)(BSTNode* node))
 {
-    traverse(0, obj, var(root), funcptr);
+    traverse(obj, var(root), funcptr);
 }
 
 method(MCBST, void, printTree, voida)
 {
-    traverse(0, null, var(root), printnode);
+    traverse(null, var(root), printnode);
     printf("total %ld nodes\n", obj->count);
 }
 
@@ -112,7 +112,7 @@ function(void, releaseNode, TrieNode* node);
 oninit(MCTrie)
 {
     if (init(MCObject)) {
-        var(root)  = createNode(0, 0, ' ');
+        var(root)  = createNode(0, ' ');
         var(count) = 0;
         return obj;
     } else {
@@ -122,7 +122,7 @@ oninit(MCTrie)
 
 method(MCTrie, void, bye, voida)
 {
-    releaseNode(0, 0, obj->root);
+    releaseNode(obj, obj->root);
     superbye(MCObject);
 }
 
@@ -141,7 +141,7 @@ function(void, releaseNode, TrieNode* node)
     if (node) {
         for (int i=0; i<MCTrieWidth; i++)
             if (node->childs[i])
-                releaseNode(0, 0, node->childs[i]);
+                releaseNode(0, node->childs[i]);
         free(node);
     }
 }
@@ -170,9 +170,9 @@ function(TrieNode*, insertWordIntoParent, TrieNode* parent, const char* word)
         TrieNode *node=null, *p=parent;
         for (size_t i=0; i<len; i++) {
             char c = *word;
-            node = createNode(0, obj, c);
+            node = createNode(obj, c);
             //update parent
-            p = insertNodeIntoParent(0, obj, p, node);
+            p = insertNodeIntoParent(obj, p, node);
             word++;
         }
         if (node) {
@@ -204,7 +204,7 @@ function(TrieNode*, retrievalNodeByKey, const char* word)
 //{
 //    as(MCTrie);
 //    MCArray* array = new(MCArray);
-//    TrieNode* node = retrievalNodeByKey(0, obj, prefix);
+//    TrieNode* node = retrievalNodeByKey(obj, prefix);
 //    for (int i=0; i<MCTrieWidth; i++) {
 //        TrieNode* child = node->childs[i];
 //        if (child->isLeaf) {
@@ -219,13 +219,13 @@ function(TrieNode*, retrievalNodeByKey, const char* word)
 
 method(MCTrie, void, insertValueByKey, MCGeneric newval, const char* word)
 {
-    TrieNode* leaf = insertWordIntoParent(0, obj, obj->root, word);
+    TrieNode* leaf = insertWordIntoParent(obj, obj->root, word);
     leaf->value = newval;
 }
 
 method(MCTrie, MCGeneric, valueOfKey, const char* word)
 {
-    TrieNode* node = retrievalNodeByKey(0, obj, word);
+    TrieNode* node = retrievalNodeByKey(obj, word);
     //last leaf node have value
     if (node->isLeaf) {
         return node->value;
@@ -241,7 +241,7 @@ method(MCTrie, MCArray*, keysWithPrefix, const char* prefix)
 
 method(MCTrie, MCBool, hasKey, const char* word)
 {
-    TrieNode* node = retrievalNodeByKey(0, obj, word);
+    TrieNode* node = retrievalNodeByKey(obj, word);
     if (node && node->isLeaf) {
         return true;
     }

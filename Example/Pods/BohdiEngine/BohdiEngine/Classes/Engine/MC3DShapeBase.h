@@ -16,8 +16,8 @@ MCInline void MakeCircleData(float cx, float cy, float cz, float r, int num_segm
     
     for(int i = 0; i < num_segments; i++)
     {
-        vertexs[i*3]   = x + cx,
-        vertexs[i*3+1] = y + cy,
+        vertexs[i*3]   = x + cx;
+        vertexs[i*3+1] = y + cy;
         vertexs[i*3+2] = cz;
         //apply the rotation matrix
         t = x;

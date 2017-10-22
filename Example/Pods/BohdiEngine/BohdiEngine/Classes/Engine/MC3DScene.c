@@ -73,11 +73,11 @@ method(MC3DScene, MC3DScene*, initWithWidthHeightVSourceFSource, unsigned width,
 {
     var(scenewidth)  = width;
     var(sceneheight) = height;
-    MCCamera_initWithWidthHeight(0, var(mainCamera), width, height);
+    MCCamera_initWithWidthHeight(var(mainCamera), width, height);
     if (vsource && fsource) {
-        MCGLRenderer_initWithShaderCodeString(0, var(renderer), vsource, fsource);
+        MCGLRenderer_initWithShaderCodeString(var(renderer), vsource, fsource);
     } else {
-        MCGLRenderer_initWithDefaultShader(0, var(renderer), 0);
+        MCGLRenderer_initWithDefaultShader(var(renderer), 0);
     }
     debug_log("MC3DScene - init end\n");
     return obj;
@@ -85,7 +85,7 @@ method(MC3DScene, MC3DScene*, initWithWidthHeightVSourceFSource, unsigned width,
 
 method(MC3DScene, MC3DScene*, initWithWidthHeightVNameFName, unsigned width, unsigned height, const char* vname, const char* fname)
 {
-    return MC3DScene_initWithWidthHeightVNameFNameInBundle(0, obj, width, height, NULL, vname, fname);
+    return MC3DScene_initWithWidthHeightVNameFNameInBundle(obj, width, height, NULL, vname, fname);
 }
 
 method(MC3DScene, MC3DScene*, initWithWidthHeightVNameFNameInBundle, unsigned width, unsigned height, const char* bundleId, const char* vname, const char* fname)
@@ -102,7 +102,7 @@ method(MC3DScene, MC3DScene*, initWithWidthHeightVNameFNameInBundle, unsigned wi
     
     //debug_log("MC3DScene vsource: %s", vsource);
     //debug_log("MC3DScene fsource: %s", fsource);
-    MC3DScene_initWithWidthHeightVSourceFSource(0, obj, width, height, vsource, fsource);
+    MC3DScene_initWithWidthHeightVSourceFSource(obj, width, height, vsource, fsource);
     
     free((void*)vsource);
     free((void*)fsource);
@@ -113,7 +113,7 @@ method(MC3DScene, MC3DScene*, initWithWidthHeightVNameFNameInBundle, unsigned wi
 method(MC3DScene, MC3DScene*, initWithWidthHeightDefaultShader, unsigned width, unsigned height)
 {
     debug_log("MC3DScene initWithWidthHeightDefaultShader %dx%d %s\n", width, height, "MCGLRenderer");
-	return MC3DScene_initWithWidthHeightVSourceFSource(0, obj, width, height, NULL, NULL);
+	return MC3DScene_initWithWidthHeightVSourceFSource(obj, width, height, NULL, NULL);
 }
 
 method(MC3DScene, void, resizeScene, unsigned width, unsigned height)
@@ -184,16 +184,16 @@ method(MC3DScene, void, moveCameraOneStep, MCFloat deltaFai, MCFloat deltaTht)
 {
     if (var(cameraLock) == false) {
 //        if (var(skyboxRef) != null) {
-//            MCSkyboxCamera_move(0, var(skyboxRef)->camera, deltaFai.d / 5, deltaTht.d / 5);
+//            MCSkyboxCamera_move(var(skyboxRef)->camera, deltaFai.d / 5, deltaTht.d / 5);
 //        }
-        MCCamera_move(0, var(mainCamera), deltaFai, deltaTht);
+        MCCamera_move(var(mainCamera), deltaFai, deltaTht);
     }
 }
 
 method(MC3DScene, void, moveSkyboxCamera, MCFloat deltaFai, MCFloat deltaTht)
 {
     if (cpt(isDrawSky)) {
-        //MCSkyboxCamera_move(0, var(skyboxRef)->camera, deltaFai, deltaTht);
+        //MCSkyboxCamera_move(var(skyboxRef)->camera, deltaFai, deltaTht);
     }
 }
 
@@ -202,26 +202,26 @@ method(MC3DScene, void, updateScene, voida)
     if(cpt(isDrawSky)) {
         //no model
         if (var(combineMode) == MC3DSceneSkyboxOnly) {
-            MCSkybox_update(0, var(skybox), var(renderer)->context);
+            MCSkybox_update(var(skybox), var(renderer)->context);
             return;
         }
         else if (var(combineMode) == MC3DSceneSkysphOnly) {
-            MCSkysphere_update(0, var(skysph), var(renderer)->context);
+            MCSkysphere_update(var(skysph), var(renderer)->context);
             return;
         }
         //with model
         else if (var(combineMode) == MC3DSceneModelWithSkybox) {
-            MCSkybox_update(0, var(skybox), var(renderer)->context);
+            MCSkybox_update(var(skybox), var(renderer)->context);
         }
         else if (var(combineMode) == MC3DSceneModelWithSkysph) {
-            MCSkysphere_update(0, var(skysph), var(renderer)->context);
+            MCSkysphere_update(var(skysph), var(renderer)->context);
         }
     }
     
-    MC3DScene_moveCameraOneStep(0, obj, (MCFloat)0.5, (MCFloat)0.0);
-    MCCamera_update(0, obj->mainCamera, obj->renderer->context);
-    MCLight_update(0, obj->light, obj->renderer->context);
-    MCGLRenderer_updateNodes(0, var(renderer), var(rootnode));
+    MC3DScene_moveCameraOneStep(obj, (MCFloat)0.5, (MCFloat)0.0);
+    MCCamera_update(obj->mainCamera, obj->renderer->context);
+    MCLight_update(obj->light, obj->renderer->context);
+    MCGLRenderer_updateNodes(var(renderer), var(rootnode));
 }
 
 method(MC3DScene, int, drawScene, voida)
@@ -231,23 +231,23 @@ method(MC3DScene, int, drawScene, voida)
     if (cpt(isDrawSky)) {
         //no model
         if (var(combineMode) == MC3DSceneSkyboxOnly) {
-            MCSkybox_draw(0, var(skybox), var(renderer)->context);
+            MCSkybox_draw(var(skybox), var(renderer)->context);
             return MCGLEngine_tickFPS(var(clock));
         }
         else if (var(combineMode) == MC3DSceneSkysphOnly) {
-            MCSkysphere_draw(0, var(skysph), var(renderer)->context);
+            MCSkysphere_draw(var(skysph), var(renderer)->context);
             return MCGLEngine_tickFPS(var(clock));
         }
         //with model
         else if (var(combineMode) == MC3DSceneModelWithSkybox) {
-            MCSkybox_draw(0, var(skybox), var(renderer)->context);
+            MCSkybox_draw(var(skybox), var(renderer)->context);
         }
         else if (var(combineMode) == MC3DSceneModelWithSkysph) {
-            MCSkysphere_draw(0, var(skysph), var(renderer)->context);
+            MCSkysphere_draw(var(skysph), var(renderer)->context);
         }
     }
 
-    MCGLRenderer_drawNodes(0, var(renderer), var(rootnode));
+    MCGLRenderer_drawNodes(var(renderer), var(rootnode));
     //calculate FPS
     return MCGLEngine_tickFPS(var(clock));
 }
@@ -256,23 +256,23 @@ method(MC3DScene, void, setRotationMat3, float mat3[9])
 {
     if (cpt(isDrawSky)) {
         if (var(skybox)) {
-            MCSkybox_setRotationMat3(0, var(skybox), mat3);
+            MCSkybox_setRotationMat3(var(skybox), mat3);
         }
         if (var(skysph)) {
-            MCSkysphere_setRotationMat3(0, var(skysph), mat3);
+            MCSkysphere_setRotationMat3(var(skysph), mat3);
         }
     }
-    MCCamera_setRotationMat3(0, var(mainCamera), mat3);
+    MCCamera_setRotationMat3(var(mainCamera), mat3);
 }
 
 method(MC3DScene, void, setRotationMat4, float mat4[16])
 {
     if (cpt(isDrawSky)) {
         if (var(skybox)) {
-            MCSkybox_setRotationMat4(0, var(skybox), mat4);
+            MCSkybox_setRotationMat4(var(skybox), mat4);
         }
         if (var(skysph)) {
-            MCSkysphere_setRotationMat4(0, var(skysph), mat4);
+            MCSkysphere_setRotationMat4(var(skysph), mat4);
         }
     }
     //TODO rotate camera

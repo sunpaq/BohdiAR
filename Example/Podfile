@@ -1,13 +1,11 @@
 use_frameworks!
 
 target 'BohdiAR_Example' do
+  # ignore all warnings from all pods
+  inhibit_all_warnings!
+
   pod 'BohdiAR',     :path => '../'
-  #pod 'BohdiEngine'
-  pod 'BohdiEngine', :path => '~/Dev/pods/BohdiEngine-pod'
+  pod 'BohdiEngine'
+  #pod 'BohdiEngine', :path => '~/Dev/pods/BohdiEngine-pod'
 
-  target 'BohdiAR_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end

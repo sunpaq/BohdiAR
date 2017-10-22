@@ -439,12 +439,12 @@ method(MCString, MCString*, initWithCString, const char* str)
 
 MCString* MCString_newWithCString(const char* cstr)
 {
-    return MCString_initWithCString(0, new(MCString), cstr);
+    return MCString_initWithCString(new(MCString), cstr);
 }
 
 MCString* MCString_newWithMCString(MCString* mcstr)
 {
-    return MCString_initWithCString(0, new(MCString), mcstr->buff);
+    return MCString_initWithCString(new(MCString), mcstr->buff);
 }
 
 MCString* MCString_newForHttp(char* cstr, int isHttps)
@@ -454,7 +454,7 @@ MCString* MCString_newForHttp(char* cstr, int isHttps)
         res = MCString_newWithCString("https://");
 	else
 		res = MCString_newWithCString("http://");
-    MCString_add(0, res, cstr);
+    MCString_add(res, cstr);
 	return res;
 }
 

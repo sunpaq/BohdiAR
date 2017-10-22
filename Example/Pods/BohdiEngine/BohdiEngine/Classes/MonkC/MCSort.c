@@ -68,17 +68,17 @@ function(void, quicksort, const size_t l, const size_t r)
     size_t cur=l;
     for (size_t idx=l+1; idx<=r; idx++) {
         if (MCGenericCompare(obj->array[idx], pivot) < 0)
-            swap(0, obj, ++cur, idx);
+            swap(obj, ++cur, idx);
     }
     
-    swap(0, obj, l, cur);
-    quicksort(0, obj, l, cur-1);
-    quicksort(0, obj, cur+1, r);
+    swap(obj, l, cur);
+    quicksort(obj, l, cur-1);
+    quicksort(obj, cur+1, r);
 }
 
 method(MCSort, void, quickSort, voida)
 {
-    quicksort(0, obj, 0, var(length)-1);
+    quicksort(obj, 0, var(length)-1);
 }
 
 method(MCSort, void, printArray, voida)
