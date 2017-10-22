@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '283CD532442204C1B3F10C3278CCF5FF'
+               BlueprintIdentifier = '139D6E90CFDF3D9055BEE184646FCFFB'
                BlueprintName = 'BohdiAR'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'BohdiAR.framework'>

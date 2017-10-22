@@ -327,7 +327,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-BohdiAR_Example/Pods-BohdiAR_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BohdiAR/BohdiAR.framework",
 				"${BUILT_PRODUCTS_DIR}/BohdiEngine/BohdiEngine.framework",
-				"${PODS_ROOT}/OpenCV-Dynamic/opencv2.framework",
+				"${BUILT_PRODUCTS_DIR}/OpenCV/opencv2.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
