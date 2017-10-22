@@ -18,15 +18,15 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		FD59A28D1EC70EFC002495A2 /* BEARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD59A28C1EC70EFC002495A2 /* BEARViewController.swift */; };
-		FD59A2991EC7120E002495A2 /* calibrate.xml in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2901EC7120E002495A2 /* calibrate.xml */; };
-		FD59A29A1EC7120E002495A2 /* 2.obj in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2921EC7120E002495A2 /* 2.obj */; };
-		FD59A29B1EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2941EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga */; };
-		FD59A29C1EC7120E002495A2 /* arcanegolem.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2951EC7120E002495A2 /* arcanegolem.mtl */; };
-		FD59A29D1EC7120E002495A2 /* arcanegolem.obj in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2961EC7120E002495A2 /* arcanegolem.obj */; };
-		FD59A29E1EC7120E002495A2 /* ARMORREFLECT4.tga in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2971EC7120E002495A2 /* ARMORREFLECT4.tga */; };
-		FD59A29F1EC7120E002495A2 /* beengine.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2981EC7120E002495A2 /* beengine.mtl */; };
-		FD59A2A11EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FD59A2A01EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf */; };
 		FD59A2A31EC72C31002495A2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD59A2A21EC72C31002495A2 /* MainViewController.swift */; };
+		FDA51B2A1F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B201F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf */; };
+		FDA51B2B1F9C9540003C2E55 /* calibrate.xml in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B211F9C9540003C2E55 /* calibrate.xml */; };
+		FDA51B2C1F9C9540003C2E55 /* 2.obj in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B231F9C9540003C2E55 /* 2.obj */; };
+		FDA51B2D1F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B251F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga */; };
+		FDA51B2E1F9C9540003C2E55 /* arcanegolem.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B261F9C9540003C2E55 /* arcanegolem.mtl */; };
+		FDA51B2F1F9C9540003C2E55 /* arcanegolem.obj in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B271F9C9540003C2E55 /* arcanegolem.obj */; };
+		FDA51B301F9C9540003C2E55 /* ARMORREFLECT4.tga in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B281F9C9540003C2E55 /* ARMORREFLECT4.tga */; };
+		FDA51B311F9C9540003C2E55 /* beengine.mtl in Resources */ = {isa = PBXBuildFile; fileRef = FDA51B291F9C9540003C2E55 /* beengine.mtl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,15 +57,15 @@
 		F8B0002E1E81036B00350307 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = "Pods/OpenCV-Dynamic/opencv2.framework"; sourceTree = "<group>"; };
 		FD59A2891EC70EA0002495A2 /* BohdiAR_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BohdiAR_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		FD59A28C1EC70EFC002495A2 /* BEARViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BEARViewController.swift; sourceTree = "<group>"; };
-		FD59A2901EC7120E002495A2 /* calibrate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = calibrate.xml; sourceTree = "<group>"; };
-		FD59A2921EC7120E002495A2 /* 2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 2.obj; sourceTree = "<group>"; };
-		FD59A2941EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = AG_Model_Mesh_ArcaneDefense.tga; sourceTree = "<group>"; };
-		FD59A2951EC7120E002495A2 /* arcanegolem.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.mtl; sourceTree = "<group>"; };
-		FD59A2961EC7120E002495A2 /* arcanegolem.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.obj; sourceTree = "<group>"; };
-		FD59A2971EC7120E002495A2 /* ARMORREFLECT4.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = ARMORREFLECT4.tga; sourceTree = "<group>"; };
-		FD59A2981EC7120E002495A2 /* beengine.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beengine.mtl; sourceTree = "<group>"; };
-		FD59A2A01EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ARUCO_MIP_36h12_test.pdf; sourceTree = "<group>"; };
 		FD59A2A21EC72C31002495A2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		FDA51B201F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ARUCO_MIP_36h12_test.pdf; sourceTree = "<group>"; };
+		FDA51B211F9C9540003C2E55 /* calibrate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = calibrate.xml; sourceTree = "<group>"; };
+		FDA51B231F9C9540003C2E55 /* 2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 2.obj; sourceTree = "<group>"; };
+		FDA51B251F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = AG_Model_Mesh_ArcaneDefense.tga; sourceTree = "<group>"; };
+		FDA51B261F9C9540003C2E55 /* arcanegolem.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.mtl; sourceTree = "<group>"; };
+		FDA51B271F9C9540003C2E55 /* arcanegolem.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arcanegolem.obj; sourceTree = "<group>"; };
+		FDA51B281F9C9540003C2E55 /* ARMORREFLECT4.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = ARMORREFLECT4.tga; sourceTree = "<group>"; };
+		FDA51B291F9C9540003C2E55 /* beengine.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beengine.mtl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +127,7 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
-				F8B0000C1E80DA2300350307 /* Resources */,
+				FDA51B1E1F9C9540003C2E55 /* Assets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			name = "Example for BohdiAR";
@@ -183,49 +183,41 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		F8B0000C1E80DA2300350307 /* Resources */ = {
+		FDA51B1E1F9C9540003C2E55 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A28E1EC7120E002495A2 /* Assets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		FD59A28E1EC7120E002495A2 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				FD59A28F1EC7120E002495A2 /* AR */,
-				FD59A2911EC7120E002495A2 /* models */,
+				FDA51B1F1F9C9540003C2E55 /* AR */,
+				FDA51B221F9C9540003C2E55 /* models */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		FD59A28F1EC7120E002495A2 /* AR */ = {
+		FDA51B1F1F9C9540003C2E55 /* AR */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A2A01EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf */,
-				FD59A2901EC7120E002495A2 /* calibrate.xml */,
+				FDA51B201F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf */,
+				FDA51B211F9C9540003C2E55 /* calibrate.xml */,
 			);
 			path = AR;
 			sourceTree = "<group>";
 		};
-		FD59A2911EC7120E002495A2 /* models */ = {
+		FDA51B221F9C9540003C2E55 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A2921EC7120E002495A2 /* 2.obj */,
-				FD59A2931EC7120E002495A2 /* Arcanegolem */,
-				FD59A2981EC7120E002495A2 /* beengine.mtl */,
+				FDA51B231F9C9540003C2E55 /* 2.obj */,
+				FDA51B241F9C9540003C2E55 /* Arcanegolem */,
+				FDA51B291F9C9540003C2E55 /* beengine.mtl */,
 			);
 			path = models;
 			sourceTree = "<group>";
 		};
-		FD59A2931EC7120E002495A2 /* Arcanegolem */ = {
+		FDA51B241F9C9540003C2E55 /* Arcanegolem */ = {
 			isa = PBXGroup;
 			children = (
-				FD59A2941EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga */,
-				FD59A2951EC7120E002495A2 /* arcanegolem.mtl */,
-				FD59A2961EC7120E002495A2 /* arcanegolem.obj */,
-				FD59A2971EC7120E002495A2 /* ARMORREFLECT4.tga */,
+				FDA51B251F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga */,
+				FDA51B261F9C9540003C2E55 /* arcanegolem.mtl */,
+				FDA51B271F9C9540003C2E55 /* arcanegolem.obj */,
+				FDA51B281F9C9540003C2E55 /* ARMORREFLECT4.tga */,
 			);
 			path = Arcanegolem;
 			sourceTree = "<group>";
@@ -293,18 +285,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD59A29C1EC7120E002495A2 /* arcanegolem.mtl in Resources */,
-				FD59A29F1EC7120E002495A2 /* beengine.mtl in Resources */,
-				FD59A29E1EC7120E002495A2 /* ARMORREFLECT4.tga in Resources */,
-				FD59A29A1EC7120E002495A2 /* 2.obj in Resources */,
-				FD59A29B1EC7120E002495A2 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */,
-				FD59A2A11EC72948002495A2 /* ARUCO_MIP_36h12_test.pdf in Resources */,
+				FDA51B2D1F9C9540003C2E55 /* AG_Model_Mesh_ArcaneDefense.tga in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
-				FD59A29D1EC7120E002495A2 /* arcanegolem.obj in Resources */,
+				FDA51B2A1F9C9540003C2E55 /* ARUCO_MIP_36h12_test.pdf in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
-				FD59A2991EC7120E002495A2 /* calibrate.xml in Resources */,
+				FDA51B2E1F9C9540003C2E55 /* arcanegolem.mtl in Resources */,
+				FDA51B301F9C9540003C2E55 /* ARMORREFLECT4.tga in Resources */,
+				FDA51B2F1F9C9540003C2E55 /* arcanegolem.obj in Resources */,
+				FDA51B311F9C9540003C2E55 /* beengine.mtl in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				FDA51B2C1F9C9540003C2E55 /* 2.obj in Resources */,
+				FDA51B2B1F9C9540003C2E55 /* calibrate.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
